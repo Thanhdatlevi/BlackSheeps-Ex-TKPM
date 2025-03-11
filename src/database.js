@@ -16,7 +16,7 @@ db.serialize(() => {
         mssv INTEGER PRIMARY KEY,
         hoten CHAR(255) NOT NULL,
         ngaysinh DATETIME NOT NULL, 
-        gioitinh CHAR(5) NOT NULL CHECK (gioitinh IN ('Nam', 'Nu')),
+        gioitinh CHAR(5) NOT NULL CHECK (gioitinh IN ('Nam', 'Nữ')),
         khoaCN CHAR(255) NOT NULL CHECK (khoaCN IN ('Khoa Luật', 'Khoa Tiếng Anh thương mại', 'Khoa Tiếng Nhật', 'Khoa Tiếng Pháp')),
         namkhoa INT NOT NULL,
         chuongtrinh CHAR(255) NOT NULL,

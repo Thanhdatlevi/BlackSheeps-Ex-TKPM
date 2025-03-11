@@ -35,17 +35,16 @@ class studentController {
     }
 
     static async updateStudent(req, res) {
-        let mssv, hoten, gioitinh, khoaCN, namkhoa, chuongtrinh, diachi, email, sdt, tinhtrang = req.body;
+        let {mssv, hoten,ngaysinh, gioitinh, khoaCN, namkhoa, chuongtrinh, diachi, email, sdt, tinhtrang} = req.body;
 
-
-        if (!mssv || !hoten || !gioitinh || !khoaCN || !namkhoa || !chuongtrinh ||
+        if (!mssv || !ngaysinh || !hoten || !gioitinh || !khoaCN || !namkhoa || !chuongtrinh ||
             !diachi || !email || !sdt || !tinhtrang) {
             return res.status(400).json({
                 error: 'All information fields are required'
             });
         }
 
-        queryStr = "SELECT sv.mssv FROM sinhvien sv WHERE mssv = ?"
+        const queryStr = "SELECT sv.mssv FROM sinhvien sv WHERE mssv = ?"
         db.all(queryStr, [mssv], (err, rows) => {
             if (err || rows.length === 0) {
                 return res.status(404).json({
@@ -55,7 +54,7 @@ class studentController {
         });
 
         const stmt = db.prepare(
-            "UPDATE sinhvien" +
+            "UPDATE sinhvien  " +
             "SET hoten    = ?," +
             "gioitinh     = ?," +
             "khoaCN       = ?," +
@@ -64,7 +63,7 @@ class studentController {
             "diachi       = ?," +
             "email        = ?," +
             "sdt          = ?," +
-            "tinhtrang    = ?," +
+            "tinhtrang    = ? " +
             "WHERE mssv   = ?"
         );
 
@@ -72,11 +71,14 @@ class studentController {
             if (err) {
                 console.error('Error updating user:', err.message);
             } else {
-                console.log(`A new user has been updated with ID: ${this.lastID}`);
+                console.log(`A new student has been updated with ID: ${mssv}`);
             }
         });
 
         stmt.finalize();
+        return res.status(200).json({
+            message: "Update success"
+        })
 
     }
 
