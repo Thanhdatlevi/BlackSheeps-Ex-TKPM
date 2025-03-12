@@ -1,8 +1,75 @@
 <h2 class="text-xl font-bold">Thêm sinh viên</h2>
-<form id="studentForm" class="mt-4">
-    <input type="text" id="id" placeholder="Mã số sinh viên" required class="p-2 border rounded w-full mb-2">
-    <input type="text" id="name" placeholder="Họ tên" required class="p-2 border rounded w-full mb-2">
-    <input type="text" id="email" placeholder="Email" required class="p-2 border rounded w-full mb-2">
-    <input type="text" id="phone" placeholder="Số điện thoại" required class="p-2 border rounded w-full mb-2">
+<form id="studentForm" class="mt-4" action="/add" method="POST">
+    <input type="text" id="id" name="mssv" placeholder="Mã số sinh viên" required class="p-2 border rounded w-full mb-2">
+    <input type="text" id="name" name="name" placeholder="Họ tên" required class="p-2 border rounded w-full mb-2">
+    <input type="date" id="dob" name="dob" placeholder="Ngày sinh" required class="p-2 border rounded w-full mb-2">
+    <select id="gender" name="gender" required class="p-2 border rounded w-full mb-2">
+        <option value="Nam">Nam</option>
+        <option value="Nữ">Nữ</option>
+    </select>
+    <select id="falcuty" name="faculty" required class="p-2 border rounded w-full mb-2">
+        <option value="Khoa Luật">Khoa Luật</option>
+        <option value="Khoa Tiếng Anh thương mại">Khoa Tiếng Anh thương mại</option>
+        <option value="Khoa Tiếng Nhật">Khoa Tiếng Nhật</option>
+        <option value="Khoa Tiếng Pháp">Khoa Tiếng Pháp</option>
+    </select>
+    <input type="text" id="course" name="course" placeholder="Khóa học" required class="p-2 border rounded w-full mb-2">
+    <input type="text" id="program" name="program" placeholder="Chương trình" required class="p-2 border rounded w-full mb-2">
+    <input type="text" id="address" name="address" placeholder="Địa chỉ" required class="p-2 border rounded w-full mb-2">
+    <input type="text" id="email" name="email" placeholder="Email" required class="p-2 border rounded w-full mb-2">
+    <input type="text" id="phone" name="phone" placeholder="Số điện thoại" required class="p-2 border rounded w-full mb-2">
+    <select id="status" name="status" required class="p-2 border rounded w-full mb-2">
+        <option value="Đang học">Đang học</option>
+        <option value="Đã tốt nghiệp">Đã tốt nghiệp</option>
+        <option value="Đã thôi học">Đã thôi học</option>
+        <option value="Tạm dừng học">Tạm dừng học</option>
+    </select>
     <button type="submit" class="bg-blue-500 text-white p-2 rounded">Thêm sinh viên</button>
 </form>
+
+<div id="notification" class="hidden fixed top-0 right-0 m-4 p-4 bg-green-500 text-black rounded"></div>
+
+<style>
+.hidden {
+    display: none;
+}
+</style>
+
+<script>
+document.getElementById('studentForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+    const form = event.target;
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+        const response = await fetch(form.action, {
+            method: form.method,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+        const notification = document.getElementById('notification');
+
+        if (response.ok) {
+            notification.textContent = result.message || 'Student added successfully.';
+            notification.classList.remove('hidden', 'bg-red-500');
+            notification.classList.add('bg-green-500');
+        } else {
+            notification.textContent = result.message || 'Failed to add student.';
+            notification.classList.remove('hidden', 'bg-green-500');
+            notification.classList.add('bg-red-500');
+        }
+
+        setTimeout(() => {
+            notification.classList.add('hidden');
+        }, 3000);
+
+    } catch (error) {
+        console.error('Error submitting form:', error);
+    }
+});
+</script>
