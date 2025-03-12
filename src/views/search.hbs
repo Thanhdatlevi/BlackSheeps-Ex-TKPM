@@ -1,3 +1,18 @@
-<h2 class="text-xl font-bold">Tìm kiếm sinh viên</h2>
-<input type="text" id="search" placeholder="Tìm kiếm sinh viên" class="p-2 border rounded w-full mb-2">
-<ul id="studentList"></ul>
+<div class="max-w-md mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
+    <h2 class="text-2xl font-bold text-center text-gray-700 mb-4">Tìm kiếm Sinh Viên</h2>
+    <div class="flex mb-4">
+        <select id="searchType" class="p-3 border border-gray-300 rounded-lg mr-2">
+            <option value="mssv">MSSV</option>
+            <option value="name">Tên</option>
+        </select>
+        <input type="text" id="search" placeholder="Nhập thông tin tìm kiếm" 
+            class="flex-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+    </div>
+    <button onclick="searchStudent()" 
+        class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 rounded-lg transition duration-300">
+        Tìm Kiếm
+    </button>
+    <ul id="studentList" class="mt-4 p-3 bg-gray-100 rounded-lg"></ul>
+</div>
+
+<script src="/js/search.js"></script>'
