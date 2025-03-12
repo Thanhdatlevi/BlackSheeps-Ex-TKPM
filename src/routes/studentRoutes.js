@@ -7,7 +7,9 @@ router.get('/', studentController.addStudent);
 
 router.get('/delete', studentController.deleteStudent);
 
-router.get('/search', studentController.searchStudent);
+router.get('/search', studentController.searchPage);
+
+router.get("/search-student", studentController.searchStudent);
 
 router.get('/update', studentController.updateStudentPage);
 router.get('/update/:mssv', studentController.updateQueryStudent);

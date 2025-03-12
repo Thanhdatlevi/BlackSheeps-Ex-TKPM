@@ -1,6 +1,5 @@
-// const cartService = require("./cartService");
-// const userService = require('../user/userService');
-const db = require('../../database')
+const studentModel = require('../student/studentModel');
+const db = require('../../public/js/database')
 class studentController {
 
     static async addStudent(req, res) {
@@ -35,12 +34,28 @@ class studentController {
 
     }
 
-    static async searchStudent(req, res) {
+    static async searchPage(req, res) {
         try {
             res.render('search', {
                 layout: 'main',
                 title: 'Search Student Page',
             });
+
+        } catch (error) {
+            console.error("Error in searchStudentController:", error.message);
+            return res.status(500).json({
+                message: 'Failed to search student of user. Please try again later.'
+            });
+        }
+
+    }
+
+    static async searchStudent(req, res) {
+        try {
+            let { mssv, name } = req.query;
+            
+            let listStudent = await studentModel.searchStudent(mssv, name);
+            return res.json(listStudent);
 
         } catch (error) {
             console.error("Error in searchStudentController:", error.message);
