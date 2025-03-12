@@ -1,3 +1,101 @@
 <h2 class="text-xl font-bold">Cập nhật sinh viên</h2>
 <input type="text" id="updateId" placeholder="Nhập MSSV để cập nhật" class="p-2 border rounded w-full mb-2">
+<button onclick="queryStudent()" class="p-2 w-20 h-10">
+    <div class="p-2 w-full h-full rounded-xl" style="background: rgb(255, 255, 200);">
+        Find Student and fill
+    </div>
+</button>
+<input type="text" id="updateHoten" placeholder="Nhập họ tên cần cập nhật" class="p-2 border rounded w-full mb-2">
+<input type="date" id="updateNgaySinh" class="p-2 border rounded w-full mb-2">
+<select id="updateGioiTinh">
+    <option value="Nam">Nam</option>
+    <option value="Nữ">Nữ</option>
+</select>
+<select id="updateKhoa">
+    <option value="Khoa Luật">Khoa Luật</option>
+    <option value="Khoa Tiếng Anh thương mại">Khoa Tiếng Anh thương mại</option>
+    <option value="Khoa Tiếng Nhật">Khoa Tiếng Nhật</option>
+    <option value="Khoa Tiếng Pháp">Khoa Tiếng Pháp</option>
+</select>
+<input type="text" id="updateNamKhoa" placeholder="Nhập năm khoá học cần cập nhật"
+    class="p-2 border rounded w-full mb-2">
+<input type="text" id="updateChuongTrinh" placeholder="Nhập chương trình học cần cập nhật"
+    class="p-2 border rounded w-full mb-2">
+<input type="text" id="updateDiaChi" placeholder="Nhập Địa chỉ cần cập nhật" class="p-2 border rounded w-full mb-2">
+<input type="text" id="updateEmail" placeholder="Nhập Email cần cập nhật" class="p-2 border rounded w-full mb-2">
+<input type="text" id="updateSdt" placeholder="Nhập số điện thoại cần cập nhật" class="p-2 border rounded w-full mb-2">
+<select id="updateTinhTrang">
+    <option value="Đang học">Đang học</option>
+    <option value="Đã tốt nghiệp">Đã tốt nghiệp</option>
+    <option value="Đã thôi học">Đã thôi học</option>
+    <option value="Tạm dừng học">Tạm dừng học</option>
+</select>
 <button onclick="updateStudent()" class="bg-yellow-500 text-white p-2 rounded">Cập nhật</button>
+
+<script>
+    window.updateStudent = async (id) => {
+        const newName = prompt("Nhập tên mới:");
+        const newEmail = prompt("Nhập email mới:");
+        const newPhone = prompt("Nhập số điện thoại mới:");
+        if (newName && newEmail && newPhone) {
+            await fetch(`/students/update/${id}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id, name: newName, email: newEmail, phone: newPhone }),
+            });
+            fetchStudents();
+        }
+    };
+    
+    window.queryStudent = async () => {
+        mssv = document.getElementById('updateId').value;
+        const result = await fetch(`/update/${mssv}`, {
+            method: "GET",
+            headers: {"Content-Type": "application/json"},
+        })
+
+        data = await result.json();
+        console.log(data[0]);
+        document.getElementById('updateHoten').value = data[0].hoten;
+        tempDate = new Date(data[0].ngaysinh);
+        document.getElementById('updateNgaySinh').value = tempDate.toISOString().split('T')[0];
+        document.getElementById('updateGioiTinh').value = data[0].gioitinh;
+        document.getElementById('updateKhoa').value = data[0].khoaCN;
+        document.getElementById('updateNamKhoa').value = data[0].namkhoa;
+        document.getElementById('updateChuongTrinh').value = data[0].chuongtrinh;
+        document.getElementById('updateDiaChi').value = data[0].diachi;
+        document.getElementById('updateEmail').value = data[0].email;
+        document.getElementById('updateSdt').value = data[0].sdt;
+        document.getElementById('updateTinhTrang').value = data[0].tinhtrang;
+    };
+
+    window.updateStudent = async () => {
+        const sinhvien = {
+            mssv: document.getElementById('updateId').value,
+            hoten: document.getElementById('updateHoten').value,
+            ngaysinh: document.getElementById('updateNgaySinh').value,
+            gioitinh: document.getElementById('updateGioiTinh').value,
+            khoaCN: document.getElementById('updateKhoa').value,
+            namkhoa: document.getElementById('updateNamKhoa').value,
+            chuongtrinh: document.getElementById('updateChuongTrinh').value,
+            diachi: document.getElementById('updateDiaChi').value,
+            email: document.getElementById('updateEmail').value,
+            sdt: document.getElementById('updateSdt').value,
+            tinhtrang: document.getElementById('updateTinhTrang').value
+        }
+        console.log(JSON.stringify(sinhvien));
+        const response = await fetch(`/update`, {
+            method: 'PUT',
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(sinhvien)
+        })
+
+        if (response.status != 200){
+            alert("Update student failed");
+        }
+        else {
+            alert("Update student successfully");
+        }
+    };
+</script>
+
