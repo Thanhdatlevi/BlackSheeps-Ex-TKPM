@@ -82,13 +82,36 @@ class studentController {
 
     }
 
-    static async deleteStudent(req, res) {
+    static async deletePage(req, res) {
         try {
             res.render('delete', {
                 layout: 'main',
                 title: 'Delete Student Page',
             });
 
+        } catch (error) {
+            console.error("Error in deleteStudentController:", error.message);
+            return res.status(500).json({
+                message: 'Failed to delete student of user. Please try again later.'
+            });
+        }
+
+    }
+
+    static async deleteStudent(req, res) {
+        try {
+            const { mssv } = req.body;
+            const checkStudent = await studentModel.searchStudent(mssv);
+        
+            if (checkStudent.length === 0) {
+                return res.status(404).json({ message: "Mã số sinh viên không tồn tại!" });
+            }
+
+            const deletedStudent = checkStudent[0];
+
+            await studentModel.deleteStudent(mssv);
+
+            return res.json({ message: "Xóa thành công!", deletedStudent });
         } catch (error) {
             console.error("Error in deleteStudentController:", error.message);
             return res.status(500).json({

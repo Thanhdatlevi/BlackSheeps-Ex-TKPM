@@ -24,6 +24,21 @@ class studentModel {
         }
     }
 
+    static async deleteStudent(mssv) {
+        try {
+            const query = `
+            DELETE FROM students
+            WHERE student_id = $1;
+            `;
+            await db.query(query, [mssv]);
+        }
+        catch (error) {
+            console.error("Error search Student in studentModel:", error);
+            throw new Error("Error search Student in studentModel.");
+        }
+    }
+}
+
     static async addStudent(student) {
         try {
             const query = `

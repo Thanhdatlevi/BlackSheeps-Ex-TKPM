@@ -5,7 +5,8 @@ const studentController = require('../modules/student/studentController');
 router.get('/', studentController.addPage);
 router.post('/add', studentController.addStudent);
 
-router.get('/delete', studentController.deleteStudent);
+router.get('/delete', studentController.deletePage);
+router.delete('/delete-student', studentController.deleteStudent);
 
 router.get('/search', studentController.searchPage);
 
