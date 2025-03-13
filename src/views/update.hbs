@@ -49,39 +49,41 @@
     
     window.queryStudent = async () => {
         mssv = document.getElementById('updateId').value;
-        const result = await fetch(`/update/${mssv}`, {
+        const result = await fetch(`/updateSearch?mssv=${mssv}`, {
             method: "GET",
             headers: {"Content-Type": "application/json"},
         })
 
+
         data = await result.json();
+
         console.log(data[0]);
-        document.getElementById('updateHoten').value = data[0].hoten;
-        tempDate = new Date(data[0].ngaysinh);
+        document.getElementById('updateHoten').value = data[0].full_name;
+        tempDate = new Date(data[0].date_of_birth);
         document.getElementById('updateNgaySinh').value = tempDate.toISOString().split('T')[0];
-        document.getElementById('updateGioiTinh').value = data[0].gioitinh;
-        document.getElementById('updateKhoa').value = data[0].khoaCN;
-        document.getElementById('updateNamKhoa').value = data[0].namkhoa;
-        document.getElementById('updateChuongTrinh').value = data[0].chuongtrinh;
-        document.getElementById('updateDiaChi').value = data[0].diachi;
+        document.getElementById('updateGioiTinh').value = data[0].gender;
+        document.getElementById('updateKhoa').value = data[0].faculty;
+        document.getElementById('updateNamKhoa').value = data[0].academic_year;
+        document.getElementById('updateChuongTrinh').value = data[0].education_program;
+        document.getElementById('updateDiaChi').value = data[0].address;
         document.getElementById('updateEmail').value = data[0].email;
-        document.getElementById('updateSdt').value = data[0].sdt;
-        document.getElementById('updateTinhTrang').value = data[0].tinhtrang;
+        document.getElementById('updateSdt').value = data[0].phone;
+        document.getElementById('updateTinhTrang').value = data[0].student_status;
     };
 
     window.updateStudent = async () => {
         const sinhvien = {
             mssv: document.getElementById('updateId').value,
-            hoten: document.getElementById('updateHoten').value,
-            ngaysinh: document.getElementById('updateNgaySinh').value,
-            gioitinh: document.getElementById('updateGioiTinh').value,
-            khoaCN: document.getElementById('updateKhoa').value,
-            namkhoa: document.getElementById('updateNamKhoa').value,
-            chuongtrinh: document.getElementById('updateChuongTrinh').value,
-            diachi: document.getElementById('updateDiaChi').value,
+            name: document.getElementById('updateHoten').value,
+            dob: document.getElementById('updateNgaySinh').value,
+            gender: document.getElementById('updateGioiTinh').value,
+            faculty: document.getElementById('updateKhoa').value,
+            course: document.getElementById('updateNamKhoa').value,
+            program: document.getElementById('updateChuongTrinh').value,
+            address: document.getElementById('updateDiaChi').value,
             email: document.getElementById('updateEmail').value,
-            sdt: document.getElementById('updateSdt').value,
-            tinhtrang: document.getElementById('updateTinhTrang').value
+            phone: document.getElementById('updateSdt').value,
+            status: document.getElementById('updateTinhTrang').value
         }
         console.log(JSON.stringify(sinhvien));
         const response = await fetch(`/update`, {
