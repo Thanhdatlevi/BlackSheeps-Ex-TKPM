@@ -1,7 +1,7 @@
 const { query } = require("express");
 const db = require("../../config/db");
 
-class cartModel {
+class studentModel {
 
     static async searchStudent(mssv, name) {
         try {
@@ -39,4 +39,27 @@ class cartModel {
     }
 }
 
-module.exports = cartModel;
+    static async addStudent(student) {
+        try {
+            const query = `
+            INSERT INTO public.students (student_id, full_name,date_of_birth, 
+            gender, faculty, academic_year, education_program, address, email, phone, student_status) 
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+            RETURNING *;
+            `;
+            const result = await db.query(query, [student.mssv, student.name,student.dob,
+                student.gender, student.faculty, student.course,
+                student.program, student.address, student.email, student.phone, student.status]);
+            if (result.rows.length > 0) {
+                return result.rows[0];
+            }
+
+            return null;
+        }
+        catch(error) {
+            console.error("Error add Student in studentModel:", error);
+            throw new Error(error.message);
+        }
+    }
+}
+module.exports = studentModel;
