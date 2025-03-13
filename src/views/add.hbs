@@ -1,8 +1,31 @@
+<div class="max-w-3xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
 <h2 class="text-xl font-bold">Thêm sinh viên</h2>
-<form id="studentForm" class="mt-4">
-    <input type="text" id="id" placeholder="Mã số sinh viên" required class="p-2 border rounded w-full mb-2">
-    <input type="text" id="name" placeholder="Họ tên" required class="p-2 border rounded w-full mb-2">
-    <input type="text" id="email" placeholder="Email" required class="p-2 border rounded w-full mb-2">
-    <input type="text" id="phone" placeholder="Số điện thoại" required class="p-2 border rounded w-full mb-2">
-    <button type="submit" class="bg-blue-500 text-white p-2 rounded">Thêm sinh viên</button>
+<form id="studentForm" class="mt-4" action="/add" method="POST">
+    <input type="text" id="id" name="mssv" placeholder="Mã số sinh viên" required class="p-2 border rounded w-full mb-2">
+    <input type="text" id="name" name="name" placeholder="Họ tên" required class="p-2 border rounded w-full mb-2">
+    <input type="date" id="dob" name="dob" placeholder="Ngày sinh" required class="p-2 border rounded w-full mb-2">
+    <select id="gender" name="gender" required class="p-2 border rounded w-full mb-2">
+        <option value="Nam">Nam</option>
+        <option value="Nữ">Nữ</option>
+    </select>
+    <select id="falcuty" name="faculty" required class="p-2 border rounded w-full mb-2">
+        <option value="Khoa Luật">Khoa Luật</option>
+        <option value="Khoa Tiếng Anh thương mại">Khoa Tiếng Anh thương mại</option>
+        <option value="Khoa Tiếng Nhật">Khoa Tiếng Nhật</option>
+        <option value="Khoa Tiếng Pháp">Khoa Tiếng Pháp</option>
+    </select>
+    <input type="text" id="course" name="course" placeholder="Khóa học" required class="p-2 border rounded w-full mb-2">
+    <input type="text" id="program" name="program" placeholder="Chương trình" required class="p-2 border rounded w-full mb-2">
+    <input type="text" id="address" name="address" placeholder="Địa chỉ" required class="p-2 border rounded w-full mb-2">
+    <input type="text" id="email" name="email" placeholder="Email" required class="p-2 border rounded w-full mb-2">
+    <input type="text" id="phone" name="phone" placeholder="Số điện thoại" required class="p-2 border rounded w-full mb-2">
+    <select id="status" name="status" required class="p-2 border rounded w-full mb-2">
+        <option value="Đang học">Đang học</option>
+        <option value="Đã tốt nghiệp">Đã tốt nghiệp</option>
+        <option value="Đã thôi học">Đã thôi học</option>
+        <option value="Tạm dừng học">Tạm dừng học</option>
+    </select>
+    <button type="submit" class="bg-blue-500 text-white p-2 rounded" >Thêm sinh viên</button>
 </form>
+</div>
+<script src="/js/add.js"></script>
