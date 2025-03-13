@@ -30,18 +30,20 @@ class studentController {
                 phone: req.body.phone,
                 status: req.body.status
             }
-            // Kiểm tra định dạng email
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            // kiểm tra tính hợp lệ của email
+            const emailRegex = /\S+@\S+\.\S+/;
             if (!emailRegex.test(newStudent.email)) {
-                return res.status(400).json({ message: "Email không hợp lệ!" });
+                return res.status(400).json({
+                    message: 'Email is invalid'
+                });
             }
-
-            // Kiểm tra định dạng số điện thoại
+            // kiểm tra tính hợp lệ của số điện thoại
             const phoneRegex = /^[0-9]{10}$/;
             if (!phoneRegex.test(newStudent.phone)) {
-                return res.status(400).json({ message: "Số điện thoại không hợp lệ!" });
+                return res.status(400).json({
+                    message: 'Phone number is invalid'
+                });
             }
-            
             const addedStudent = await studentModel.addStudent(newStudent);
             if (addedStudent) {
                 return res.status(201).json({
@@ -55,6 +57,23 @@ class studentController {
             }
 
         } catch (error) {
+            if (error.message.includes('duplicate key value violates unique constraint')) {
+                if (error.message.includes('students_pkey')) {
+                    return res.status(400).json({
+                        message: 'Student ID already exists. Please use a different ID.'
+                    });
+                }
+                else if (error.message.includes('students_email_key')) {
+                    return res.status(400).json({
+                        message: 'Email already exists. Please use a different email.'
+                    });
+                }
+                else if (error.message.includes('students_phone_key')) {
+                    return res.status(400).json({
+                        message: 'Phone number already exists. Please use a different phone number.'
+                    });
+                }
+            }
             console.error("Error in addStudentController:", error.message);
             return res.status(500).json({
                 message: 'Failed to add student. Please try again later.'

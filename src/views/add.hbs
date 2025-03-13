@@ -1,3 +1,4 @@
+<div class="max-w-3xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
 <h2 class="text-xl font-bold">Thêm sinh viên</h2>
 <form id="studentForm" class="mt-4" action="/add" method="POST">
     <input type="text" id="id" name="mssv" placeholder="Mã số sinh viên" required class="p-2 border rounded w-full mb-2">
@@ -24,52 +25,7 @@
         <option value="Đã thôi học">Đã thôi học</option>
         <option value="Tạm dừng học">Tạm dừng học</option>
     </select>
-    <button type="submit" class="bg-blue-500 text-white p-2 rounded">Thêm sinh viên</button>
+    <button type="submit" class="bg-blue-500 text-white p-2 rounded" >Thêm sinh viên</button>
 </form>
-
-<div id="notification" class="hidden fixed top-0 right-0 m-4 p-4 bg-green-500 text-black rounded"></div>
-
-<style>
-.hidden {
-    display: none;
-}
-</style>
-
-<script>
-document.getElementById('studentForm').addEventListener('submit', async function(event) {
-    event.preventDefault();
-    const form = event.target;
-    const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries());
-
-    try {
-        const response = await fetch(form.action, {
-            method: form.method,
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        });
-
-        const result = await response.json();
-        const notification = document.getElementById('notification');
-
-        if (response.ok) {
-            notification.textContent = result.message || 'Student added successfully.';
-            notification.classList.remove('hidden', 'bg-red-500');
-            notification.classList.add('bg-green-500');
-        } else {
-            notification.textContent = result.message || 'Failed to add student.';
-            notification.classList.remove('hidden', 'bg-green-500');
-            notification.classList.add('bg-red-500');
-        }
-
-        setTimeout(() => {
-            notification.classList.add('hidden');
-        }, 3000);
-
-    } catch (error) {
-        console.error('Error submitting form:', error);
-    }
-});
-</script>
+</div>
+<script src="/js/add.js"></script>

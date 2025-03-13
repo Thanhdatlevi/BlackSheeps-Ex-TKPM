@@ -43,7 +43,7 @@ class studentModel {
         }
         catch(error) {
             console.error("Error add Student in studentModel:", error);
-            throw new Error("Error add Student in studentModel.");
+            throw new Error(error.message);
         }
     }
 }
