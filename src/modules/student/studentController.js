@@ -30,20 +30,7 @@ class studentController {
                 phone: req.body.phone,
                 status: req.body.status
             }
-            // kiểm tra tính hợp lệ của email
-            const emailRegex = /\S+@\S+\.\S+/;
-            if (!emailRegex.test(newStudent.email)) {
-                return res.status(400).json({
-                    message: 'Email is invalid'
-                });
-            }
-            // kiểm tra tính hợp lệ của số điện thoại
-            const phoneRegex = /^[0-9]{10}$/;
-            if (!phoneRegex.test(newStudent.phone)) {
-                return res.status(400).json({
-                    message: 'Phone number is invalid'
-                });
-            }
+            
             const addedStudent = await studentModel.addStudent(newStudent);
             if (addedStudent) {
                 return res.status(201).json({

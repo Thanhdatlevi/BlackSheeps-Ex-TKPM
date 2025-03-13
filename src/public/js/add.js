@@ -3,7 +3,19 @@ async function addStudent(event) {
     const form = event.target;
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
-
+    
+    // Kiểm tra email có đúng định dạng không
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(data.email)) {
+        alert("Email không hợp lệ!");
+        return;
+    }
+    // Kiểm tra sdt có đúng định dạng không
+    const phoneRegex = /(84|0[3|5|7|8|9])+([0-9]{8})\b/;
+    if (!phoneRegex.test(data.phone)) {
+        alert("Số điện thoại không hợp lệ!");
+        return;
+    }
     try {
         const response = await fetch(form.action, {
             method: form.method,
