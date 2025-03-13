@@ -13,7 +13,7 @@ router.get('/search', studentController.searchPage);
 router.get("/search-student", studentController.searchStudent);
 
 router.get('/update', studentController.updateStudentPage);
-router.get('/update/:mssv', studentController.updateQueryStudent);
+router.get('/updateSearch', studentController.searchStudent);
 router.put('/update', studentController.updateStudent);
 
 module.exports = router;

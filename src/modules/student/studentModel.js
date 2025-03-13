@@ -60,5 +60,36 @@ class studentModel {
             throw new Error(error.message);
         }
     }
+
+    static async updateStudent(student) {
+        try {
+            console.log(student.course);
+            const query = `UPDATE public.students 
+            SET full_name = $1,
+            date_of_birth = $2, 
+            gender = $3,
+            faculty = $4,
+            academic_year = $5, 
+            education_program = $6, 
+            address = $7, 
+            email = $8,
+            phone = $9, 
+            student_status = $10
+            WHERE student_id = $11
+            RETURNING *
+            `;
+            const result = await db.query(query, [student.name,student.dob,
+                student.gender, student.faculty, student.course,
+                student.program, student.address, student.email, student.phone, student.status, student.mssv ]);
+            if (result.rows.length > 0) {
+                return result.rows[0];
+            }
+            return null;
+        }
+        catch(error) {
+            console.error("Error updating Student in studentModel:", error);
+            throw new Error(error.message);
+        }
+    }
 }
 module.exports = studentModel;

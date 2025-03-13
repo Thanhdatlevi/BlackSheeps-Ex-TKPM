@@ -156,68 +156,65 @@ class studentController {
     }
 
     static async updateStudent(req, res) {
-        let {mssv, hoten,ngaysinh, gioitinh, khoaCN, namkhoa, chuongtrinh, diachi, email, sdt, tinhtrang} = req.body;
+        const newStudent = {
+            mssv: req.body.mssv,
+            name: req.body.name,
+            dob: req.body.dob,
+            gender: req.body.gender,
+            faculty: req.body.faculty,
+            course: req.body.course,
+            program: req.body.program,
+            address: req.body.address,
+            email: req.body.email,
+            phone: req.body.phone,
+            status: req.body.status
+        }
 
-        if (!mssv || !ngaysinh || !hoten || !gioitinh || !khoaCN || !namkhoa || !chuongtrinh ||
-            !diachi || !email || !sdt || !tinhtrang) {
+        if (!newStudent.mssv || 
+            !newStudent.name || 
+            !newStudent.dob || 
+            !newStudent.gender || 
+            !newStudent.faculty || 
+            !newStudent.course || 
+            !newStudent.program ||
+            !newStudent.address || 
+            !newStudent.email || 
+            !newStudent.phone || 
+            !newStudent.status) {
             return res.status(400).json({
                 error: 'All information fields are required'
             });
         }
 
-        const queryStr = "SELECT sv.mssv FROM sinhvien sv WHERE mssv = ?"
-        db.all(queryStr, [mssv], (err, rows) => {
-            if (err || rows.length === 0) {
+        try {
+            let listStudent = await studentModel.searchStudent(newStudent.mssv);
+            if (!listStudent || listStudent.length === 0){
                 return res.status(404).json({
-                    error: 'No student found with corressponding mssv'
-                });
+                    message: 'No student with corressponding id'
+                })
             }
-        });
+        } catch (error) {
+            console.error("Error in update(searching)StudentController:", error.message);
+            return res.status(500).json({
+                message: 'Failed to search while updating student of user. Please try again later.'
+            });
+        }
 
-        const stmt = db.prepare(
-            "UPDATE sinhvien  " +
-            "SET hoten    = ?," +
-            "gioitinh     = ?," +
-            "khoaCN       = ?," +
-            "namkhoa      = ?," +
-            "chuongtrinh  = ?," +
-            "diachi       = ?," +
-            "email        = ?," +
-            "sdt          = ?," +
-            "tinhtrang    = ? " +
-            "WHERE mssv   = ?"
-        );
+        try {
+            let result = await studentModel.updateStudent(newStudent);
+            console.log(result.status);
+        }
+        catch(error){
+            console.error("Error in updateStudentController:", error.message);
+            return res.status(500).json({
+                message: 'Failed to update student of user. Please try again later.'
+            });
 
-        stmt.run(hoten, gioitinh, khoaCN, namkhoa, chuongtrinh, diachi, email, sdt, tinhtrang, mssv, function(err) {
-            if (err) {
-                console.error('Error updating user:', err.message);
-            } else {
-                console.log(`A new student has been updated with ID: ${mssv}`);
-            }
-        });
+        }
 
-        stmt.finalize();
         return res.status(200).json({
             message: "Update success"
         })
-
-    }
-
-    static async updateQueryStudent(req, res) {
-
-        const { mssv } = req.params;
-        const queryStr = "SELECT * FROM sinhvien sv WHERE mssv = ?"
-        db.all(queryStr, [mssv], (err, rows) => {
-            if (err || rows.length === 0) {
-                return res.status(404).json({
-                    error: 'No student found with corressponding mssv'
-                });
-            }
-            else {
-                // console.log(rows);
-                return res.status(200).json(rows);
-            }
-        });
     }
 }
 
