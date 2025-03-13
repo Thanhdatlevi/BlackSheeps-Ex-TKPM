@@ -16,6 +16,19 @@ async function addStudent(event) {
         alert("Số điện thoại không hợp lệ!");
         return;
     }
+
+    const dob = new Date(data.dob);
+    const today = new Date();
+    const age = today.getFullYear() - dob.getFullYear();
+    const monthDiff = today.getMonth() - dob.getMonth();
+    const dayDiff = today.getDate() - dob.getDate();
+
+    // Nếu tuổi nhỏ hơn 18 hoặc năm sinh không hợp lệ
+    if (age < 18 || (age === 18 && (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)))) {
+        alert("Sinh viên phải đủ 18 tuổi trở lên!");
+        return;
+    }
+    
     try {
         const response = await fetch(form.action, {
             method: form.method,

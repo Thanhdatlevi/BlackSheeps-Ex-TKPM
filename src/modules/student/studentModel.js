@@ -37,7 +37,6 @@ class studentModel {
             throw new Error("Error search Student in studentModel.");
         }
     }
-}
 
     static async addStudent(student) {
         try {
