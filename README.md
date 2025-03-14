@@ -42,10 +42,12 @@ tailwind.config.js
 ## Hướng dẫn cài đặt và chạy chương trình
 
 # Hướng dẫn cài đặt
+```
 Bước 1: Cài đặt NodeJS và npm
 Bước 2: Clone repo về máy
 Bước 3: Chạy npm install để cài đặt node-modules
 Bước 4: Tạo file .env và thêm các nội dung có note bên bài txt đã nộp
+```
 
 # Chạy chương trình
 Trong terminal
