@@ -1,5 +1,4 @@
 const studentModel = require('../student/studentModel');
-const db = require('../../public/js/database')
 class studentController {
 
     static async addPage(req, res) {
