@@ -3,6 +3,7 @@
 # Project name: Website quản lý sinh viên
 
 ## Cấu trúc source code
+```
 node_modules/
 src/
     config/
@@ -36,6 +37,7 @@ package-lock.json
 package.json
 README.md
 tailwind.config.js
+```
 
 ## Hướng dẫn cài đặt và chạy chương trình
 
