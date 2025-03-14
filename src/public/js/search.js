@@ -25,21 +25,30 @@ async function searchStudent() {
         }
 
         // Hiển thị danh sách sinh viên
-        studentList.innerHTML = result.map(student => `
-            <li class='p-4 border-b bg-white shadow rounded-lg mb-2'>
-                <p><strong>MSSV:</strong> ${student.student_id}</p>
-                <p><strong>Họ tên:</strong> ${student.full_name}</p>
-                <p><strong>Ngày sinh:</strong> ${student.date_of_birth}</p>
-                <p><strong>Giới tính:</strong> ${student.gender}</p>
-                <p><strong>Khoa:</strong> ${student.faculty}</p>
-                <p><strong>Khóa:</strong> ${student.academic_year}</p>
-                <p><strong>Chương trình:</strong> ${student.education_program}</p>
-                <p><strong>Địa chỉ:</strong> ${student.address}</p>
-                <p><strong>Email:</strong> ${student.email}</p>
-                <p><strong>Số điện thoại:</strong> ${student.phone}</p>
-                <p><strong>Tình trạng sinh viên:</strong> ${student.student_status}</p>
-            </li>
-        `).join("");
+        studentList.innerHTML = result.map(student => {
+            // Chuyển đổi ngày sinh sang định dạng YYYY-MM-DD
+            let formattedDate = "N/A";
+            if (student.date_of_birth) {
+                const tempDate = new Date(student.date_of_birth);
+                formattedDate = tempDate.toISOString().split('T')[0];
+            }
+
+            return `
+                <li class='p-4 border-b bg-white shadow rounded-lg mb-2'>
+                    <p><strong>MSSV:</strong> ${student.student_id}</p>
+                    <p><strong>Họ tên:</strong> ${student.full_name}</p>
+                    <p><strong>Ngày sinh:</strong> ${formattedDate}</p>
+                    <p><strong>Giới tính:</strong> ${student.gender}</p>
+                    <p><strong>Khoa:</strong> ${student.faculty}</p>
+                    <p><strong>Khóa:</strong> ${student.academic_year}</p>
+                    <p><strong>Chương trình:</strong> ${student.education_program}</p>
+                    <p><strong>Địa chỉ:</strong> ${student.address}</p>
+                    <p><strong>Email:</strong> ${student.email}</p>
+                    <p><strong>Số điện thoại:</strong> ${student.phone}</p>
+                    <p><strong>Tình trạng sinh viên:</strong> ${student.student_status}</p>
+                </li>
+            `;
+        }).join("");
     } else {
         alert("Lỗi: " + result.message);
     }

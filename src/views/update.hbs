@@ -43,24 +43,10 @@
 </div>
 
 <script>
-    window.updateStudent = async (id) => {
-        const newName = prompt("Nhập tên mới:");
-        const newEmail = prompt("Nhập email mới:");
-        const newPhone = prompt("Nhập số điện thoại mới:");
-        if (newName && newEmail && newPhone) {
-            await fetch(`/students/update/${id}`, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ id, name: newName, email: newEmail, phone: newPhone }),
-            });
-            fetchStudents();
-        }
-    };
-    
     window.queryStudent = async () => {
         mssv = document.getElementById('updateId').value;
         if (!mssv) {
-            alert("Vui lòng nhập MSSV để xóa!");
+            alert("Vui lòng nhập MSSV để cập nhật!");
             return;
         }
 
@@ -106,6 +92,31 @@
             phone: document.getElementById('updateSdt').value,
             status: document.getElementById('updateTinhTrang').value
         }
+
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!emailRegex.test(sinhvien.email)) {
+            alert("Email không hợp lệ!");
+            return;
+        }
+        // Kiểm tra sdt có đúng định dạng không
+        const phoneRegex = /(84|0[3|5|7|8|9])+([0-9]{8})\b/;
+        if (!phoneRegex.test(sinhvien.phone)) {
+            alert("Số điện thoại không hợp lệ!");
+            return;
+        }
+
+        const validDepartments = ["Khoa Luật", "Khoa Tiếng Anh thương mại", "Khoa Tiếng Nhật", "Khoa Tiếng Pháp"];
+        if (!validDepartments.includes(sinhvien.faculty)) {
+            alert("Khoa không hợp lệ! Vui lòng chọn một trong các khoa: " + validDepartments.join(", "));
+            return;
+        }
+
+        const validStatuses = ["Đang học", "Đã tốt nghiệp", "Đã thôi học", "Tạm dừng học"];
+        if (!validStatuses.includes(sinhvien.status)) {
+            alert("Tình trạng sinh viên không hợp lệ! Vui lòng chọn một trong các tình trạng: " + validStatuses.join(", "));
+            return;
+        }
+
         console.log(JSON.stringify(sinhvien));
         const response = await fetch(`/update`, {
             method: 'PUT',

@@ -4,31 +4,30 @@ async function addStudent(event) {
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
     
-    // Kiểm tra email có đúng định dạng không
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex.test(data.email)) {
         alert("Email không hợp lệ!");
         return;
     }
-    // Kiểm tra sdt có đúng định dạng không
+
     const phoneRegex = /(84|0[3|5|7|8|9])+([0-9]{8})\b/;
     if (!phoneRegex.test(data.phone)) {
         alert("Số điện thoại không hợp lệ!");
         return;
     }
 
-    const dob = new Date(data.dob);
-    const today = new Date();
-    const age = today.getFullYear() - dob.getFullYear();
-    const monthDiff = today.getMonth() - dob.getMonth();
-    const dayDiff = today.getDate() - dob.getDate();
-
-    // Nếu tuổi nhỏ hơn 18 hoặc năm sinh không hợp lệ
-    if (age < 18 || (age === 18 && (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)))) {
-        alert("Sinh viên phải đủ 18 tuổi trở lên!");
+    const validDepartments = ["Khoa Luật", "Khoa Tiếng Anh thương mại", "Khoa Tiếng Nhật", "Khoa Tiếng Pháp"];
+    if (!validDepartments.includes(data.faculty)) {
+        alert("Khoa không hợp lệ! Vui lòng chọn một trong các khoa: " + validDepartments.join(", "));
         return;
     }
-    
+
+    const validStatuses = ["Đang học", "Đã tốt nghiệp", "Đã thôi học", "Tạm dừng học"];
+    if (!validStatuses.includes(data.status)) {
+        alert("Tình trạng sinh viên không hợp lệ! Vui lòng chọn một trong các tình trạng: " + validStatuses.join(", "));
+        return;
+    }
+
     try {
         const response = await fetch(form.action, {
             method: form.method,
