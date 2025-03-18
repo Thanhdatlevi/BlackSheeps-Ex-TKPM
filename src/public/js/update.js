@@ -21,7 +21,6 @@ window.queryStudent = async () => {
 
     console.log(data[0]);
     document.getElementById('updateHoten').value = data[0].full_name;
-    // console.log(tempDate)
     document.getElementById('updateNgaySinh').value = data[0].date_of_birth;
     document.getElementById('updateGioiTinh').value = data[0].gender;
     document.getElementById('updateKhoa').value = data[0].faculty;

@@ -1,5 +1,6 @@
 const { query } = require("express");
 const db = require("../../config/db");
+const logger = require("../../config/logging")
 
 class studentModel {
 
@@ -28,13 +29,14 @@ class studentModel {
             const result = await db.query(query, [mssv || null, name || null]);
 
             if (result.rows.length > 0) {
-                console.log(result.rows[0].date_of_birth);
+                logger.info("searchStudent executed successfully in studentModel");
+                logger.info(result.rows);
                 return result.rows;
             }
             return [];
         }
         catch (error) {
-            console.error("Error search Student in studentModel:", error);
+            logger.error("Error search Student in studentModel:", error);
             throw new Error("Error search Student in studentModel.");
         }
     }
@@ -48,9 +50,10 @@ class studentModel {
             await db.query(query, [mssv]);
         }
         catch (error) {
-            console.error("Error search Student in studentModel:", error);
+            logger.error("Error search Student in studentModel:", error);
             throw new Error("Error search Student in studentModel.");
         }
+        logger.info("deleteStudent executed successfully in studentModel");
     }
 
     static async addStudent(student) {
@@ -65,23 +68,20 @@ class studentModel {
                 student.gender, student.faculty, student.course,
                 student.program, student.address, student.email, student.phone, student.status]);
             if (result.rows.length > 0) {
+                logger.info("addStudent executed successfully in studentModel");
                 return result.rows[0];
             }
 
             return null;
         }
         catch(error) {
-            console.error("Error add Student in studentModel:", error);
+            logger.error("Error add Student in studentModel:", error);
             throw new Error(error.message);
         }
     }
 
     static async updateStudent(student) {
         try {
-            // logging for later
-            // console.log(student.course);
-
-            
             // get faculty_id, status id, education_program_id
             const getIDQuery = `
             SELECT ep.program_id, f.faculty_id, ss.status_id
@@ -103,9 +103,6 @@ class studentModel {
             student.program = IDResult.rows[0].program_id;
             student.faculty = IDResult.rows[0].faculty_id;
             student.status = IDResult.rows[0].status_id;
-
-            console.log(student.dob);
-            // return null;
 
             // update
             const query = `UPDATE public.students 
@@ -141,10 +138,12 @@ class studentModel {
             if (result.rows.length > 0) {
                 return result.rows[0];
             }
+            logger.info("updateStudent executed successfully in studentModel");
+            logger.info(student);
             return null;
         }
         catch(error) {
-            console.error("Error updating Student in studentModel:", error);
+            logger.error("Error updating Student in studentModel:", error);
             throw new Error(error.message);
         }
     }
