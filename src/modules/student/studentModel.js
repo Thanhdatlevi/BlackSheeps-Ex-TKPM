@@ -9,7 +9,7 @@ class studentModel {
             SELECT 
             s.student_id,
             s.full_name,
-            s.date_of_birth,
+            to_char(s.date_of_birth, 'yyyy-mm-dd') as date_of_birth,
             s.gender, 
             s.academic_year,
             s.address,
@@ -26,10 +26,11 @@ class studentModel {
             AND ($2::TEXT IS NULL OR s.full_name ILIKE '%' || $2::TEXT || '%');
             `;
             const result = await db.query(query, [mssv || null, name || null]);
+
             if (result.rows.length > 0) {
+                console.log(result.rows[0].date_of_birth);
                 return result.rows;
             }
-
             return [];
         }
         catch (error) {
@@ -77,7 +78,36 @@ class studentModel {
 
     static async updateStudent(student) {
         try {
-            console.log(student.course);
+            // logging for later
+            // console.log(student.course);
+
+            
+            // get faculty_id, status id, education_program_id
+            const getIDQuery = `
+            SELECT ep.program_id, f.faculty_id, ss.status_id
+            FROM education_programs ep
+            JOIN faculties f ON 1=1
+            JOIN student_status ss ON 1=1
+            WHERE ep.program_name = $1
+            AND f.faculty_name = $2
+            AND ss.status_name = $3
+            `
+            const IDResult = await db.query(getIDQuery, 
+                [
+                    student.program,
+                    student.faculty,
+                    student.status
+                ]
+            );
+
+            student.program = IDResult.rows[0].program_id;
+            student.faculty = IDResult.rows[0].faculty_id;
+            student.status = IDResult.rows[0].status_id;
+
+            console.log(student.dob);
+            // return null;
+
+            // update
             const query = `UPDATE public.students 
             SET full_name = $1,
             date_of_birth = $2, 
@@ -92,9 +122,22 @@ class studentModel {
             WHERE student_id = $11
             RETURNING *
             `;
-            const result = await db.query(query, [student.name,student.dob,
-                student.gender, student.faculty, student.course,
-                student.program, student.address, student.email, student.phone, student.status, student.mssv ]);
+
+            const result = await db.query(query, 
+                [
+                    student.name,
+                    student.dob,
+                    student.gender,
+                    student.faculty,
+                    student.course,
+                    student.program,
+                    student.address,
+                    student.email,
+                    student.phone,
+                    student.status,
+                    student.mssv 
+                ]
+            );
             if (result.rows.length > 0) {
                 return result.rows[0];
             }
