@@ -148,6 +148,22 @@ class studentController {
 
     }
 
+    static async searchStudentIdentification (req, res) {
+        try {
+            logger.info("searchStudentIdentification method got called in studentController");
+            let { mssv } = req.query;
+            
+            let listStudent = await studentModel.searchStudentIdentification(mssv);
+            return res.json(listStudent);
+
+        } catch (error) {
+            logger.error("Error in searchStudentController:", error.message);
+            return res.status(500).json({
+                message: 'Failed to search student of user. Please try again later.'
+            });
+        }
+    }
+
     //
     static async updateStudentPage(req, res) {
         try {

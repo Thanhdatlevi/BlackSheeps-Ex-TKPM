@@ -41,6 +41,39 @@ class studentModel {
         }
     }
 
+    static async searchStudentIdentification(mssv) {
+        try {
+            const query = `
+            SELECT 
+                si.student_id,
+                si.id_type,
+                si.id_number,
+                to_char(si.issue_date, 'yyyy-mm-dd') as issue_date,
+                si.issue_place,
+                si.expiry_date,
+                to_char(si.expiry_date, 'yyyy-mm-dd') as expiry_date,
+                si.has_chip,
+                si.issue_country,
+                si.note
+            FROM identificationdocument si
+            WHERE ($1::TEXT IS NULL OR si.student_id::TEXT = $1::TEXT) 
+            `
+            const result = await db.query(query, [mssv || null]);
+            logger.info(result);
+
+            if (result.rows.length > 0) {
+                logger.info("searchStudentIdentification executed successfully in studentModel");
+                logger.info(result.rows);
+                return result.rows;
+            }
+            return [];
+        }
+        catch (error) {
+            logger.error("Error search Student Identification in studentModel:", error);
+            throw new Error("Error search Student Identification in studentModel.");
+        }
+    }
+
     static async deleteStudent(mssv) {
         try {
             const query = `

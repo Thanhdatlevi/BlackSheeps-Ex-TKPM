@@ -1,3 +1,58 @@
+window.grayCheckBox = async() => {
+    value = document.getElementById('updateCardIDType').value;
+    if (value !== "CCCD") {
+        document.getElementById('updateCardChip').disabled = "disabled";
+        document.getElementById('updateCardChip').checked = false;
+    }
+    else {
+        document.getElementById('updateCardChip').removeAttribute('disabled');
+    }
+
+    if(value !== "passport") {
+        document.getElementById('updateCardIssueCountry').disabled = "disabled"
+        document.getElementById('updateCardIssueCountry').classList.add('bg-gray-100')
+    }
+    else {
+        document.getElementById('updateCardIssueCountry').removeAttribute('disabled');
+        document.getElementById('updateCardIssueCountry').classList.remove('bg-gray-100')
+    }
+}
+// run once everytime this page load 
+grayCheckBox();
+
+window.queryStudentIdentification = async () => {
+    mssv = document.getElementById('updateId').value;
+    if (!mssv) {
+        alert("Vui lòng nhập MSSV để cập nhật!");
+        return;
+    }
+
+    const result = await fetch(`/updateSearchID?mssv=${mssv}`, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+    })
+
+
+    data = await result.json();
+
+    console.log(data)
+    if (data.length === 0) {
+        alert('Mã số sinh viên không tồn tại!');
+        return
+    }
+
+    console.log(data[0]);
+    document.getElementById('updateCardIDType').value = data[0].id_type;
+    document.getElementById('updateCardIDNumber').value = data[0].id_number;
+    document.getElementById('updateCardIssueDate').value = data[0].issue_date;
+    document.getElementById('updateCardIssuePlace').value = data[0].issue_place;
+    document.getElementById('updateCardExpireDate').value = data[0].expiry_date;
+    document.getElementById('updateCardChip').checked = data[0].has_chip;
+    document.getElementById('updateCardIssueCountry').value = data[0].issue_country;
+    document.getElementById('updateCardNotes').value = data[0].note;
+
+    grayCheckBox();
+};
 window.queryStudent = async () => {
     mssv = document.getElementById('updateId').value;
     if (!mssv) {
