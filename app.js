@@ -9,6 +9,9 @@ const Handlebars = require('handlebars');
 
 // const uploadRoutes = require('./src/routes/uploadRoutes');
 const studentRoutes = require('./src/routes/studentRoutes'); // Điều hướng view
+const facultyRoutes = require('./src/routes/facultyRoutes');
+const programRoutes = require('./src/routes/programRoutes');
+const statusRoutes = require('./src/routes/statusRoutes');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -26,6 +29,9 @@ app.set('views', path.join(__dirname, 'src', 'views'))
 app.use(express.static(path.join(__dirname, 'src', 'public')));
 
 app.use('/', studentRoutes);
+app.use('/', facultyRoutes);
+app.use('/', programRoutes);
+app.use('/', statusRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
