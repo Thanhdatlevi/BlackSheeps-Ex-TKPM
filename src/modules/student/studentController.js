@@ -339,8 +339,8 @@ class studentController {
             const docSheet = docWorkbook.Sheets[docWorkbook.SheetNames[0]];
             const docData = XLSX.utils.sheet_to_json(docSheet);
 
-            console.log("Student Data:", studentData);
-            console.log("Document Data:", docData);
+            await studentModel.importStudent(studentData);
+            await studentModel.importIdentificationDocuments(docData);
             res.json({ message: "Import Excel thành công!" });
 
             // Xoá file sau khi xử lý xong

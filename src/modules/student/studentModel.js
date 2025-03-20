@@ -17,6 +17,7 @@ class studentModel {
                 COALESCE(addr.DIA_CHI_NHAN_THU, '') AS mailing_address, -- Địa chỉ nhận thư
                 s.email,
                 s.phone,
+                s.nationality,
                 f.faculty_name as faculty,
                 ep.program_name as education_program,
                 ss.status_name as student_status
@@ -169,7 +170,7 @@ class studentModel {
                         academic_year, 
                         education_program, 
                         email, phone, 
-                        student_status
+                        student_status, nationality
                     ) VALUES ($1, $2, $3, $4, (select f.faculty_id
                                                 from faculties f
                                                 where f.faculty_name = $5), $6,
@@ -179,13 +180,13 @@ class studentModel {
                                                 , $8, $9, 
                                                 (select ss.status_id
                                                 from student_status ss
-                                                where ss.status_name = $10))
+                                                where ss.status_name = $10), $11)
                     ON CONFLICT (student_id) DO NOTHING;
                 `;
                 await client.query(studentQuery, [
                     student.student_id, student.full_name, student.date_of_birth,
                     student.gender, student.faculty, student.academic_year,
-                    student.education_program, student.email, student.phone, student.student_status
+                    student.education_program, student.email, student.phone, student.student_status,student.nationality
                 ]);
 
                 // Thêm địa chỉ vào bảng address
@@ -248,9 +249,11 @@ class studentModel {
                     doc.issue_date || null,
                     doc.issue_place || null, 
                     doc.expiry_date || null, 
-                    doc.has_chip.toLowerCase() === "true" || null,
-                    doc.issue_country.trim() || null,
-                    doc.note.trim() || null
+                    doc.has_chip?.toString().toLowerCase() === "true" ? true 
+                    : doc.has_chip?.toString().toLowerCase() === "false" ? false 
+                    : null,
+                    doc.issue_country || null,
+                    doc.note || null
                 ]);
             }
 
