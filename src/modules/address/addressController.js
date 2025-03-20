@@ -1,4 +1,5 @@
 const addressModel = require('../address/addressModel');
+const logger = require('../../config/logging')
 class addressController {
     static async addAddress(req, res) {
         try {
@@ -20,12 +21,13 @@ class addressController {
                     address: addedAddress
                 });
             } else {
+                logger.warn("Failed to add address. Please try again later.");
                 return res.status(500).json({
                     message: 'Failed to add address. Please try again later.'
                 });
             }
         } catch (error) {
-            console.error("Error in addAddressController:", error.message);
+            logger.error("Error in addAddressController:", error.message);
             return res.status(500).json({
                 message: 'Failed to add address of user. Please try again later.'
             });

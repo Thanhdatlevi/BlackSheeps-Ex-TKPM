@@ -67,10 +67,15 @@ class studentModel {
             const khoaParsed = khoa ? parseInt(khoa, 10) : null;
     
             const result = await db.query(query, [mssv || null, name || null, khoaParsed]);
-    
-            return result.rows.length > 0 ? result.rows : [];
+            
+            if (result.rows.length > 0) {
+                logger.info("searchStudent executed successfully in studentModel");
+                logger.info(result.rows);
+                return result.rows;
+            }
+            return [];
         } catch (error) {
-            console.error("Error in searchStudent:", error.message);
+            logger.error("Error search Student in studentModel:", error.message);
             throw new Error("Error search Student in studentModel.");
         }
     }
@@ -95,39 +100,6 @@ class studentModel {
             ORDER BY si.student_id
             `
             const result = await db.query(query, [mssv || null]);
-
-            if (result.rows.length > 0) {
-                logger.info("searchStudent executed successfully in studentModel");
-                logger.info(result.rows);
-                return result.rows;
-            }
-            return [];
-        }
-        catch (error) {
-            logger.error("Error search Student in studentModel:", error);
-            throw new Error("Error search Student in studentModel.");
-
-        }
-    }
-
-    static async searchStudentIdentification(mssv) {
-        try {
-            const query = `
-            SELECT 
-                si.student_id,
-                si.id_type,
-                si.id_number,
-                to_char(si.issue_date, 'yyyy-mm-dd') as issue_date,
-                si.issue_place,
-                si.expiry_date,
-                to_char(si.expiry_date, 'yyyy-mm-dd') as expiry_date,
-                si.has_chip,
-                si.issue_country,
-                si.note
-            FROM identificationdocument si
-            WHERE ($1::TEXT IS NULL OR si.student_id::TEXT = $1::TEXT) 
-            `
-            const result = await db.query(query, [mssv || null]);
             logger.info(result);
 
             if (result.rows.length > 0) {
@@ -140,6 +112,7 @@ class studentModel {
         catch (error) {
             logger.error("Error search Student Identification in studentModel:", error);
             throw new Error("Error search Student Identification in studentModel.");
+
         }
     }
 
@@ -314,10 +287,11 @@ class studentModel {
             }
 
             await client.query("COMMIT"); // Hoàn thành transaction
+            logger.info("importStudent executed successfully in studentModel");
             return true;
         } catch (error) {
             await client.query("ROLLBACK"); // Hoàn tác nếu có lỗi
-            console.error("Error in addStudents:", error);
+            logger.error("Error import Student in studentModel:", error);
             throw new Error(error.message);
         } finally {
             client.release();
@@ -355,10 +329,11 @@ class studentModel {
             }
 
             await client.query("COMMIT"); // Hoàn thành transaction
+            logger.info("importIdentificationDocuments executed successfully in studentModel");
             return { success: true, message: `Đã nhập ${idList.length} giấy tờ thành công.` };
         } catch (error) {
             await client.query("ROLLBACK"); // Hoàn tác nếu có lỗi
-            console.error("Lỗi khi nhập giấy tờ tùy thân:", error);
+            logger.error("Error import IdentificationDocuments in studentModel:", error);
             throw new Error(error.message);
         } finally {
             client.release();

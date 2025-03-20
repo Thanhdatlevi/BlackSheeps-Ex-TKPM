@@ -1,13 +1,15 @@
 const programModel = require('../program/programModel');
+const logger = require('../../config/logging')
 class programController {
     static async addPage(req,res){
         try {
+            logger.info("addPage method got called in programController");
             res.render ('addProgram',{
                 lauout: 'main',
                 title: 'Add Program Page',
             });
         } catch (error) {
-            console.error("Error in addProgramController:", error.message);
+            logger.error("Error in addProgramController:", error.message);
             return res.status(500).json({
                 message: 'Failed to add program of user. PLease try again later'
             });
@@ -26,6 +28,7 @@ class programController {
                     }
                 );
             } else {
+                logger.warn("Failed to add program. Please try again later.");
                 return res.status(500).json(
                     {
                         mesage: 'Failed to add program. Please try again later.'
@@ -34,7 +37,7 @@ class programController {
             }
         }
         catch (error){
-            console.error("Error in addProgramController:", error.message);
+            logger.error("Error in addProgramController:", error.message);
             return res.status(500).json({
                 message: 'Failed to add program of user. Please try again later.'
             });
@@ -42,13 +45,14 @@ class programController {
     }
     static async updatePage(req,res){
         try {
+            logger.info("updatePage method got called in ProgramController");
             res.render('updateProgram',{
                 layout: 'main',
                 title: 'Update Program Page',
             });
         }
         catch (error){
-            console.error("Error in updateProgramController:", error.message);
+            logger.error("Error in updateProgramController:", error.message);
             return res.status(500).json({
                 message: 'Failed to update program of user. Please try again later.'
             });
@@ -59,6 +63,7 @@ class programController {
             const program_name = req.query.searchName;
             const program = await programModel.searchProgramByName(program_name);
             if (program){
+                logger.info("searchProgramByName executed successfully");
                 return res.status(200).json(
                     {
                         message: 'Search program successfully',
@@ -66,6 +71,7 @@ class programController {
                     }
                 );
             } else {
+                logger.warn("Failed to search program. Please try again later.");
                 return res.status(500).json(
                     {
                         message: 'Failed to search program. Please try again later.'
@@ -74,7 +80,7 @@ class programController {
             }
         }
         catch (error){
-            console.error("Error in searchProgramController:", error.message);
+            logger.error("Error in searchProgramController:", error.message);
             return res.status(500).json({
                 message: 'Failed to search program of user. Please try again later.'
             });
@@ -85,6 +91,7 @@ class programController {
             const {searchName, programName} = req.body;
             const program = await programModel.searchProgramByName(searchName);
             if (!program || program.length === 0){
+                logger.warn("No program found to update");
                 return res.status(404).json(
                     {
                         success: false,
@@ -98,6 +105,7 @@ class programController {
             });
             console.log("Đã tìm thấy chương trình", updatedProgram);
             if (updatedProgram){
+                logger.info("updateProgram executed successfully");
                 return res.status(200).json(
                     {
                         success: true,
@@ -106,6 +114,7 @@ class programController {
                     }
                 );
             } else {
+                logger.warn("Failed to update program.");
                 return res.status(500).json(
                     {
                         message: 'Cập nhật chương trình thất bại'
@@ -114,7 +123,7 @@ class programController {
             }
         }
         catch (error){
-            console.error("Error in updateProgramController:", error.message);
+            logger.error("Error in updateProgramController:", error.message);
             return res.status(500).json({
                 message: 'Failed to update program of user. Please try again later.'
             });
@@ -122,6 +131,7 @@ class programController {
     }
     static async getAllPrograms(req,res){
         try {
+            logger.info("getAllPrograms executed successfully");
             const programs = await programModel.getAllPrograms();
             return res.status(200).json(
                 {
@@ -131,7 +141,7 @@ class programController {
             );
         }
         catch (error){
-            console.error("Error in getAllProgramsController:", error.message);
+            logger.error("Error in getAllProgramsController:", error.message);
             return res.status(500).json({
                 message: 'Failed to get all programs of user. Please try again later.'
             });

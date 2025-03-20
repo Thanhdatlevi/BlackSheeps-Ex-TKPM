@@ -1,13 +1,15 @@
 const statusModel = require('../status/statusModel');
+const logger = require('../../config/logging')
 class statusController {
     static async addPage(req,res){
         try {
+            logger.info("addPage method got called in statusController");
             res.render('addStatus',{
                 layout: 'main',
                 title: 'Add Status Page',
             });
         } catch (error) {
-            console.error("Error in addStatusController:", error.message);
+            logger.error("Error in addStatusController:", error.message);
             return res.status(500).json({
                 message: 'Failed to add status of user. Please try again later.'
             });
@@ -15,6 +17,7 @@ class statusController {
     }
     static async addStatus(req,res){
         try {
+            logger.info("addStatus method got called in statusController");
             const status_name = req.body.name
             const addedStatus = await statusModel.addStatus(status_name);
             if (addedStatus){
@@ -26,6 +29,7 @@ class statusController {
                     }
                 );
             } else {
+                logger.warn("Failed to add status. Please try again later.");
                 return res.status(500).json(
                     {
                         message: 'Failed to add status. Please try again later.'
@@ -34,7 +38,7 @@ class statusController {
             }
         }
         catch (error){
-            console.error("Error in addStatusController:", error.message);
+            logger.error("Error in addStatusController:", error.message);
             return res.status(500).json({
                 message: 'Failed to add status of user. Please try again later.'
             });
@@ -42,13 +46,14 @@ class statusController {
     }
     static async updatePage(req,res){
         try {
+            logger.info("updatePage method got called in statusController");
             res.render('updateStatus',{
                 layout: 'main',
                 title: 'Update Status Page',
             });
         }
         catch (error){
-            console.error("Error in updateStatusController:", error.message);
+            logger.error("Error in updateStatusController:", error.message);
             return res.status(500).json({
                 message: 'Failed to update status of user. Please try again later.'
             });
@@ -61,6 +66,7 @@ class statusController {
             const status = await statusModel.searchStatusByName(status_name);
             console.log("status in controller",status);
             if (status){
+                logger.info("searchStatusByName executed successfully");
                 return res.status(200).json(
                     {
                         message: 'Search status successfully',
@@ -68,6 +74,7 @@ class statusController {
                     }
                 );
             } else {
+                logger.warn("Failed to search status. Please try again later.");
                 return res.status(500).json(
                     {
                         message: 'Failed to search status. Please try again later.'
@@ -76,7 +83,7 @@ class statusController {
             }
         }
         catch (error){
-            console.error("Error in searchStatusController:", error.message);
+            logger.error("Error in searchStatusController:", error.message);
             return res.status(500).json({
                 message: 'Failed to search status of user. Please try again later.'
             });
@@ -87,6 +94,7 @@ class statusController {
             const {searchName, statusName} = req.body;
             const status = await statusModel.searchStatusByName(searchName);
             if (!status || status.length === 0){
+                logger.warn("No status found to update");
                 return res.status(404).json({
                     success: false,
                     message: 'Không tìm thấy trạng thái để cập nhật.'
@@ -97,6 +105,7 @@ class statusController {
                 status_name: statusName
             });
             if (updatedStatus){
+                logger.info("updateStatus executed successfully");
                 return res.status(200).json(
                     {
                         success: true,
@@ -105,6 +114,7 @@ class statusController {
                     }
                 );
             } else {
+                logger.warn("Failed to update status.");
                 return res.status(500).json(
                     {
                         message: 'Cập nhật trạng thái thất bại. Vui lòng thử lại sau.'
@@ -114,7 +124,7 @@ class statusController {
 
         }
         catch (error){
-            console.error("Error in updateStatusController:", error.message);
+            logger.error("Error in updateStatusController:", error.message);
             return res.status(500).json({
                 message: 'Failed to update status of user. Please try again later.'
             });
@@ -123,6 +133,7 @@ class statusController {
     static async getAllStatus(req,res){
         try {
             const status = await statusModel.getAllStatus();
+            logger.info("getAllStatus executed successfully");
             return res.status(200).json(
                 {
                     message: 'Get all status successfully',
@@ -131,7 +142,7 @@ class statusController {
             );
         }
         catch (error){
-            console.error("Error in getAllStatusController:", error.message);
+            logger.error("Error in getAllStatus:", error.message);
             return res.status(500).json({
                 message: 'Failed to get all status of user. Please try again later.'
             });

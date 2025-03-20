@@ -9,12 +9,13 @@ class studentController {
 
     static async addPage(req, res) {
         try {
+            logger.info("addPage method got called in studentController");
             res.render('add', {
                 layout: 'main',
                 title: 'Add Student Page',
             });
         } catch (error) {
-            console.error("Error in addStudentController:", error.message);
+            logger.error("Error in addStudentController:", error.message);
             return res.status(500).json({
                 message: 'Failed to add student. Please try again later.'
             });
@@ -250,9 +251,10 @@ class studentController {
 
     static async exportData(req, res, fetchData, fileName, format) {
         try {
-            const data = await fetchData(); // Gọi hàm lấy dữ liệu
+            const data = await fetchData();
 
             if (!Array.isArray(data) || data.length === 0) {
+                logger.warn("Not corressponding student");
                 return res.status(404).send(`Không có dữ liệu để xuất: ${fileName}`);
             }
 
@@ -274,32 +276,38 @@ class studentController {
                 const buffer = XLSX.write(workbook, { type: "buffer", bookType: "xlsx" });
                 res.end(buffer);
             } else {
+                logger.warn("Not csv or excel file");
                 return res.status(400).send("Định dạng không hợp lệ. Chỉ hỗ trợ CSV và Excel.");
             }
         } catch (error) {
-            console.error(`Lỗi xuất dữ liệu (${fileName} - ${format}):`, error);
+            logger.error("Error in exportDataStudentController:", error.message);
             res.status(500).send("Lỗi xuất dữ liệu");
         }
     }
 
     static async exportStudentListCSV(req, res) {
+        logger.info("exportStudentListCSV method got called in studentController");
         return studentController.exportData(req, res, studentModel.searchStudent, "students", "csv");
     }
 
     static async exportStudentListExcel(req, res) {
+        logger.info("exportStudentListExcel method got called in studentController");
         return studentController.exportData(req, res, studentModel.searchStudent, "students", "excel");
     }
 
     static async exportIdentificationDocumentsCSV(req, res) {
+        logger.info("exportIdentificationDocumentsCSV method got called in studentController");
         return studentController.exportData(req, res, studentModel.searchStudentIdentification, "identification_documents", "csv");
     }
 
     static async exportIdentificationDocumentsExcel(req, res) {
+        logger.info("exportIdentificationDocumentsExcel method got called in studentController");
         return studentController.exportData(req, res, studentModel.searchStudentIdentification, "identification_documents", "excel");
     }
 
     static async importCSV(req, res) {
         try {
+            logger.info("importCSV method got called in studentController");
             if (!req.files || !req.files.studentFile || !req.files.docFile) {
                 return res.status(400).json({ message: "Thiếu file cần thiết." });
             }
@@ -336,7 +344,7 @@ class studentController {
                         });
                 });
         } catch (error) {
-            console.error("Lỗi import CSV:", error);
+            logger.error("Error in importCSVStudentController:", error.message);
             res.status(500).json({ message: "Lỗi import CSV" });
         }
     }
@@ -344,6 +352,7 @@ class studentController {
     // Xử lý import Excel
     static async importExcel(req, res) {
         try {
+            logger.info("importExcel method got called in studentController");
             if (!req.files || !req.files.studentFile || !req.files.docFile) {
                 return res.status(400).json({ message: "Thiếu file cần thiết." });
             }
@@ -375,7 +384,7 @@ class studentController {
             fs.unlinkSync(studentPath);
             fs.unlinkSync(docPath);
         } catch (error) {
-            console.error("Lỗi import Excel:", error);
+            logger.error("Error in importExcelStudentController:", error.message);
             res.status(500).json({ message: "Lỗi import Excel" });
         }
     }

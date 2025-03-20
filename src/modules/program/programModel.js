@@ -1,5 +1,6 @@
 const {query} = require('express');
 const db = require("../../config/db");
+const logger = require('../../config/logging')
 
 class programModel{
     static async addProgram(program_name){
@@ -11,13 +12,15 @@ class programModel{
             `
             const result = await db.query(query, [program_name]);
             if (result.rows.length > 0){
+                logger.info("addProgram executed successfully in programModel");
+                logger.info(result.rows[0]);
                 return result.rows[0];
             }
 
             return null;
         }
         catch (error){
-            console.error("Error add Program in programModel:", error);
+            logger.error("Error add Program in programModel:", error.message);
             throw new Error(error.message);
         }
     }
@@ -30,13 +33,15 @@ class programModel{
             const result = await db.query(query, [program_name]);
 
             if (result.rows.length > 0){
+                logger.info("searchProgramByName executed successfully in programModel");
+                logger.info(result.rows[0]);
                 return result.rows[0];
             }
 
             return null;
         }
         catch (error){
-            console.error("Error search Program in prograModel:", error);
+            logger.error("Error search Program in prograModel:", error.message);
             throw new Error(error.message);
         }
     }
@@ -50,12 +55,14 @@ class programModel{
             `;
             const result = await db.query( query, [program.program_name, program.program_id]);
             if ( result.rows.length > 0){
+                logger.info("updateProgram executed successfully in programModel");
+                logger.info(result.rows[0]);
                 return result.rows[0];
             }
             return null;
         }
         catch (error){
-            console.error("Error updating Program in programModel:", error);
+            logger.error("Error updating Program in programModel:", error.message);
             throw new Error(error.message);
         }
     }
@@ -65,10 +72,12 @@ class programModel{
             SELECT * FROM public.education_programs;
             `;
             const result = await db.query(query);
+            logger.info("getAllPrograms executed successfully in programModel");
+            logger.info(result.rows);
             return result.rows;
         }
         catch (error){
-            console.error("Error get all Programs in programModel:", error);
+            logger.error("Error get all Programs in programModel:", error.message);
             throw new Error(error.message);
         }
     }

@@ -11,13 +11,15 @@ class indentificationModel{
             `;
             const result = await db.query(query, [info.student_id, info.id_type, info.id_number, info.issue_date, info.issue_place, info.expiry_date, info.has_chip, info.issue_country, info.note]);
             if (result.rows.length > 0){
+                logger.info("addIdentification executed successfully in indentificationModel");
+                logger.info(result.rows[0]);
                 return result.rows[0];
             }
 
             return null;
         }
         catch(error){
-            console.error("Error add Identification in identificationModel:", error);
+            logger.error("Error add Identification in identificationModel:", error.message);
             throw new Error(error.message);
         }
     }

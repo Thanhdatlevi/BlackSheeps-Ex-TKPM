@@ -1,5 +1,6 @@
 const {query} = require('express');
 const db = require("../../config/db");
+const logger = require('../../config/logging')
 
 class statusModel {
     static async addStatus(status_name){
@@ -11,13 +12,15 @@ class statusModel {
             `;
             const result = await db.query(query, [status_name]);
             if (result.rows.length > 0) {
+                logger.info("addStatus executed successfully in statusModel");
+                logger.info(result.rows[0]);
                 return result.rows[0];
             }
 
             return null;
         }
         catch (error){
-            console.error("Error add Status in statusModel:", error);
+            logger.error("Error add Status in statusModel:", error.message);
             throw new Error(error.message);
         }
     }
@@ -30,12 +33,14 @@ class statusModel {
             `;
             const result = await db.query(query, [status_name]);
             if ( result.rows.length > 0){
+                logger.info("searchStatusByName executed successfully in statusModel");
+                logger.info(result.rows[0]);
                 return result.rows[0];
             }
             return null;
         }
         catch (error){
-            console.error("Error search Status in statusModel:", error);
+            logger.error("Error search Status in statusModel:", error.message);
             throw new Error(error.message);
         }
     }
@@ -49,13 +54,15 @@ class statusModel {
             `;
             const result = await db.query(query, [status.status_id,status.status_name]);
             if (result.rows.length > 0){
+                logger.info("updateStatus executed successfully in statusModel");
+                logger.info(result.rows[0]);
                 return result.rows[0];
             }
 
             return null;
         }
         catch (error){
-            console.error("Error updating Status in statusModel:", error);
+            logger.error("Error updating Status in statusModel:", error.message);
             throw new Error(error.mesage);
         }
     }
@@ -65,10 +72,15 @@ class statusModel {
             SELECT * FROM public.student_status;
             `;
             const result = await db.query(query);
-            return result.rows;
+            if (result.rows.length > 0){
+                logger.info("getAllStatus executed successfully in statusModel");
+                logger.info(result.rows);
+                return result.rows;
+            }
+            return null;
         }
         catch (error){
-            console.error("Error getting all Status in statusModel:", error);
+            logger.error("Error getting all Status in statusModel:", error.message);
             throw new Error(error.message);
         }
     }
