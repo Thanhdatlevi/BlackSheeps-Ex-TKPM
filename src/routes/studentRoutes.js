@@ -15,6 +15,7 @@ router.get("/search-student", studentController.searchStudent);
 
 router.get('/update', studentController.updateStudentPage);
 router.get('/updateSearch', studentController.searchStudent);
+router.get('/updateSearchID', studentController.searchStudentIdentification);
 router.put('/update', studentController.updateStudent);
 
 router.post('/add-identification', identificationController.addIdentification);

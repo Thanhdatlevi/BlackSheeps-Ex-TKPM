@@ -1,4 +1,5 @@
 const studentModel = require('../student/studentModel');
+const logger = require('../../config/logging')
 
 const fastCsv = require('fast-csv');
 const XLSX = require("xlsx");
@@ -21,6 +22,7 @@ class studentController {
     }
     static async addStudent(req, res) {
         try {
+            logger.info("addStudent method got called in studentController");
             const newStudent = {
                 mssv: req.body.mssv,
                 name: req.body.name,
@@ -49,22 +51,25 @@ class studentController {
         } catch (error) {
             if (error.message.includes('duplicate key value violates unique constraint')) {
                 if (error.message.includes('students_pkey')) {
+                    logger.warn("Error existing studentID when adding student");
                     return res.status(400).json({
                         message: 'Student ID already exists. Please use a different ID.'
                     });
                 }
                 else if (error.message.includes('students_email_key')) {
+                    logger.warn("Error existing student email when adding student");
                     return res.status(400).json({
                         message: 'Email already exists. Please use a different email.'
                     });
                 }
                 else if (error.message.includes('students_phone_key')) {
+                    logger.warn("Error existing student phone number when adding student");
                     return res.status(400).json({
                         message: 'Phone number already exists. Please use a different phone number.'
                     });
                 }
             }
-            console.error("Error in addStudentController:", error.message);
+            logger.error("Error in addStudentController:", error.message);
             return res.status(500).json({
                 message: 'Failed to add student. Please try again later.'
             });
@@ -74,13 +79,13 @@ class studentController {
 
     static async deletePage(req, res) {
         try {
+            logger.info("deletePage method got called in studentController");
             res.render('delete', {
                 layout: 'main',
                 title: 'Delete Student Page',
             });
-
         } catch (error) {
-            console.error("Error in deleteStudentController:", error.message);
+            logger.error("Error in deleteStudentController:", error.message);
             return res.status(500).json({
                 message: 'Failed to delete student of user. Please try again later.'
             });
@@ -90,10 +95,12 @@ class studentController {
 
     static async deleteStudent(req, res) {
         try {
+            logger.info("deleteStudent method got called in studentController");
             const { mssv } = req.body;
             const checkStudent = await studentModel.searchStudent(mssv);
         
             if (checkStudent.length === 0) {
+                logger.warn("StudentID not exists when deleting");
                 return res.status(404).json({ message: "Mã số sinh viên không tồn tại!" });
             }
 
@@ -103,7 +110,7 @@ class studentController {
 
             return res.json({ message: "Xóa thành công!", deletedStudent });
         } catch (error) {
-            console.error("Error in deleteStudentController:", error.message);
+            logger.error("Error in deleteStudentController:", error.message);
             return res.status(500).json({
                 message: 'Failed to delete student of user. Please try again later.'
             });
@@ -113,13 +120,14 @@ class studentController {
 
     static async searchPage(req, res) {
         try {
+            logger.info("searchPage method got called in studentController");
             res.render('search', {
                 layout: 'main',
                 title: 'Search Student Page',
             });
 
         } catch (error) {
-            console.error("Error in searchStudentController:", error.message);
+            logger.error("Error in searchStudentController:", error.message);
             return res.status(500).json({
                 message: 'Failed to search student of user. Please try again later.'
             });
@@ -129,13 +137,14 @@ class studentController {
 
     static async searchStudent(req, res) {
         try {
+            logger.info("searchStudent method got called in studentController");
             let { mssv, name, khoa } = req.query;
             
             let listStudent = await studentModel.searchStudent(mssv, name, khoa);
             return res.json(listStudent);
 
         } catch (error) {
-            console.error("Error in searchStudentController:", error.message);
+            logger.error("Error in searchStudentController:", error.message);
             return res.status(500).json({
                 message: 'Failed to search student of user. Please try again later.'
             });
@@ -143,15 +152,32 @@ class studentController {
 
     }
 
+    static async searchStudentIdentification (req, res) {
+        try {
+            logger.info("searchStudentIdentification method got called in studentController");
+            let { mssv } = req.query;
+            
+            let listStudent = await studentModel.searchStudentIdentification(mssv);
+            return res.json(listStudent);
+
+        } catch (error) {
+            logger.error("Error in searchStudentController:", error.message);
+            return res.status(500).json({
+                message: 'Failed to search student of user. Please try again later.'
+            });
+        }
+    }
+
     //
     static async updateStudentPage(req, res) {
         try {
+            logger.info("updateStudentPage method got called in studentController");
             res.render('update', {
                 title: 'Update Student Page'
             })
         }
         catch (error) {
-            console.error("Error in updateStudent:", error.message);
+            logger.error("Error in updateStudent:", error.message);
             return res.status(500).json({
                 message: 'Student non existed.'
             });
@@ -159,6 +185,7 @@ class studentController {
     }
 
     static async updateStudent(req, res) {
+        logger.info("updateStudentPage method got called in studentController");
         const newStudent = {
             mssv: req.body.mssv,
             name: req.body.name,
@@ -184,6 +211,7 @@ class studentController {
             !newStudent.email || 
             !newStudent.phone || 
             !newStudent.status) {
+            logger.warn("Not enough parameters when updating student");
             return res.status(400).json({
                 error: 'All information fields are required'
             });
@@ -192,12 +220,13 @@ class studentController {
         try {
             let listStudent = await studentModel.searchStudent(newStudent.mssv);
             if (!listStudent || listStudent.length === 0){
+                logger.warn("Not corressponding student with specified ID");
                 return res.status(404).json({
                     message: 'No student with corressponding id'
                 })
             }
         } catch (error) {
-            console.error("Error in update(searching)StudentController:", error.message);
+            logger.error("Error in update(searching)StudentController:", error.message);
             return res.status(500).json({
                 message: 'Failed to search while updating student of user. Please try again later.'
             });
@@ -205,10 +234,9 @@ class studentController {
 
         try {
             let result = await studentModel.updateStudent(newStudent);
-            console.log(result.status);
         }
         catch(error){
-            console.error("Error in updateStudentController:", error.message);
+            logger.error("Error in updateStudentController:", error.message);
             return res.status(500).json({
                 message: 'Failed to update student of user. Please try again later.'
             });
