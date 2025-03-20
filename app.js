@@ -1,11 +1,15 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
 const path = require('path');
+const fileUpload = require("express-fileupload");
 
 const app = express();
 const PORT = 3000;
 
 const Handlebars = require('handlebars');
+
+// Cấu hình express-fileupload
+app.use(fileUpload());
 
 // const uploadRoutes = require('./src/routes/uploadRoutes');
 const studentRoutes = require('./src/routes/studentRoutes'); // Điều hướng view
