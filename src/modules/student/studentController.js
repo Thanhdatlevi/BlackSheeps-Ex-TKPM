@@ -1,4 +1,8 @@
 const studentModel = require('../student/studentModel');
+const fastCsv = require('fast-csv');
+const XLSX = require("xlsx");
+const csv = require("csv-parser");
+const fs = require("fs");
 class studentController {
 
     static async addPage(req, res) {
@@ -214,6 +218,138 @@ class studentController {
         return res.status(200).json({
             message: "Update success"
         })
+    }
+
+    static async exportData(req, res, fetchData, fileName, format) {
+        try {
+            const data = await fetchData(); // Gọi hàm lấy dữ liệu
+
+            if (!Array.isArray(data) || data.length === 0) {
+                return res.status(404).send(`Không có dữ liệu để xuất: ${fileName}`);
+            }
+
+            if (format === "csv") {
+                res.setHeader("Content-Disposition", `attachment; filename=${fileName}.csv`);
+                res.setHeader("Content-Type", "text/csv");
+                const csvStream = fastCsv.format({ headers: true });
+                csvStream.pipe(res);
+                data.forEach((row) => csvStream.write(row));
+                csvStream.end();
+            } else if (format === "excel") {
+                res.setHeader("Content-Disposition", `attachment; filename=${fileName}.xlsx`);
+                res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+
+                const workbook = XLSX.utils.book_new();
+                const worksheet = XLSX.utils.json_to_sheet(data);
+                XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+
+                const buffer = XLSX.write(workbook, { type: "buffer", bookType: "xlsx" });
+                res.end(buffer);
+            } else {
+                return res.status(400).send("Định dạng không hợp lệ. Chỉ hỗ trợ CSV và Excel.");
+            }
+        } catch (error) {
+            console.error(`Lỗi xuất dữ liệu (${fileName} - ${format}):`, error);
+            res.status(500).send("Lỗi xuất dữ liệu");
+        }
+    }
+
+    static async exportStudentListCSV(req, res) {
+        return studentController.exportData(req, res, studentModel.searchStudent, "students", "csv");
+    }
+
+    static async exportStudentListExcel(req, res) {
+        return studentController.exportData(req, res, studentModel.searchStudent, "students", "excel");
+    }
+
+    static async exportIdentificationDocumentsCSV(req, res) {
+        return studentController.exportData(req, res, studentModel.searchStudentIdentification, "identification_documents", "csv");
+    }
+
+    static async exportIdentificationDocumentsExcel(req, res) {
+        return studentController.exportData(req, res, studentModel.searchStudentIdentification, "identification_documents", "excel");
+    }
+
+    static async importCSV(req, res) {
+        try {
+            if (!req.files || !req.files.studentFile || !req.files.docFile) {
+                return res.status(400).json({ message: "Thiếu file cần thiết." });
+            }
+
+            const studentFile = req.files.studentFile;
+            const docFile = req.files.docFile;
+
+            // Lưu file tạm thời
+            const studentPath = `uploads/${studentFile.name}`;
+            const docPath = `uploads/${docFile.name}`;
+            await studentFile.mv(studentPath);
+            await docFile.mv(docPath);
+
+            const studentData = [];
+            const docData = [];
+
+            // Đọc file CSV student
+            fs.createReadStream(studentPath)
+                .pipe(csv())
+                .on("data", (row) => studentData.push(row))
+                .on("end", async () => {
+                    // Đọc file CSV docFile
+                    fs.createReadStream(docPath)
+                        .pipe(csv())
+                        .on("data", (row) => docData.push(row))
+                        .on("end", async () => {
+                            await studentModel.importStudent(studentData);
+                            await studentModel.importIdentificationDocuments(docData);
+                            res.json({ message: "Import CSV thành công!" });
+
+                            // Xoá file sau khi xử lý xong
+                            fs.unlinkSync(studentPath);
+                            fs.unlinkSync(docPath);
+                        });
+                });
+        } catch (error) {
+            console.error("Lỗi import CSV:", error);
+            res.status(500).json({ message: "Lỗi import CSV" });
+        }
+    }
+
+    // Xử lý import Excel
+    static async importExcel(req, res) {
+        try {
+            if (!req.files || !req.files.studentFile || !req.files.docFile) {
+                return res.status(400).json({ message: "Thiếu file cần thiết." });
+            }
+
+            const studentFile = req.files.studentFile;
+            const docFile = req.files.docFile;
+
+            // Lưu file tạm thời
+            const studentPath = `uploads/${studentFile.name}`;
+            const docPath = `uploads/${docFile.name}`;
+            await studentFile.mv(studentPath);
+            await docFile.mv(docPath);
+
+            // Đọc file Excel student
+            const studentWorkbook = XLSX.readFile(studentPath);
+            const studentSheet = studentWorkbook.Sheets[studentWorkbook.SheetNames[0]];
+            const studentData = XLSX.utils.sheet_to_json(studentSheet);
+
+            // Đọc file Excel docFile
+            const docWorkbook = XLSX.readFile(docPath);
+            const docSheet = docWorkbook.Sheets[docWorkbook.SheetNames[0]];
+            const docData = XLSX.utils.sheet_to_json(docSheet);
+
+            console.log("Student Data:", studentData);
+            console.log("Document Data:", docData);
+            res.json({ message: "Import Excel thành công!" });
+
+            // Xoá file sau khi xử lý xong
+            fs.unlinkSync(studentPath);
+            fs.unlinkSync(docPath);
+        } catch (error) {
+            console.error("Lỗi import Excel:", error);
+            res.status(500).json({ message: "Lỗi import Excel" });
+        }
     }
 }
 
