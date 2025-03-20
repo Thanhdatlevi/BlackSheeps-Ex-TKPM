@@ -102,14 +102,14 @@ class studentModel {
     static async addStudent(student) {
         try {
             const query = `
-            INSERT INTO public.students (student_id, full_name,date_of_birth, 
-            gender, faculty, academic_year, education_program, address, email, phone, student_status) 
+            INSERT INTO public.students (student_id, full_name, date_of_birth, 
+            gender, academic_year, address, email, phone, faculty, education_program, student_status) 
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
             RETURNING *;
             `;
             const result = await db.query(query, [student.mssv, student.name,student.dob,
-                student.gender, student.faculty, student.course,
-                student.program, student.address, student.email, student.phone, student.status]);
+                student.gender, student.course, student.address, student.email, student.phone, student.faculty,
+                student.program, student.status]);
             if (result.rows.length > 0) {
                 return result.rows[0];
             }
