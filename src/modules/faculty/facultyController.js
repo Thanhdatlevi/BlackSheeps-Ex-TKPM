@@ -16,12 +16,9 @@ class facultyController {
    }
    static async addFaculty(req,res){
         try {
-            const newFaculty = {
-                faculty_id: req.body.id,
-                faculty_name: req.body.name
-            };
-            console.log(newFaculty);
-            const addedFaculty = await facultyModel.addFaculty(newFaculty);
+            const faculty_name = req.body.name;
+            
+            const addedFaculty = await facultyModel.addFaculty(faculty_name);
             if (addedFaculty){
                 return res.status(201).json(
                     {

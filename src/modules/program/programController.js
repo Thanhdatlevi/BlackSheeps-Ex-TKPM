@@ -15,12 +15,8 @@ class programController {
     }
     static async addProgram(req, res){
         try {
-            const newProgram = {
-                program_id: req.body.id,
-                program_name: req.body.name
-            };
-            console.log(newProgram);
-            const addedProgram = await programModel.addProgram(newProgram);
+            const program_name = req.body.name
+            const addedProgram = await programModel.addProgram(program_name);
             if (addedProgram){
                 return res.status(201).json(
                     {

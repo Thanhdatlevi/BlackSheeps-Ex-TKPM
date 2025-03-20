@@ -129,9 +129,9 @@ class studentController {
 
     static async searchStudent(req, res) {
         try {
-            let { mssv, name } = req.query;
+            let { mssv, name, khoa } = req.query;
             
-            let listStudent = await studentModel.searchStudent(mssv, name);
+            let listStudent = await studentModel.searchStudent(mssv, name, khoa);
             return res.json(listStudent);
 
         } catch (error) {

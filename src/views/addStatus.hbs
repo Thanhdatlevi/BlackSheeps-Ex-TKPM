@@ -1,7 +1,6 @@
 <div class="max-w-3xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
     <h2 class="text-xl font-bold">Thêm Trạng thái</h2>
     <form id = "facultyForm" class="mt-4" action="/addStatus" method="POST">
-        <input type="text" id="id" name="id" placeholder="Mã trạng thái" required class="p-2 border rounded w-full mb-2">
         <input type="text" id="name" name="name" placeholder="Tên trạng thái" required class="p-2 border rounded w-full mb-2">
         <button type="submit" class="bg-blue-500 text-white p-2 rounded">Thêm trạng thái</button>
 </div>
@@ -9,17 +8,13 @@
     const facultyForm = document.getElementById('facultyForm');
     facultyForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        const id = document.getElementById('id').value;
         const name = document.getElementById('name').value;
         fetch('/addStatus', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                id,
-                name
-            })
+            body: JSON.stringify({name})
         })
             .then(res => res.json())
             .then(data => {

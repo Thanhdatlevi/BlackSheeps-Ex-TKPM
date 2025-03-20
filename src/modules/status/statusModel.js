@@ -2,14 +2,14 @@ const {query} = require('express');
 const db = require("../../config/db");
 
 class statusModel {
-    static async addStatus(status){
+    static async addStatus(status_name){
         try {
             const query = `
-            INSERT INTO public.student_status (status_id, status_name)
-            VALUES ($1,$2)
+            INSERT INTO public.student_status (status_name)
+            VALUES ($1)
             RETURNING *;
             `;
-            const result = await db.query(query, [status.status_id, status.status_name]);
+            const result = await db.query(query, [status_name]);
             if (result.rows.length > 0) {
                 return result.rows[0];
             }

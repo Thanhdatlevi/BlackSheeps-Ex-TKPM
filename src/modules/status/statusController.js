@@ -15,11 +15,8 @@ class statusController {
     }
     static async addStatus(req,res){
         try {
-            const newStatus = {
-                status_id: req.body.id,
-                status_name: req.body.name
-            };
-            const addedStatus = await statusModel.addStatus(newStatus);
+            const status_name = req.body.name
+            const addedStatus = await statusModel.addStatus(status_name);
             if (addedStatus){
                 return res.status(201).json(
                     {

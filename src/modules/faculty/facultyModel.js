@@ -2,14 +2,14 @@ const {query} = require('express');
 const db = require("../../config/db");
 
 class facultyModel {
-    static async addFaculty(faculty){
+    static async addFaculty(faculty_name){
         try {
             const query = `
-            INSERT INTO public.faculties (faculty_id, faculty_name)
-            VALUES ($1,$2)
+            INSERT INTO public.faculties (faculty_name)
+            VALUES ($1)
             RETURNING *;
             `;
-            const result = await db.query(query, [faculty.faculty_id, faculty.faculty_name]);
+            const result = await db.query(query, [faculty_name]);
             if (result.rows.length > 0){
                 return result.rows[0];
             }

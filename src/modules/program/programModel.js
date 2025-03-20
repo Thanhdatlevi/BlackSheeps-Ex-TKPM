@@ -2,14 +2,14 @@ const {query} = require('express');
 const db = require("../../config/db");
 
 class programModel{
-    static async addProgram(program){
+    static async addProgram(program_name){
         try {
             const query = `
-            INSERT INTO public.education_programs (program_id, program_name)
-            VAlUES ($1, $2)
+            INSERT INTO public.education_programs (program_name)
+            VAlUES ($1)
             RETURNING *;
             `
-            const result = await db.query(query, [program.program_id, program.program_name]);
+            const result = await db.query(query, [program_name]);
             if (result.rows.length > 0){
                 return result.rows[0];
             }
