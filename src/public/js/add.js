@@ -51,3 +51,43 @@ async function addStudent(event) {
 }
 
 document.getElementById("studentForm").addEventListener("submit", addStudent);
+
+
+let importType = "";
+
+function openImportDialog(type) {
+    importType = type;
+    document.getElementById("importTitle").innerText = `Import ${type.toUpperCase()}`;
+    document.getElementById("importDialog").style.display = "block";
+}
+
+function closeDialog() {
+    document.getElementById("importDialog").style.display = "none";
+}
+
+function submitImport() {
+    const studentFile = document.getElementById("studentFile").files[0];
+    const docFile = document.getElementById("docFile").files[0];
+
+    if (!studentFile || !docFile) {
+        alert("Vui lòng chọn đủ 2 file.");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("studentFile", studentFile);
+    formData.append("docFile", docFile);
+    fetch(`/import/${importType}`, {
+        method: "POST",
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert(data.message);
+        closeDialog();
+    })
+    .catch(error => {
+        console.error("Lỗi import:", error);
+        alert("Import thất bại.");
+    });
+}

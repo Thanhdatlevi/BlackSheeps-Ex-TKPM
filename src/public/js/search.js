@@ -53,3 +53,45 @@ async function searchStudent() {
         alert("Lỗi: " + result.message);
     }
 }
+
+async function exportCSVList() {
+    try {
+        // Bước 1: Tải danh sách sinh viên
+        await exportStudentList('/export/csv', 'students.csv');
+
+        // Bước 2: Tải danh sách giấy tờ
+        await exportStudentList('/export/csv/identification', 'identification_documents.csv');
+
+    } catch (error) {
+        console.error("Lỗi khi tải file:", error);
+    }
+}
+
+async function exportExcelList() {
+    try {
+        // Bước 1: Tải danh sách sinh viên
+        await exportStudentList('/export/excel', 'students.xlsx');
+
+        // Bước 2: Tải danh sách giấy tờ
+        await exportStudentList('/export/excel/identification', 'identification_documents.xlsx');
+
+    } catch (error) {
+        console.error("Lỗi khi tải file:", error);
+    }
+}
+
+async function exportStudentList(url, filename) {
+    return fetch(url)
+        .then(response => response.blob())
+        .then(blob => {
+            const downloadUrl = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = downloadUrl;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(downloadUrl);
+        })
+        .catch(error => console.error(`Lỗi khi tải file ${filename}:`, error));
+}
