@@ -1,4 +1,6 @@
 const studentModel = require('../student/studentModel');
+// TODO: migrating these api controller to address controller
+const addressModel = require('../address/addressModel');
 const logger = require('../../config/logging')
 
 const fastCsv = require('fast-csv');
@@ -187,6 +189,7 @@ class studentController {
 
     static async updateStudent(req, res) {
         logger.info("updateStudent method got called in studentController");
+
         const newStudent = {
             mssv: req.body.mssv,
             name: req.body.name,
@@ -195,7 +198,6 @@ class studentController {
             faculty: req.body.faculty,
             course: req.body.course,
             program: req.body.program,
-            address: req.body.address,
             email: req.body.email,
             phone: req.body.phone,
             status: req.body.status,
@@ -207,6 +209,10 @@ class studentController {
             card_chip: req.body.card_chip,
             issue_country: req.body.issue_country,
             note: req.body.note,
+            // TODO: move these to ID controller and address controller 
+            permanent_address : req.body.permanent_address,
+            temprary_address : req.body.temprary_address,
+            
         }
 
         if (!newStudent.mssv ||
@@ -216,7 +222,6 @@ class studentController {
             !newStudent.faculty ||
             !newStudent.course ||
             !newStudent.program ||
-            !newStudent.address ||
             !newStudent.email ||
             !newStudent.phone ||
             !newStudent.status ||
@@ -273,13 +278,30 @@ class studentController {
             });
         }
 
+        // TODO: refactor this controller to a different controller
+        try {
+            if (newStudent.permanent_address !== undefined){
+                let result = await addressModel.updateAddress(newStudent.permanent_address)
+            }
+
+            if (newStudent.temprary_address !== undefined){
+                let result2 = await addressModel.updateAddress(newStudent.temprary_address)
+            }
+        }
+        catch (error) {
+            logger.error("Error in updateStudentController address:", error.message);
+            return res.status(500).json({
+                message: 'Failed to update student of user 1. Please try again later.'
+            });
+        }
+
         try {
             let result = await studentModel.updateStudent(newStudent);
         }
         catch (error) {
             logger.error("Error in updateStudentController:", error.message);
             return res.status(500).json({
-                message: 'Failed to update student of user. Please try again later.'
+                message: 'Failed to update student of user 2. Please try again later.'
             });
         }
 

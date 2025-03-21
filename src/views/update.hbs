@@ -37,8 +37,6 @@
                     class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400">
                 <input type="text" id="updateChuongTrinh" placeholder="Nhập chương trình học"
                     class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400">
-                <input type="text" id="updateDiaChi" placeholder="Nhập Địa chỉ"
-                    class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400">
                 <input type="text" id="updateEmail" placeholder="Nhập Email"
                     class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400">
                 <input type="text" id="updateSdt" placeholder="Nhập số điện thoại"
@@ -62,8 +60,41 @@
     </div>
 
     <div class="max-w-lg ml-5 mr-auto bg-white shadow-lg rounded-lg p-6">
+
+        <!-- Địa chỉ thường trú -->
+        <div class="mb-4">
+            <h3 class="text-lg font-semibold mb-2">Địa chỉ thường trú</h3>
+            <input type="text" id="permanent_street" name="permanent_street" placeholder="Số nhà, Tên đường" required
+                class="p-2 border rounded w-full mb-2">
+            <input type="text" id="permanent_ward" name="permanent_ward" placeholder="Phường/Xã" required
+                class="p-2 border rounded w-full mb-2">
+            <input type="text" id="permanent_district" name="permanent_district" placeholder="Quận/Huyện" required
+                class="p-2 border rounded w-full mb-2">
+            <input type="text" id="permanent_city" name="permanent_city" placeholder="Tỉnh/Thành phố" required
+                class="p-2 border rounded w-full mb-2">
+            <input type="text" id="permanent_country" name="permanent_country" placeholder="Quốc gia" required
+                class="p-2 border rounded w-full mb-2" value="Việt Nam">
+        </div>
+
+        <!-- Địa chỉ tạm trú -->
+        <div class="mb-4">
+            <h3 class="text-lg font-semibold mb-2">Địa chỉ tạm trú <span class="text-sm font-normal">(không bắt
+                    buộc)</span></h3>
+            <input type="text" id="temporary_street" name="temporary_street" placeholder="Số nhà, Tên đường"
+                class="p-2 border rounded w-full mb-2">
+            <input type="text" id="temporary_ward" name="temporary_ward" placeholder="Phường/Xã"
+                class="p-2 border rounded w-full mb-2">
+            <input type="text" id="temporary_district" name="temporary_district" placeholder="Quận/Huyện"
+                class="p-2 border rounded w-full mb-2">
+            <input type="text" id="temporary_city" name="temporary_city" placeholder="Tỉnh/Thành phố"
+                class="p-2 border rounded w-full mb-2">
+            <input type="text" id="temporary_country" name="temporary_country" placeholder="Quốc gia"
+                class="p-2 border rounded w-full mb-2" value="Việt Nam">
+        </div>
+
+
         <div class="space-y-3">
-            <select id="updateCardIDType" class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400" 
+            <select id="updateCardIDType" class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400"
                 onchange="grayCheckBox()">
                 <option value="CCCD">CCCD</option>
                 <option value="CMND">CMND</option>
@@ -91,7 +122,7 @@
 
 
             <div class="flex flex-row">
-                Thẻ có chip hay không: 
+                Thẻ có chip hay không:
                 <input type="checkbox" id="updateCardChip"
                     class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400">
             </div>
