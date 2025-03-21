@@ -1,15 +1,21 @@
 const studentModel = require('../student/studentModel');
 const logger = require('../../config/logging')
+
+const fastCsv = require('fast-csv');
+const XLSX = require("xlsx");
+const csv = require("csv-parser");
+const fs = require("fs");
 class studentController {
 
     static async addPage(req, res) {
         try {
+            logger.info("addPage method got called in studentController");
             res.render('add', {
                 layout: 'main',
                 title: 'Add Student Page',
             });
         } catch (error) {
-            console.error("Error in addStudentController:", error.message);
+            logger.error("Error in addStudentController:", error.message);
             return res.status(500).json({
                 message: 'Failed to add student. Please try again later.'
             });
@@ -26,12 +32,12 @@ class studentController {
                 faculty: req.body.faculty,
                 course: req.body.course,
                 program: req.body.program,
-                address: req.body.address,
+                status: req.body.status,
+                address: req.body.permanent_street + ', ' + req.body.permanent_ward + ', ' + req.body.permanent_district + ', ' + req.body.permanent_city,
                 email: req.body.email,
                 phone: req.body.phone,
-                status: req.body.status
+                
             }
-
             const addedStudent = await studentModel.addStudent(newStudent);
             if (addedStudent) {
                 return res.status(201).json({
@@ -43,7 +49,6 @@ class studentController {
                     message: 'Failed to add student. Please try again later.'
                 });
             }
-
         } catch (error) {
             if (error.message.includes('duplicate key value violates unique constraint')) {
                 if (error.message.includes('students_pkey')) {
@@ -134,9 +139,9 @@ class studentController {
     static async searchStudent(req, res) {
         try {
             logger.info("searchStudent method got called in studentController");
-            let { mssv, name } = req.query;
-
-            let listStudent = await studentModel.searchStudent(mssv, name);
+            let { mssv, name, khoa } = req.query;
+            
+            let listStudent = await studentModel.searchStudent(mssv, name, khoa);
             return res.json(listStudent);
 
         } catch (error) {
@@ -281,6 +286,146 @@ class studentController {
         return res.status(200).json({
             message: "Update success"
         })
+    }
+
+    static async exportData(req, res, fetchData, fileName, format) {
+        try {
+            const data = await fetchData();
+
+            if (!Array.isArray(data) || data.length === 0) {
+                logger.warn("Not corressponding student");
+                return res.status(404).send(`Không có dữ liệu để xuất: ${fileName}`);
+            }
+
+            if (format === "csv") {
+                res.setHeader("Content-Disposition", `attachment; filename=${fileName}.csv`);
+                res.setHeader("Content-Type", "text/csv");
+                const csvStream = fastCsv.format({ headers: true });
+                csvStream.pipe(res);
+                data.forEach((row) => csvStream.write(row));
+                csvStream.end();
+            } else if (format === "excel") {
+                res.setHeader("Content-Disposition", `attachment; filename=${fileName}.xlsx`);
+                res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+
+                const workbook = XLSX.utils.book_new();
+                const worksheet = XLSX.utils.json_to_sheet(data);
+                XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+
+                const buffer = XLSX.write(workbook, { type: "buffer", bookType: "xlsx" });
+                res.end(buffer);
+            } else {
+                logger.warn("Not csv or excel file");
+                return res.status(400).send("Định dạng không hợp lệ. Chỉ hỗ trợ CSV và Excel.");
+            }
+        } catch (error) {
+            logger.error("Error in exportDataStudentController:", error.message);
+            res.status(500).send("Lỗi xuất dữ liệu");
+        }
+    }
+
+    static async exportStudentListCSV(req, res) {
+        logger.info("exportStudentListCSV method got called in studentController");
+        return studentController.exportData(req, res, studentModel.searchStudent, "students", "csv");
+    }
+
+    static async exportStudentListExcel(req, res) {
+        logger.info("exportStudentListExcel method got called in studentController");
+        return studentController.exportData(req, res, studentModel.searchStudent, "students", "excel");
+    }
+
+    static async exportIdentificationDocumentsCSV(req, res) {
+        logger.info("exportIdentificationDocumentsCSV method got called in studentController");
+        return studentController.exportData(req, res, studentModel.searchStudentIdentification, "identification_documents", "csv");
+    }
+
+    static async exportIdentificationDocumentsExcel(req, res) {
+        logger.info("exportIdentificationDocumentsExcel method got called in studentController");
+        return studentController.exportData(req, res, studentModel.searchStudentIdentification, "identification_documents", "excel");
+    }
+
+    static async importCSV(req, res) {
+        try {
+            logger.info("importCSV method got called in studentController");
+            if (!req.files || !req.files.studentFile || !req.files.docFile) {
+                return res.status(400).json({ message: "Thiếu file cần thiết." });
+            }
+
+            const studentFile = req.files.studentFile;
+            const docFile = req.files.docFile;
+
+            // Lưu file tạm thời
+            const studentPath = `uploads/${studentFile.name}`;
+            const docPath = `uploads/${docFile.name}`;
+            await studentFile.mv(studentPath);
+            await docFile.mv(docPath);
+
+            const studentData = [];
+            const docData = [];
+
+            // Đọc file CSV student
+            fs.createReadStream(studentPath)
+                .pipe(csv())
+                .on("data", (row) => studentData.push(row))
+                .on("end", async () => {
+                    // Đọc file CSV docFile
+                    fs.createReadStream(docPath)
+                        .pipe(csv())
+                        .on("data", (row) => docData.push(row))
+                        .on("end", async () => {
+                            await studentModel.importStudent(studentData);
+                            await studentModel.importIdentificationDocuments(docData);
+                            res.json({ message: "Import CSV thành công!" });
+
+                            // Xoá file sau khi xử lý xong
+                            fs.unlinkSync(studentPath);
+                            fs.unlinkSync(docPath);
+                        });
+                });
+        } catch (error) {
+            logger.error("Error in importCSVStudentController:", error.message);
+            res.status(500).json({ message: "Lỗi import CSV" });
+        }
+    }
+
+    // Xử lý import Excel
+    static async importExcel(req, res) {
+        try {
+            logger.info("importExcel method got called in studentController");
+            if (!req.files || !req.files.studentFile || !req.files.docFile) {
+                return res.status(400).json({ message: "Thiếu file cần thiết." });
+            }
+
+            const studentFile = req.files.studentFile;
+            const docFile = req.files.docFile;
+
+            // Lưu file tạm thời
+            const studentPath = `uploads/${studentFile.name}`;
+            const docPath = `uploads/${docFile.name}`;
+            await studentFile.mv(studentPath);
+            await docFile.mv(docPath);
+
+            // Đọc file Excel student
+            const studentWorkbook = XLSX.readFile(studentPath);
+            const studentSheet = studentWorkbook.Sheets[studentWorkbook.SheetNames[0]];
+            const studentData = XLSX.utils.sheet_to_json(studentSheet);
+
+            // Đọc file Excel docFile
+            const docWorkbook = XLSX.readFile(docPath);
+            const docSheet = docWorkbook.Sheets[docWorkbook.SheetNames[0]];
+            const docData = XLSX.utils.sheet_to_json(docSheet);
+
+            await studentModel.importStudent(studentData);
+            await studentModel.importIdentificationDocuments(docData);
+            res.json({ message: "Import Excel thành công!" });
+
+            // Xoá file sau khi xử lý xong
+            fs.unlinkSync(studentPath);
+            fs.unlinkSync(docPath);
+        } catch (error) {
+            logger.error("Error in importExcelStudentController:", error.message);
+            res.status(500).json({ message: "Lỗi import Excel" });
+        }
     }
 }
 

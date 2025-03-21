@@ -1,31 +1,149 @@
 <div class="max-w-3xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
+
 <h2 class="text-xl font-bold">Thêm sinh viên</h2>
+<button class="my-6 bg-blue-500 hover:bg-blue-600 text-white font-bold p-3 rounded-lg" onclick="openImportDialog('csv')">Import CSV</button>
+<button class="my-6 bg-blue-500 hover:bg-blue-600 text-white font-bold p-3 rounded-lg" onclick="openImportDialog('excel')">Import Excel</button>
+
 <form id="studentForm" class="mt-4" action="/add" method="POST">
-    <input type="text" id="id" name="mssv" placeholder="Mã số sinh viên" required class="p-2 border rounded w-full mb-2">
-    <input type="text" id="name" name="name" placeholder="Họ tên" required class="p-2 border rounded w-full mb-2">
-    <input type="date" id="dob" name="dob" placeholder="Ngày sinh" required class="p-2 border rounded w-full mb-2">
-    <select id="gender" name="gender" required class="p-2 border rounded w-full mb-2">
-        <option value="Nam">Nam</option>
-        <option value="Nữ">Nữ</option>
-    </select>
-    <select id="falcuty" name="faculty" required class="p-2 border rounded w-full mb-2">
-        <option value="Khoa Luật">Khoa Luật</option>
-        <option value="Khoa Tiếng Anh thương mại">Khoa Tiếng Anh thương mại</option>
-        <option value="Khoa Tiếng Nhật">Khoa Tiếng Nhật</option>
-        <option value="Khoa Tiếng Pháp">Khoa Tiếng Pháp</option>
-    </select>
-    <input type="text" id="course" name="course" placeholder="Khóa học" required class="p-2 border rounded w-full mb-2">
-    <input type="text" id="program" name="program" placeholder="Chương trình" required class="p-2 border rounded w-full mb-2">
-    <input type="text" id="address" name="address" placeholder="Địa chỉ" required class="p-2 border rounded w-full mb-2">
-    <input type="text" id="email" name="email" placeholder="Email" required class="p-2 border rounded w-full mb-2">
-    <input type="text" id="phone" name="phone" placeholder="Số điện thoại" required class="p-2 border rounded w-full mb-2">
-    <select id="status" name="status" required class="p-2 border rounded w-full mb-2">
-        <option value="Đang học">Đang học</option>
-        <option value="Đã tốt nghiệp">Đã tốt nghiệp</option>
-        <option value="Đã thôi học">Đã thôi học</option>
-        <option value="Tạm dừng học">Tạm dừng học</option>
-    </select>
-    <button type="submit" class="bg-blue-500 text-white p-2 rounded" >Thêm sinh viên</button>
+    <!-- Thông tin cơ bản -->
+    <div class="mb-4">
+        <h3 class="text-lg font-semibold mb-2">Thông tin cơ bản</h3>
+        <input type="text" id="id" name="mssv" placeholder="Mã số sinh viên" required class="p-2 border rounded w-full mb-2">
+        <input type="text" id="name" name="name" placeholder="Họ tên" required class="p-2 border rounded w-full mb-2">
+        <input type="date" id="dob" name="dob" placeholder="Ngày sinh" required class="p-2 border rounded w-full mb-2">
+        <select id="gender" name="gender" required class="p-2 border rounded w-full mb-2">
+            <option value="Nam">Nam</option>
+            <option value="Nữ">Nữ</option>
+        </select>
+        <select id="faculty" name="faculty" required class="p-2 border rounded w-full mb-2">
+            <option value="">Chọn khoa</option>
+            <!-- Các option sẽ được load từ database -->
+        </select>
+        <input type="text" id="course" name="course" placeholder="Khóa học" required class="p-2 border rounded w-full mb-2">
+        <select id="program" name="program" required class="p-2 border rounded w-full mb-2">
+            <option value="">Chọn chương trình</option>
+            <!-- Các option sẽ được load từ database -->
+        </select>
+        <select id="status" name="status" required class="p-2 border rounded w-full mb-2">
+            <option value="">Chọn tình trạng</option>
+            <!-- Các option sẽ được load từ database -->
+        </select>
+        <input type="text" id="nationality" name="nationality" placeholder="Quốc tịch" required class="p-2 border rounded w-full mb-2">
+    </div>
+
+    <!-- Thông tin liên lạc -->
+    <div class="mb-4">
+        <h3 class="text-lg font-semibold mb-2">Thông tin liên lạc</h3>
+        <input type="email" id="email" name="email" placeholder="Email" required class="p-2 border rounded w-full mb-2">
+        <input type="text" id="phone" name="phone" placeholder="Số điện thoại" required class="p-2 border rounded w-full mb-2">
+    </div>
+    
+    <!-- Địa chỉ thường trú -->
+    <div class="mb-4">
+        <h3 class="text-lg font-semibold mb-2">Địa chỉ thường trú</h3>
+        <input type="text" id="permanent_street" name="permanent_street" placeholder="Số nhà, Tên đường" required class="p-2 border rounded w-full mb-2">
+        <input type="text" id="permanent_ward" name="permanent_ward" placeholder="Phường/Xã" required class="p-2 border rounded w-full mb-2">
+        <input type="text" id="permanent_district" name="permanent_district" placeholder="Quận/Huyện" required class="p-2 border rounded w-full mb-2">
+        <input type="text" id="permanent_city" name="permanent_city" placeholder="Tỉnh/Thành phố" required class="p-2 border rounded w-full mb-2">
+        <input type="text" id="permanent_country" name="permanent_country" placeholder="Quốc gia" required class="p-2 border rounded w-full mb-2" value="Việt Nam">
+    </div>
+
+    <!-- Địa chỉ tạm trú -->
+    <div class="mb-4">
+        <h3 class="text-lg font-semibold mb-2">Địa chỉ tạm trú <span class="text-sm font-normal">(không bắt buộc)</span></h3>
+        <div class="mb-2">
+            <input type="checkbox" id="same_as_permanent" class="mr-2">
+            <label for="same_as_permanent">Giống địa chỉ thường trú</label>
+        </div>
+        <input type="text" id="temporary_street" name="temporary_street" placeholder="Số nhà, Tên đường" class="p-2 border rounded w-full mb-2">
+        <input type="text" id="temporary_ward" name="temporary_ward" placeholder="Phường/Xã" class="p-2 border rounded w-full mb-2">
+        <input type="text" id="temporary_district" name="temporary_district" placeholder="Quận/Huyện" class="p-2 border rounded w-full mb-2">
+        <input type="text" id="temporary_city" name="temporary_city" placeholder="Tỉnh/Thành phố" class="p-2 border rounded w-full mb-2">
+        <input type="text" id="temporary_country" name="temporary_country" placeholder="Quốc gia" class="p-2 border rounded w-full mb-2" value="Việt Nam">
+    </div>
+
+    <!-- Địa chỉ nhận thư -->
+    <div class="mb-4">
+        <h3 class="text-lg font-semibold mb-2">Địa chỉ nhận thư</h3>
+        <div class="mb-2">
+            <select id="mailing_address_type" name="mailing_address_type" class="p-2 border rounded w-full mb-2">
+                <option value="permanent">Sử dụng địa chỉ thường trú</option>
+                <option value="temporary">Sử dụng địa chỉ tạm trú</option>
+                <option value="other">Sử dụng địa chỉ khác</option>
+            </select>
+        </div>
+        <div id="other_mailing_address" class="hidden">
+            <input type="text" id="mailing_street" name="mailing_street" placeholder="Số nhà, Tên đường" class="p-2 border rounded w-full mb-2">
+            <input type="text" id="mailing_ward" name="mailing_ward" placeholder="Phường/Xã" class="p-2 border rounded w-full mb-2">
+            <input type="text" id="mailing_district" name="mailing_district" placeholder="Quận/Huyện" class="p-2 border rounded w-full mb-2">
+            <input type="text" id="mailing_city" name="mailing_city" placeholder="Tỉnh/Thành phố" class="p-2 border rounded w-full mb-2">
+            <input type="text" id="mailing_country" name="mailing_country" placeholder="Quốc gia" class="p-2 border rounded w-full mb-2" value="Việt Nam">
+        </div>
+    </div>
+
+    <!-- Giấy tờ tùy thân -->
+    <div class="mb-4">
+        <h3 class="text-lg font-semibold mb-2">Giấy tờ tùy thân</h3>
+        <select id="id_type" name="id_type" required class="p-2 border rounded w-full mb-2">
+            <option value="">Chọn loại giấy tờ</option>
+            <option value="cmnd">Chứng minh nhân dân (CMND)</option>
+            <option value="cccd">Căn cước công dân (CCCD)</option>
+            <option value="passport">Hộ chiếu (Passport)</option>
+        </select>
+
+        <!-- CMND Fields -->
+        <div id="cmnd_fields" class="hidden">
+            <input type="text" id="cmnd_number" name="cmnd_number" placeholder="Số CMND" class="p-2 border rounded w-full mb-2">
+            <input type="date" id="cmnd_issue_date" name="cmnd_issue_date" placeholder="Ngày cấp" class="p-2 border rounded w-full mb-2">
+            <input type="text" id="cmnd_issue_place" name="cmnd_issue_place" placeholder="Nơi cấp" class="p-2 border rounded w-full mb-2">
+            <input type="date" id="cmnd_expiry_date" name="cmnd_expiry_date" placeholder="Ngày hết hạn" class="p-2 border rounded w-full mb-2">
+        </div>
+
+        <!-- CCCD Fields -->
+        <div id="cccd_fields" class="hidden">
+            <input type="text" id="cccd_number" name="cccd_number" placeholder="Số CCCD" class="p-2 border rounded w-full mb-2">
+            <input type="date" id="cccd_issue_date" name="cccd_issue_date" placeholder="Ngày cấp" class="p-2 border rounded w-full mb-2">
+            <input type="text" id="cccd_issue_place" name="cccd_issue_place" placeholder="Nơi cấp" class="p-2 border rounded w-full mb-2">
+            <input type="date" id="cccd_expiry_date" name="cccd_expiry_date" placeholder="Ngày hết hạn" class="p-2 border rounded w-full mb-2">
+            <div class="mb-2">
+                <input type="checkbox" id="cccd_has_chip" name="cccd_has_chip" class="mr-2">
+                <label for="cccd_has_chip">Có gắn chip</label>
+            </div>
+        </div>
+
+        <!-- Passport Fields -->
+        <div id="passport_fields" class="hidden">
+            <input type="text" id="passport_number" name="passport_number" placeholder="Số hộ chiếu" class="p-2 border rounded w-full mb-2">
+            <input type="date" id="passport_issue_date" name="passport_issue_date" placeholder="Ngày cấp" class="p-2 border rounded w-full mb-2">
+            <input type="date" id="passport_expiry_date" name="passport_expiry_date" placeholder="Ngày hết hạn" class="p-2 border rounded w-full mb-2">
+            <input type="text" id="passport_issue_place" name="passport_issue_place" placeholder="Nơi cấp" class="p-2 border rounded w-full mb-2">
+            <input type="text" id="passport_issue_country" name="passport_issue_country" placeholder="Quốc gia cấp" class="p-2 border rounded w-full mb-2">
+            <textarea id="passport_notes" name="passport_notes" placeholder="Ghi chú (nếu có)" class="p-2 border rounded w-full mb-2"></textarea>
+        </div>
+    </div>
+
+    <button type="submit" class="bg-blue-500 text-white p-2 rounded w-full">Thêm sinh viên</button>
 </form>
+</div>
+
+
+<!-- Dialog nhập file -->
+<div id="importDialog" class="fixed inset-0 bg-black bg-opacity-50 hidden flex justify-center items-center">
+    <div class="bg-white rounded-lg p-6 shadow-lg w-96 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+        <h3 id="importTitle" class="text-2xl font-bold text-center mb-4">Import</h3>
+        
+        <div class="space-y-4">
+            <label class="block text-gray-700 font-semibold">Chọn file danh sách sinh viên:</label>
+            <input type="file" id="studentFile" name="studentFile" class="w-full p-2 border rounded-lg" required>
+
+            <label class="block text-gray-700 font-semibold">Chọn file giấy tờ tuỳ thân:</label>
+            <input type="file" id="docFile" name="docFile" class="w-full p-2 border rounded-lg" required>
+        </div>
+
+        <div class="flex justify-end space-x-3 mt-6">
+            <button class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg" onclick="closeDialog()">Đóng</button>
+            <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg" onclick="submitImport()">Import</button>
+        </div>
+    </div>
 </div>
 <script src="/js/add.js"></script>
