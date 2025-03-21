@@ -37,7 +37,7 @@ window.queryStudentIdentification = async () => {
 
     console.log(data)
     if (data.length === 0) {
-        alert('Mã số sinh viên không tồn tại!');
+        alert('Giấy tờ tuỳ thân của mã số sinh viên tương ứng không tồn tại!');
         return
     }
 
@@ -99,7 +99,15 @@ window.updateStudent = async () => {
         address: document.getElementById('updateDiaChi').value,
         email: document.getElementById('updateEmail').value,
         phone: document.getElementById('updateSdt').value,
-        status: document.getElementById('updateTinhTrang').value
+        status: document.getElementById('updateTinhTrang').value,
+        id_type: document.getElementById('updateCardIDType').value, 
+        id_number: document.getElementById('updateCardIDNumber').value, 
+        issue_date: document.getElementById('updateCardIssueDate').value, 
+        issue_place: document.getElementById('updateCardIssuePlace').value, 
+        expire_date: document.getElementById('updateCardExpireDate').value, 
+        card_chip: document.getElementById('updateCardChip').checked, 
+        issue_country: document.getElementById('updateCardIssueCountry').value, 
+        note: document.getElementById('updateCardNotes').value, 
     }
 
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
