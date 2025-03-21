@@ -1,6 +1,7 @@
 const { query } = require("express");
 const db = require("../../config/db");
-const logger = require("../../config/logging")
+const logger = require("../../config/logging");
+const { updateStudent } = require("./studentController");
 
 class studentModel {
 
@@ -30,7 +31,6 @@ class studentModel {
 
             if (result.rows.length > 0) {
                 logger.info("searchStudent executed successfully in studentModel");
-                logger.info(result.rows);
                 return result.rows;
             }
             return [];
@@ -59,7 +59,6 @@ class studentModel {
             WHERE ($1::TEXT IS NULL OR si.student_id::TEXT = $1::TEXT) 
             `
             const result = await db.query(query, [mssv || null]);
-            logger.info(result);
 
             if (result.rows.length > 0) {
                 logger.info("searchStudentIdentification executed successfully in studentModel");
@@ -133,13 +132,14 @@ class studentModel {
                 ]
             );
 
+
             student.program = IDResult.rows[0].program_id;
             student.faculty = IDResult.rows[0].faculty_id;
             student.status = IDResult.rows[0].status_id;
 
             // update
-            const query = `UPDATE public.students 
-            SET full_name = $1,
+            const query = `update public.students 
+            set full_name = $1,
             date_of_birth = $2, 
             gender = $3,
             faculty = $4,
@@ -149,8 +149,8 @@ class studentModel {
             email = $8,
             phone = $9, 
             student_status = $10
-            WHERE student_id = $11
-            RETURNING *
+            where student_id = $11
+            returning *
             `;
 
             const result = await db.query(query, 
@@ -169,14 +169,45 @@ class studentModel {
                 ]
             );
             if (result.rows.length > 0) {
-                return result.rows[0];
+                logger.info("update student info executed successfully in studentmodel");
+                // return result.rows[0];
             }
-            logger.info("updateStudent executed successfully in studentModel");
-            logger.info(student);
-            return null;
+
+            const idetifyQuery = 
+                `update public.identificationdocument 
+                set id_type = $1,
+                id_number = $2, 
+                issue_date = $3,
+                issue_place = $4,
+                expiry_date = $5, 
+                has_chip = $6, 
+                issue_country = $7, 
+                note = $8
+                where student_id = $9
+                returning *
+            `;
+
+            const Identifyresult = await db.query(idetifyQuery, 
+                [
+                    student.id_type,
+                    student.id_number,
+                    student.issue_date,
+                    student.issue_place,
+                    student.expire_date,
+                    student.card_chip,
+                    student.issue_country,
+                    student.note,
+                    student.mssv 
+                ]
+            );
+            if (result.rows.length > 0) {
+                logger.info("update student \"identity\" executed successfully in studentmodel");
+                logger.info(student);
+                return Identifyresult.rows[0] + result.rows[0];
+            }
         }
         catch(error) {
-            logger.error("Error updating Student in studentModel:", error);
+            logger.error("error updating student in studentmodel:", error);
             throw new Error(error.message);
         }
     }

@@ -31,7 +31,7 @@ class studentController {
                 phone: req.body.phone,
                 status: req.body.status
             }
-            
+
             const addedStudent = await studentModel.addStudent(newStudent);
             if (addedStudent) {
                 return res.status(201).json({
@@ -94,7 +94,7 @@ class studentController {
             logger.info("deleteStudent method got called in studentController");
             const { mssv } = req.body;
             const checkStudent = await studentModel.searchStudent(mssv);
-        
+
             if (checkStudent.length === 0) {
                 logger.warn("StudentID not exists when deleting");
                 return res.status(404).json({ message: "Mã số sinh viên không tồn tại!" });
@@ -135,7 +135,7 @@ class studentController {
         try {
             logger.info("searchStudent method got called in studentController");
             let { mssv, name } = req.query;
-            
+
             let listStudent = await studentModel.searchStudent(mssv, name);
             return res.json(listStudent);
 
@@ -148,11 +148,11 @@ class studentController {
 
     }
 
-    static async searchStudentIdentification (req, res) {
+    static async searchStudentIdentification(req, res) {
         try {
             logger.info("searchStudentIdentification method got called in studentController");
             let { mssv } = req.query;
-            
+
             let listStudent = await studentModel.searchStudentIdentification(mssv);
             return res.json(listStudent);
 
@@ -181,7 +181,7 @@ class studentController {
     }
 
     static async updateStudent(req, res) {
-        logger.info("updateStudentPage method got called in studentController");
+        logger.info("updateStudent method got called in studentController");
         const newStudent = {
             mssv: req.body.mssv,
             name: req.body.name,
@@ -193,30 +193,70 @@ class studentController {
             address: req.body.address,
             email: req.body.email,
             phone: req.body.phone,
-            status: req.body.status
+            status: req.body.status,
+            id_type: req.body.id_type,
+            id_number: req.body.id_number,
+            issue_date: req.body.issue_date,
+            issue_place: req.body.issue_place,
+            expire_date: req.body.expire_date,
+            card_chip: req.body.card_chip,
+            issue_country: req.body.issue_country,
+            note: req.body.note,
         }
 
-        if (!newStudent.mssv || 
-            !newStudent.name || 
-            !newStudent.dob || 
-            !newStudent.gender || 
-            !newStudent.faculty || 
-            !newStudent.course || 
+        if (!newStudent.mssv ||
+            !newStudent.name ||
+            !newStudent.dob ||
+            !newStudent.gender ||
+            !newStudent.faculty ||
+            !newStudent.course ||
             !newStudent.program ||
-            !newStudent.address || 
-            !newStudent.email || 
-            !newStudent.phone || 
-            !newStudent.status) {
+            !newStudent.address ||
+            !newStudent.email ||
+            !newStudent.phone ||
+            !newStudent.status ||
+            !newStudent.id_type ||
+            !newStudent.id_number ||
+            !newStudent.issue_date ||
+            !newStudent.issue_place ||
+            !newStudent.expire_date
+        ) {
             logger.warn("Not enough parameters when updating student");
             return res.status(400).json({
                 error: 'All information fields are required'
             });
         }
 
+
+        // console.log(newStudent)
+        if (newStudent.id_type != 'CCCD') {
+            newStudent.card_chip = 'NULL'
+        }
+
+        if (newStudent.id_type == 'passport' &&
+            (!newStudent.issue_country || newStudent.issue_country == '')
+        ) {
+            logger.warn("Not exists country parameters for passport when updating student");
+            return res.status(400).json({
+                error: 'Hộ chiếu phải có thông tin quốc tịch'
+            });
+        }
+        else {
+            newStudent.issue_country = '' 
+        }
+
         try {
             let listStudent = await studentModel.searchStudent(newStudent.mssv);
-            if (!listStudent || listStudent.length === 0){
+            if (!listStudent || listStudent.length === 0) {
                 logger.warn("Not corressponding student with specified ID");
+                return res.status(404).json({
+                    message: 'No student with corressponding id'
+                })
+            }
+
+            let listStudentID = await studentModel.searchStudentIdentification(newStudent.mssv);
+            if (!listStudent || listStudent.length === 0) {
+                logger.warn("Not corressponding student identification details with specified ID");
                 return res.status(404).json({
                     message: 'No student with corressponding id'
                 })
@@ -231,12 +271,11 @@ class studentController {
         try {
             let result = await studentModel.updateStudent(newStudent);
         }
-        catch(error){
+        catch (error) {
             logger.error("Error in updateStudentController:", error.message);
             return res.status(500).json({
                 message: 'Failed to update student of user. Please try again later.'
             });
-
         }
 
         return res.status(200).json({
