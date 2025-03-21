@@ -1,5 +1,6 @@
 const {query} = require('express');
 const db = require("../../config/db");
+const logger = require('../../config/logging')
 
 class indentificationModel{
     static async addIdentification(info){

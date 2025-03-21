@@ -1,4 +1,5 @@
 const identificationModel = require('../identification/identificationModel');
+const logger = require('../../config/logging')
 class identificationController{
     static async addIdentification(req, res){
         try {

@@ -1,0 +1,3 @@
+student_id,id_type,id_number,issue_date,issue_place,expiry_date,has_chip,issue_country,note
+22120005,CCCD,012345683741,2022-06-15,TP Hồ Chí Minh,2030-06-15,true,,
+22120006,CMND,778829071122,2022-05-12,TP Hồ Chí Minh,2030-07-05,,,
