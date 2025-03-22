@@ -67,6 +67,7 @@ window.queryStudent = async () => {
 
 
     data = await result.json();
+    data = data[0]
 
     console.log(data)
     if (data.length === 0) {
@@ -74,54 +75,50 @@ window.queryStudent = async () => {
         return
     }
 
-    console.log(data[0]);
-    document.getElementById('updateHoten').value = data[0].full_name;
-    document.getElementById('updateNgaySinh').value = data[0].date_of_birth;
-    document.getElementById('updateGioiTinh').value = data[0].gender;
-    document.getElementById('updateKhoa').value = data[0].faculty;
-    document.getElementById('updateNamKhoa').value = data[0].academic_year;
-    document.getElementById('updateChuongTrinh').value = data[0].education_program;
-    // document.getElementById('updateDiaChi').value = data[0].address;
-    permanent_address = data[0].permanent_address.split(', ');
-    temporary_address = data[0].temporary_address.split(', ');
-
-    if (permanent_address[0] != '') {
-        document.getElementById('permanent_street').value = permanent_address[0];
-        document.getElementById('permanent_ward').value = permanent_address[1];
-        document.getElementById('permanent_district').value = permanent_address[2];
-        document.getElementById('permanent_city').value = permanent_address[3];
-        document.getElementById('permanent_country').value = permanent_address[4];
-    }
-    else {
-        document.getElementById('permanent_street').value = '';
-        document.getElementById('permanent_ward').value = '';
-        document.getElementById('permanent_district').value = '';
-        document.getElementById('permanent_city').value = '';
-        document.getElementById('permanent_country').value = '';
-    }
-
-    if (temporary_address[0] != '') {
-        document.getElementById('temporary_street').value = temporary_address[0];
-        document.getElementById('temporary_ward').value = temporary_address[1];
-        document.getElementById('temporary_district').value = temporary_address[2];
-        document.getElementById('temporary_city').value = temporary_address[3];
-        document.getElementById('temporary_country').value = temporary_address[4];
-    }
-    else {
-        document.getElementById('temporary_street').value = '';
-        document.getElementById('temporary_ward').value = '';
-        document.getElementById('temporary_district').value = '';
-        document.getElementById('temporary_city').value = '';
-        document.getElementById('temporary_country').value = '';
-    }
-
+    console.log(data);
+    document.getElementById('updateHoten').value = data.full_name;
+    document.getElementById('updateNgaySinh').value = data.date_of_birth;
+    document.getElementById('updateGioiTinh').value = data.gender;
+    document.getElementById('updateKhoa').value = data.faculty;
+    document.getElementById('updateNamKhoa').value = data.academic_year;
+    document.getElementById('updateChuongTrinh').value = data.education_program;
+    // document.getElementById('updateDiaChi').value = data.address;
     document.getElementById('updateEmail').value = data[0].email;
     document.getElementById('updateSdt').value = data[0].phone;
     document.getElementById('updateTinhTrang').value = data[0].student_status;
+
+    permanent_address = data.permanent_address.split(', ');
+    perm_add_elems = document.getElementsByClassName('permanent_address_cl');
+    if (data.permanent_address != undefined) {
+        for (i = 0; i < perm_add_elems.length; i++) {
+            perm_add_elems[i].value = permanent_address[i];
+        }
+    }
+    else {
+        for (i = 0; i < perm_add_elems.length; i++) {
+            perm_add_elems[i].value = '';
+        }
+    }
+
+
+    temporary_address = data.temporary_address.split(', ');
+    let temp_add_elems = document.getElementsByClassName('temporary_address_cl');
+    if (temporary_address != undefined && temporary_address[0] != undefined) {
+        for (i = 0; i < temp_add_elems.length; i++) {
+            temp_add_elems[i].value = temporary_address[i];
+        }
+    }
+    else {
+        for (i = 0; i < temp_add_elems.length; i++) {
+            temp_add_elems[i].value = '';
+        }
+    }
+
 };
 
 window.updateStudent = async () => {
     const sinhvien = {
+        //information: {
         mssv: document.getElementById('updateId').value,
         name: document.getElementById('updateHoten').value,
         dob: document.getElementById('updateNgaySinh').value,
@@ -129,12 +126,13 @@ window.updateStudent = async () => {
         faculty: document.getElementById('updateKhoa').value,
         course: document.getElementById('updateNamKhoa').value,
         program: document.getElementById('updateChuongTrinh').value,
-        // address: document.getElementById('updateDiaChi').value,
         email: document.getElementById('updateEmail').value,
         phone: document.getElementById('updateSdt').value,
         status: document.getElementById('updateTinhTrang').value,
+        //},
 
         // TODO: group these up to identification info 
+        //ID_info: {
         id_type: document.getElementById('updateCardIDType').value,
         id_number: document.getElementById('updateCardIDNumber').value,
         issue_date: document.getElementById('updateCardIssueDate').value,
@@ -143,12 +141,13 @@ window.updateStudent = async () => {
         card_chip: document.getElementById('updateCardChip').checked,
         issue_country: document.getElementById('updateCardIssueCountry').value,
         note: document.getElementById('updateCardNotes').value,
+        //},
 
         permanent_address: {
             student_id: document.getElementById('updateId').value,
             addresstype: 'thuongtru',
             street: document.getElementById('permanent_street').value,
-            ward : document.getElementById('permanent_ward').value,
+            ward: document.getElementById('permanent_ward').value,
             district: document.getElementById('permanent_district').value,
             city: document.getElementById('permanent_city').value,
             country: document.getElementById('permanent_country').value,
@@ -158,12 +157,24 @@ window.updateStudent = async () => {
             student_id: document.getElementById('updateId').value,
             addresstype: 'tamtru',
             street: document.getElementById('temporary_street').value,
-            ward : document.getElementById('temporary_ward').value,
+            ward: document.getElementById('temporary_ward').value,
             district: document.getElementById('temporary_district').value,
             city: document.getElementById('temporary_city').value,
             country: document.getElementById('temporary_country').value,
         },
+
+        mailing_address: {
+            student_id: document.getElementById('updateId').value,
+            addresstype: 'nhanthu',
+            street: document.getElementById('mailing_street').value,
+            ward: document.getElementById('mailing_ward').value,
+            district: document.getElementById('mailing_district').value,
+            city: document.getElementById('mailing_city').value,
+            country: document.getElementById('mailing_country').value,
+        },
     }
+
+
 
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex.test(sinhvien.email)) {
