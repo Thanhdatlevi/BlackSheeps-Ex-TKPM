@@ -8,60 +8,26 @@ class studentModel {
     static async searchStudent(mssv, name, khoa) {
         try {
             const query = `
-            SELECT
+            SELECT 
                 s.student_id,
                 s.full_name,
                 to_char(s.date_of_birth, 'yyyy-mm-dd') as date_of_birth,
                 s.gender, 
                 s.academic_year,
-                COALESCE(addr.DIA_CHI_THUONG_TRU, '') AS permanent_address,
-                COALESCE(addr.DIA_CHI_TAM_TRU, '') AS temporary_address,
-                COALESCE(addr.DIA_CHI_NHAN_THU, '') AS mailing_address,
                 s.email,
                 s.phone,
                 s.nationality,
                 f.faculty_name as faculty,
                 ep.program_name as education_program,
-                ss.status_name as student_status,
-                COALESCE(
-                JSON_AGG(
-                    JSONB_BUILD_OBJECT(
-                        'id_type', si.id_type,
-                        'id_number', si.id_number,
-                        'issue_date', to_char(si.issue_date, 'yyyy-mm-dd'),
-                        'expiry_date', to_char(si.expiry_date, 'yyyy-mm-dd'),
-                        'issue_place', si.issue_place,
-                        'has_chip', si.has_chip,
-                        'issue_country', si.issue_country,
-                        'note', si.note
-                    )
-                ) FILTER (WHERE si.id_number IS NOT NULL), '[]'
-            ) AS identifications
+                ss.status_name as student_status
             FROM public.students s 
             JOIN faculties f ON f.faculty_id = s.faculty
             JOIN education_programs ep ON ep.program_id = s.education_program
             JOIN student_status ss ON ss.status_id = s.student_status
-            LEFT JOIN (
-                SELECT 
-                    a.student_id,
-                    MAX(CASE WHEN a.address_type = 'thuongtru' THEN 
-                        a.street_address || ', ' || a.ward || ', ' || a.district || ', ' || a.city || ', ' || a.country 
-                    END) AS DIA_CHI_THUONG_TRU,
-                    MAX(CASE WHEN a.address_type = 'tamtru' THEN 
-                        a.street_address || ', ' || a.ward || ', ' || a.district || ', ' || a.city || ', ' || a.country 
-                    END) AS DIA_CHI_TAM_TRU,
-                    MAX(CASE WHEN a.address_type = 'nhanthu' THEN 
-                        a.street_address || ', ' || a.ward || ', ' || a.district || ', ' || a.city || ', ' || a.country 
-                    END) AS DIA_CHI_NHAN_THU
-                FROM public.address a
-                GROUP BY a.student_id
-            ) addr ON addr.student_id = s.student_id
-            LEFT JOIN identificationdocument si ON si.student_id = s.student_id
             WHERE 
                 ($1::TEXT IS NULL OR s.student_id::TEXT = $1::TEXT) 
                 AND ($2::TEXT IS NULL OR s.full_name ILIKE '%' || $2::TEXT || '%')
-                AND ($3::INT IS NULL OR s.faculty = $3::INT)
-            GROUP BY s.student_id, f.faculty_name, ep.program_name, ss.status_name, addr.DIA_CHI_THUONG_TRU, addr.DIA_CHI_TAM_TRU, addr.DIA_CHI_NHAN_THU;
+                AND ($3::INT IS NULL OR s.faculty = $3::INT);
             `;
     
             // Chuyển `khoa` từ string sang số hoặc null

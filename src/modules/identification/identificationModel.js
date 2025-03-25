@@ -3,6 +3,37 @@ const db = require("../../config/db");
 const logger = require('../../config/logging')
 
 class indentificationModel{
+    static async getIdentification(mssv){
+        try {
+            const query = `
+            SELECT 
+                si.student_id,
+                si.id_type,
+                si.id_number,
+                to_char(si.issue_date, 'yyyy-mm-dd') AS issue_date,
+                to_char(si.expiry_date, 'yyyy-mm-dd') AS expiry_date,
+                si.issue_place,
+                si.has_chip,
+                si.issue_country,
+                si.note
+            FROM identificationdocument si
+            WHERE si.student_id = $1;
+            `;
+            const result = await db.query(query, [mssv]);
+            if (result.rows.length > 0){
+                logger.info("getIdentification executed successfully in indentificationModel");
+                logger.info(result.rows[0]);
+                return result.rows[0];
+            }
+
+            return null;
+        }
+        catch(error){
+            logger.error("Error get Identification in identificationModel:", error.message);
+            throw new Error(error.message);
+        }
+    }
+
     static async addIdentification(info){
         try {
             const query = `
