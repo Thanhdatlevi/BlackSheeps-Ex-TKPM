@@ -16,6 +16,7 @@ const studentRoutes = require('./src/routes/studentRoutes'); // Điều hướng
 const facultyRoutes = require('./src/routes/facultyRoutes');
 const programRoutes = require('./src/routes/programRoutes');
 const statusRoutes = require('./src/routes/statusRoutes');
+const emailRoutes = require('./src/routes/emailDomainRoutes');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -36,6 +37,7 @@ app.use('/', studentRoutes);
 app.use('/', facultyRoutes);
 app.use('/', programRoutes);
 app.use('/', statusRoutes);
+app.use('/', emailRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);

@@ -1,8 +1,19 @@
+let allowedDomains = [];
 document.addEventListener('DOMContentLoaded', function() {
     // Load dữ liệu từ database cho các dropdown
     loadFaculties();
     loadPrograms();
     loadStatuses();
+    loadAllowedDomains();
+
+    // Thêm event listener cho input email
+    const emailInput = document.getElementById('email');
+    emailInput.addEventListener('input', function() {
+        // Clear error when user starts typing
+        const emailError = document.getElementById('emailError');
+        emailError.classList.add('hidden');
+        this.classList.remove('border-red-500');
+    });
 
     // Xử lý khi chọn loại giấy tờ
     const idTypeSelect = document.getElementById('id_type');
@@ -25,11 +36,22 @@ document.addEventListener('DOMContentLoaded', function() {
             clearTemporaryAddress();
         }
     });
-
+     
     // Form validation và submit
     document.getElementById("studentForm").addEventListener("submit", addStudent);
 });
-
+async function loadAllowedDomains() {
+    try {
+        const response = await fetch('/emails');
+        const data = await response.json();
+        console.log("API response:", data);
+        if (data.domains) {
+            allowedDomains = data.domains.map(d => d.email_domain);
+        }
+    } catch (error) {
+        console.error('Error loading allowed domains:', error);
+    }
+}
 // Functions to load dropdown data
 async function loadFaculties() {
     try {
@@ -134,7 +156,38 @@ async function loadStatuses() {
         });
     }
 }
+// Hàm validate email
+function validateEmail() {
+    const emailInput = document.getElementById('email');
+    const email = emailInput.value;
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
+    emailError.classList.add('hidden');
+    emailInput.classList.remove('border-red-500');
+    if (!email) return; // Bỏ qua nếu email trống
+
+    if (!emailRegex.test(email)) {
+        showEmailError("Email không đúng định dạng!");
+        return false;
+    }
+
+    // Kiểm tra domain
+    const domain = email.split('@')[1];
+    if (!allowedDomains.includes(domain)) {
+        showEmailError("Domain email không được phép sử dụng!");
+        return false;
+    }
+
+    return true;
+}
+function showEmailError(message) {
+    const emailInput = document.getElementById('email');
+    const emailError = document.getElementById('emailError');
+    
+    emailError.textContent = message;
+    emailError.classList.remove('hidden');
+    emailInput.classList.add('border-red-500');
+}
 // Toggle ID fields based on selection
 function toggleIdFields(idType) {
     // Hide all ID fields first
@@ -188,9 +241,7 @@ async function addStudent(event) {
     const data = Object.fromEntries(formData.entries());
     
     // Validate email
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (!emailRegex.test(data.email)) {
-        alert("Email không hợp lệ!");
+    if (!validateEmail()) {
         return;
     }
 

@@ -1,0 +1,260 @@
+<div class="max-w-4xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
+    <h2 class="text-2xl font-bold mb-6">Quản lý Email Domain</h2>
+
+    <!-- Thêm Email Domain mới -->
+    <div class="mb-8 p-4 border rounded-lg bg-gray-50">
+        <h3 class="text-xl font-semibold mb-4">Thêm Email Domain</h3>
+        <form id="addDomainForm" class="flex flex-col space-y-4">
+            <div>
+                <label for="newDomain" class="block text-sm font-medium mb-1">Tên domain:</label>
+                <div class="flex">
+                    <input type="text" id="newDomain" name="domain" placeholder="example.com" 
+                           required class="p-2 border rounded-l flex-grow">
+                    <button type="submit" class="bg-green-500 hover:bg-green-600 text-white p-2 rounded-r px-4">
+                        Thêm
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Danh sách Email Domain -->
+    <div class="mb-4">
+        <h3 class="text-xl font-semibold mb-4">Danh sách Email Domain</h3>
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white">
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th class="py-2 px-4 border-b text-left">STT</th>
+                        <th class="py-2 px-4 border-b text-left">Domain</th>
+                        <th class="py-2 px-4 border-b text-center">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody id="domainTableBody">
+                    <!-- Dữ liệu sẽ được thêm vào đây bằng JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal chỉnh sửa domain -->
+<div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex justify-center items-center">
+    <div class="bg-white rounded-lg p-6 shadow-lg w-96">
+        <h3 class="text-xl font-semibold mb-4">Chỉnh sửa Domain</h3>
+        <form id="editDomainForm">
+            <input type="hidden" id="editDomainId">
+            <div class="mb-4">
+                <label for="editDomainName" class="block text-sm font-medium mb-1">Tên domain:</label>
+                <input type="text" id="editDomainName" name="domain" required class="p-2 border rounded w-full">
+            </div>
+            <div class="flex justify-end space-x-2">
+                <button type="button" onclick="closeEditModal()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded">
+                    Hủy
+                </button>
+                <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+                    Lưu
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Danh sách domains - sẽ được thay thế bằng dữ liệu từ API
+    let domains = [];
+
+    // Tải danh sách domains khi trang được load
+    document.addEventListener('DOMContentLoaded', function() {
+        loadDomains();
+
+        // Xử lý form thêm domain
+        document.getElementById('addDomainForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            addDomain();
+        });
+
+        // Xử lý form edit domain
+        document.getElementById('editDomainForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            updateDomain();
+        });
+    });
+
+    // Tải danh sách domains từ API
+    async function loadDomains() {
+        try {
+            const response = await fetch('/emails');
+            const data = await response.json();
+            console.log(data);
+            if (data.success && data.domains) {
+                domains = data.domains;
+                renderDomainTable();
+            } else {
+                console.error('Failed to load domains:', data.message);
+                // mock data
+                domains = [
+                    { id: 1, domain: "gmail.com" },
+                    { id: 2, domain: "outlook.com" },
+                    { id: 3, domain: "yahoo.com" },
+                    { id: 4, domain: "student.hcmus.edu.vn" }
+                ];
+                renderDomainTable();
+            }
+        } catch (error) {
+            console.error('Error loading domains:', error);
+            // mock data
+            domains = [
+                { id: 1, domain: "gmail.com" },
+                { id: 2, domain: "outlook.com" },
+                { id: 3, domain: "yahoo.com" },
+                { id: 4, domain: "student.hcmus.edu.vn" }
+            ];
+            renderDomainTable();
+        }
+    }
+
+    // Hiển thị danh sách domains trong bảng
+    function renderDomainTable() {
+        const tableBody = document.getElementById('domainTableBody');
+        tableBody.innerHTML = '';
+        console.log(domains);
+        domains.forEach((domain, index) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td class="py-2 px-4 border-b">${index + 1}</td>
+                <td class="py-2 px-4 border-b">${domain.email_domain}</td>
+                <td class="py-2 px-4 border-b text-center">
+                    <button onclick="openEditModal(${domain.email_id}, '${domain.email_domain}')" 
+                            class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded mr-2">
+                        Sửa
+                    </button>
+                    <button onclick="deleteDomain(${domain.email_id})" 
+                            class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded">
+                        Xóa
+                    </button>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+    }
+
+    // Thêm domain mới
+    async function addDomain() {
+        const domainInput = document.getElementById('newDomain');
+        const domainName = domainInput.value.trim();
+        
+        if (!domainName) {
+            alert('Vui lòng nhập tên domain!');
+            return;
+        }
+
+        try {
+            const response = await fetch('/addEmail', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ domain: domainName })
+            });
+
+            const data = await response.json();
+            
+            if (data.success) {
+                // Thêm domain mới vào danh sách và hiển thị lại
+                const newId = data.domain.email_id || domains.length + 1;
+                domains.push({ email_id: newId, email_domain: domainName });
+                renderDomainTable();
+                domainInput.value = '';
+                alert('Thêm domain thành công!');
+            } else {
+                alert('Lỗi: ' + (data.message || 'Không thể thêm domain'));
+            }
+        } catch (error) {
+            console.error('Error adding domain:', error);
+        }
+    }
+
+    // Mở modal chỉnh sửa domain
+    function openEditModal(id, domainName) {
+        document.getElementById('editDomainId').value = id;
+        document.getElementById('editDomainName').value = domainName;
+        document.getElementById('editModal').classList.remove('hidden');
+        document.getElementById('editModal').classList.add('flex');
+    }
+
+    // Đóng modal chỉnh sửa
+    function closeEditModal() {
+        document.getElementById('editModal').classList.add('hidden');
+        document.getElementById('editModal').classList.remove('flex');
+    }
+
+    // Cập nhật domain
+    async function updateDomain() {
+        const id = document.getElementById('editDomainId').value;
+        const newDomainName = document.getElementById('editDomainName').value.trim();
+        
+        if (!newDomainName) {
+            alert('Vui lòng nhập tên domain!');
+            return;
+        }
+
+        try {
+            const response = await fetch(`/updateEmail`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email_id : id, email_domain: newDomainName })
+            });
+            const data = await response.json();
+            console.log(data);
+            if (data.success) {
+                // Cập nhật domain trong danh sách và hiển thị lại
+                const index = domains.findIndex(d => d.email_id == id);
+                console.log("index:",index);
+                if (index !== -1) {
+                    domains[index].email_domain = newDomainName;
+                }
+                console.log("domain:",domains);
+                renderDomainTable();
+                closeEditModal();
+                alert('Cập nhật domain thành công!');
+            } else {
+                alert('Lỗi: ' + (data.message || 'Không thể cập nhật domain'));
+            }
+        } catch (error) {
+            console.error('Error updating domain:', error);
+        }
+    }
+
+    // Xóa domain
+    async function deleteDomain(id) {
+        if (!confirm('Bạn có chắc chắn muốn xóa domain này?')) {
+            return;
+        }
+
+        try {
+            const response = await fetch(`/deleteEmail`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email_id: id })
+            });
+
+            const data = await response.json();
+            
+            if (data.success) {
+                // Xóa domain khỏi danh sách và hiển thị lại
+                domains = domains.filter(d => d.email_id != id);
+                renderDomainTable();
+                alert('Xóa domain thành công!');
+            } else {
+                alert('Lỗi: ' + (data.message || 'Không thể xóa domain'));
+            }
+        } catch (error) {
+            console.error('Error deleting domain:', error);
+        }
+    }
+</script>
