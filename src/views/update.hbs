@@ -4,8 +4,8 @@
         <div>
             <h2 class="text-2xl font-bold text-center text-gray-700 mb-4">Cập nhật sinh viên</h2>
 
-            <div class="space-y-3">
-                <input type="text" id="updateId" placeholder="Nhập MSSV để cập nhật"
+            <div class="space-y-3" id="student_info">
+                <input type="text" id="student_id" placeholder="Nhập MSSV để cập nhật"
                     class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400">
 
                 <button onclick="queryStudent(); queryStudentIdentification();"
@@ -13,48 +13,49 @@
                     Tìm sinh viên
                 </button>
 
-                <input type="text" id="updateHoten" placeholder="Nhập họ tên"
+                <input type="text" id="full_name" placeholder="Nhập họ tên"
                     class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400">
                 <div>
                     Ngày sinh (mm/dd/yyyy)
                 </div>
-                <input type="date" id="updateNgaySinh"
+                <input type="date" id="date_of_birth"
                     class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400">
 
-                <select id="updateGioiTinh" class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400">
+                <select id="gender" class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400">
                     <option value="Nam">Nam</option>
                     <option value="Nữ">Nữ</option>
                 </select>
 
-                <select id="updateKhoa" class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400">
+                <select id="faculty" class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400">
                     <option value="Khoa Luật">Khoa Luật</option>
                     <option value="Khoa Tiếng Anh thương mại">Khoa Tiếng Anh thương mại</option>
                     <option value="Khoa Tiếng Nhật">Khoa Tiếng Nhật</option>
                     <option value="Khoa Tiếng Pháp">Khoa Tiếng Pháp</option>
                 </select>
 
-                <input type="text" id="updateNamKhoa" placeholder="Nhập năm khoá học"
+                <input type="text" id="academic_year" placeholder="Nhập năm khoá học"
                     class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400">
-                <input type="text" id="updateChuongTrinh" placeholder="Nhập chương trình học"
+                <input type="text" id="education_program" placeholder="Nhập chương trình học"
                     class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400">
-                <input type="text" id="updateEmail" placeholder="Nhập Email"
+                <input type="text" id="email" placeholder="Nhập Email"
                     class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400">
-                <input type="text" id="updateSdt" placeholder="Nhập số điện thoại"
+                <input type="text" id="phone" placeholder="Nhập số điện thoại"
                     class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400">
 
-                <select id="updateTinhTrang" class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400">
+                <select id="student_status" class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400">
                     <option value="Đang học">Đang học</option>
                     <option value="Đã tốt nghiệp">Đã tốt nghiệp</option>
                     <option value="Đã thôi học">Đã thôi học</option>
                     <option value="Tạm dừng học">Tạm dừng học</option>
                 </select>
 
-                <button onclick="updateStudent()"
-                    class="w-full bg-blue-500 text-white font-semibold py-2 rounded-lg shadow-md hover:bg-blue-600 transition">
-                    Cập nhật
-                </button>
-
             </div>
+
+            <button onclick="updateStudent()"
+                class="my-3 w-full bg-blue-500 text-white font-semibold py-2 rounded-lg shadow-md hover:bg-blue-600 transition">
+                Cập nhật
+            </button>
+
         </div>
 
     </div>
@@ -62,75 +63,75 @@
     <div class="max-w-lg ml-5 mr-auto bg-white shadow-lg rounded-lg p-6">
 
         <!-- Địa chỉ thường trú -->
-        <div class="mb-4">
+        <div class="mb-4" id="permanent_address_info">
             <h3 class="text-lg font-semibold mb-2">Địa chỉ thường trú</h3>
-            <input type="text" id="permanent_street" name="permanent_street" placeholder="Số nhà, Tên đường" required
-                class="permanent_address_cl p-2 border rounded w-full mb-2">
-            <input type="text" id="permanent_ward" name="permanent_ward" placeholder="Phường/Xã" required
-                class="permanent_address_cl p-2 border rounded w-full mb-2">
-            <input type="text" id="permanent_district" name="permanent_district" placeholder="Quận/Huyện" required
-                class="permanent_address_cl p-2 border rounded w-full mb-2">
-            <input type="text" id="permanent_city" name="permanent_city" placeholder="Tỉnh/Thành phố" required
-                class="permanent_address_cl p-2 border rounded w-full mb-2">
-            <input type="text" id="permanent_country" name="permanent_country" placeholder="Quốc gia" required
-                class="permanent_address_cl p-2 border rounded w-full mb-2" value="Việt Nam">
+            <input type="text" id="street_address" name="temporary_street" placeholder="Số nhà, Tên đường"
+                class="temporary_address_cl p-2 border rounded w-full mb-2">
+            <input type="text" id="ward" name="temporary_ward" placeholder="Phường/Xã"
+                class="temporary_address_cl p-2 border rounded w-full mb-2">
+            <input type="text" id="district" name="temporary_district" placeholder="Quận/Huyện"
+                class="temporary_address_cl p-2 border rounded w-full mb-2">
+            <input type="text" id="city" name="temporary_city" placeholder="Tỉnh/Thành phố"
+                class="temporary_address_cl p-2 border rounded w-full mb-2">
+            <input type="text" id="country" name="temporary_country" placeholder="Quốc gia"
+                class="temporary_address_cl p-2 border rounded w-full mb-2" value="Việt Nam">
         </div>
 
         <!-- Địa chỉ tạm trú -->
-        <div class="mb-4">
+        <div class="mb-4" id="temporary_address_info">
             <h3 class="text-lg font-semibold mb-2">Địa chỉ tạm trú <span class="text-sm font-normal">(không bắt
                     buộc)</span></h3>
-            <input type="text" id="temporary_street" name="temporary_street" placeholder="Số nhà, Tên đường"
+            <input type="text" id="street_address" name="temporary_street" placeholder="Số nhà, Tên đường"
                 class="temporary_address_cl p-2 border rounded w-full mb-2">
-            <input type="text" id="temporary_ward" name="temporary_ward" placeholder="Phường/Xã"
+            <input type="text" id="ward" name="temporary_ward" placeholder="Phường/Xã"
                 class="temporary_address_cl p-2 border rounded w-full mb-2">
-            <input type="text" id="temporary_district" name="temporary_district" placeholder="Quận/Huyện"
+            <input type="text" id="district" name="temporary_district" placeholder="Quận/Huyện"
                 class="temporary_address_cl p-2 border rounded w-full mb-2">
-            <input type="text" id="temporary_city" name="temporary_city" placeholder="Tỉnh/Thành phố"
+            <input type="text" id="city" name="temporary_city" placeholder="Tỉnh/Thành phố"
                 class="temporary_address_cl p-2 border rounded w-full mb-2">
-            <input type="text" id="temporary_country" name="temporary_country" placeholder="Quốc gia"
+            <input type="text" id="country" name="temporary_country" placeholder="Quốc gia"
                 class="temporary_address_cl p-2 border rounded w-full mb-2" value="Việt Nam">
         </div>
 
 
-        <div class="space-y-3">
-            <select id="updateCardIDType" class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400"
+        <div class="space-y-3" id="ID_info">
+            <select id="id_type" class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400"
                 onchange="grayCheckBox()">
                 <option value="CCCD">CCCD</option>
                 <option value="CMND">CMND</option>
                 <option value="passport">passport</option>
             </select>
-            <input type="text" id="updateCardIDNumber" placeholder="Nhập số thẻ tương ứng"
+            <input type="text" id="id_number" placeholder="Nhập số thẻ tương ứng"
                 class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400">
 
 
             <div>
                 Ngày cấp thẻ (mm/dd/yyyy)
             </div>
-            <input type="date" id="updateCardIssueDate"
+            <input type="date" id="issue_date"
                 class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400">
 
-            <input type="text" id="updateCardIssuePlace" placeholder="Nhập nơi cấp thẻ tương ứng"
+            <input type="text" id="issue_place" placeholder="Nhập nơi cấp thẻ tương ứng"
                 class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400">
 
 
             <div>
                 Ngày thẻ hết hạn (mm/dd/yyyy)
             </div>
-            <input type="date" id="updateCardExpireDate"
+            <input type="date" id="expiry_date"
                 class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400">
 
 
             <div class="flex flex-row">
                 Thẻ có chip hay không:
-                <input type="checkbox" id="updateCardChip"
+                <input type="checkbox" id="has_chip"
                     class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400">
             </div>
 
-            <input type="text" id="updateCardIssueCountry" placeholder="Nhập quốc tịch của hộ chiếu"
+            <input type="text" id="issue_country" placeholder="Nhập quốc tịch của hộ chiếu"
                 class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400 bg-gray-100">
 
-            <input type="text" id="updateCardNotes" placeholder="Ghi chú"
+            <input type="text" id="note" placeholder="Ghi chú"
                 class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400">
 
         </div>
