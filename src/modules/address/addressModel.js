@@ -1,6 +1,6 @@
-const { query } = require('express');
+const {query} = require('express');
 const logger = require('../../config/logging')
-const db = require("../../config/db");
+const db = require('../../config/db');
 class addressModel {
     static async addAddress(info) {
         try {
@@ -9,7 +9,8 @@ class addressModel {
             VALUES ($1,$2,$3,$4,$5,$6,$7)
             RETURNING *;
             `;
-            const result = await db.query(query, [info.student_id, info.address_type, info.street_address, info.ward, info.district, info.city, info.country]);
+            const result = await db.query(query, [info.student_id, info.address_type, 
+                info.street_address, info.ward, info.district, info.city, info.country]);
             if (result.rows.length > 0) {
                 logger.info("addAddress executed successfully in studentModel");
                 return result.rows[0];

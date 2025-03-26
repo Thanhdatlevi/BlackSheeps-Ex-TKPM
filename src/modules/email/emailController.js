@@ -12,7 +12,7 @@ class emailController {
         } catch (error) {
             logger.error("Error in emailController:", error.message);
             return res.status(500).json({
-                message: 'Failed to add email of user. Please try again later.'
+                message: "Failed to add email of user. Please try again later."
             });
        }
     }
@@ -26,7 +26,7 @@ class emailController {
                 return res.status(201).json(
                     {
                         success: true,
-                        message: 'Add email succcessfully',
+                        message: "Add email succcessfully",
                         email: addedEmail
                     }
                 );
@@ -34,7 +34,7 @@ class emailController {
                 logger.warn("Failed to add email. Please try again later.");
                 return res.status(500).json(
                     {
-                        message: 'Failed to add email. Please try again later.'
+                        message: "Failed to add email. Please try again later."
                     }
                 );
             }
@@ -42,7 +42,7 @@ class emailController {
         catch (error){
             logger.error("Error in addEmailController:", error.message);
             return res.status(500).json({
-                message: 'Failed to add email of user. Please try again later.'
+                message: "Failed to add email of user. Please try again later."
             });
         }
     }
@@ -56,7 +56,7 @@ class emailController {
                 return res.status(200).json(
                     {
                         success: true,
-                        message: 'Search email succcessfully',
+                        message: "Search email succcessfully",
                         email: searchedEmail
                     }
                 );
@@ -64,7 +64,7 @@ class emailController {
                 logger.warn("Failed to search email. Please try again later.");
                 return res.status(500).json(
                     {
-                        message: 'Failed to search email. Please try again later.'
+                        message: "Failed to search email. Please try again later."
                     }
                 );
             }
@@ -72,7 +72,7 @@ class emailController {
         catch (error){
             logger.error("Error in searchEmailController:", error.message);
             return res.status(500).json({
-                message: 'Failed to search email of user. Please try again later.'
+                message: "Failed to search email of user. Please try again later."
             });
         }
     }
@@ -83,14 +83,12 @@ class emailController {
                 email_domain: req.body.email_domain,
                 email_id: req.body.email_id
             };
-            console.log(email);
             const updatedEmail = await emailModel.updateEmail(email);
-            console.log(updatedEmail);
             if (updatedEmail){
                 return res.status(200).json(
                     {
                         success: true,
-                        message: 'Update email succcessfully',
+                        message: "Update email succcessfully",
                         email: updatedEmail
                     }
                 );
@@ -98,7 +96,7 @@ class emailController {
                 logger.warn("Failed to update email. Please try again later.");
                 return res.status(500).json(
                     {
-                        message: 'Failed to update email. Please try again later.'
+                        message: "Failed to update email. Please try again later."
                     }
                 );
             }
@@ -106,7 +104,7 @@ class emailController {
         catch (error){
             logger.error("Error in updateEmailController:", error.message);
             return res.status(500).json({
-                message: 'Failed to update email of user. Please try again later.'
+                message: "Failed to update email of user. Please try again later."
             });
         }
     }
@@ -118,7 +116,7 @@ class emailController {
                 return res.status(200).json(
                     {
                         success: true,
-                        message: 'Get all emails succcessfully',
+                        message: "Get all emails succcessfully",
                         domains: emails
                     }
                 );
@@ -126,7 +124,7 @@ class emailController {
                 logger.warn("Failed to get all emails. Please try again later.");
                 return res.status(500).json(
                     {
-                        message: 'Failed to get all emails. Please try again later.'
+                        message: "Failed to get all emails. Please try again later."
                     }
                 );
             }
@@ -134,7 +132,7 @@ class emailController {
         catch (error){
             logger.error("Error in getAllEmailsController:", error.message);
             return res.status(500).json({
-                message: 'Failed to get all emails of user. Please try again later.'
+                message: "Failed to get all emails of user. Please try again later."
             });
         }
     }
@@ -142,13 +140,12 @@ class emailController {
         try {
             logger.info("deleteEmail method got called in emailController");
             const email_id = req.body.email_id;
-            
             const deletedEmail = await emailModel.deleteEmail(email_id);
             if (deletedEmail){
                 return res.status(200).json(
                     {
                         success: true,
-                        message: 'Delete email succcessfully',
+                        message: "Delete email succcessfully",
                         email: deletedEmail
                     }
                 );
@@ -156,7 +153,7 @@ class emailController {
                 logger.warn("Failed to delete email. Please try again later.");
                 return res.status(500).json(
                     {
-                        message: 'Failed to delete email. Please try again later.'
+                        message: "Failed to delete email. Please try again later."
                     }
                 );
             }
@@ -164,7 +161,7 @@ class emailController {
         catch (error){
             logger.error("Error in deleteEmailController:", error.message);
             return res.status(500).json({
-                message: 'Failed to delete email of user. Please try again later.'
+                message: "Failed to delete email of user. Please try again later."
             });
         }
     }

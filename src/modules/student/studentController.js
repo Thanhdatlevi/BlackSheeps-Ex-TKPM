@@ -41,7 +41,6 @@ class studentController {
                 address: req.body.permanent_street + ', ' + req.body.permanent_ward + ', ' + req.body.permanent_district + ', ' + req.body.permanent_city,
                 email: req.body.email,
                 phone: req.body.phone,
-                
             }
             const addedStudent = await studentModel.addStudent(newStudent);
             if (addedStudent) {
