@@ -1,14 +1,37 @@
-<nav class="bg-blue-500 p-4 text-white flex justify-around">
-    <a href="/" class="px-4 py-2 rounded-lg hover:bg-blue-600 transition">Thêm sinh viên</a>
-    <a href="/delete" class="px-4 py-2 rounded-lg hover:bg-blue-600 transition">Xóa sinh viên</a>
-    <a href="/update" class="px-4 py-2 rounded-lg hover:bg-blue-600 transition">Cập nhật sinh viên</a>
-    <a href="/search" class="px-4 py-2 rounded-lg hover:bg-blue-600 transition">Tìm kiếm sinh viên</a>
-</nav>
-<nav class="bg-blue-500 p-4 text-white flex justify-around">
-    <a href="/addFacultyPage" class="px-4 py-2 rounded-lg hover:bg-blue-600 transition">Thêm khoa</a>
-    <a href="/updateFacultyPage" class="px-4 py-2 rounded-lg hover:bg-blue-600 transition">Sửa khoa</a>
-    <a href="/addStatusPage" class="px-4 py-2 rounded-lg hover:bg-blue-600 transition">Thêm trạng thái</a>
-    <a href="/updateStatusPage" class="px-4 py-2 rounded-lg hover:bg-blue-600 transition">Sửa trạng thái</a>
-    <a href="/addProgramPage" class="px-4 py-2 rounded-lg hover:bg-blue-600 transition">Thêm chương trình</a>
-    <a href="/updateProgramPage" class="px-4 py-2 rounded-lg hover:bg-blue-600 transition">Sửa chương trình</a>
+<nav class="bg-blue-500 text-white w-64 min-h-screen p-4">
+    <ul class="space-y-2">
+        <li class="menu-item relative">
+            <a href="#" class="block px-4 py-2 rounded-lg hover:bg-blue-600 menu-toggle">Quản lý sinh viên</a>
+            <ul class="submenu hidden ml-4 space-y-2">
+                <li><a href="/" class="block px-4 py-2 rounded-lg hover:bg-blue-600">Thêm sinh viên</a></li>
+                <li><a href="/delete" class="block px-4 py-2 rounded-lg hover:bg-blue-600">Xóa sinh viên</a></li>
+                <li><a href="/update" class="block px-4 py-2 rounded-lg hover:bg-blue-600">Cập nhật sinh viên</a></li>
+                <li><a href="/search" class="block px-4 py-2 rounded-lg hover:bg-blue-600">Tìm kiếm sinh viên</a></li>
+            </ul>
+        </li>
+        <hr>
+        <li class="menu-item relative">
+            <a href="#" class="block px-4 py-2 rounded-lg hover:bg-blue-600 menu-toggle">Quản lý khoa</a>
+            <ul class="submenu hidden ml-4 space-y-2">
+                <li><a href="/addFacultyPage" class="block px-4 py-2 rounded-lg hover:bg-blue-600">Thêm khoa</a></li>
+                <li><a href="/updateFacultyPage" class="block px-4 py-2 rounded-lg hover:bg-blue-600">Thay đổi khoa</a></li>
+            </ul>
+        </li>
+        <hr>
+        <li class="menu-item relative">
+            <a href="#" class="block px-4 py-2 rounded-lg hover:bg-blue-600 menu-toggle">Quản lý tình trạng</a>
+            <ul class="submenu hidden ml-4 space-y-2">
+                <li><a href="/addStatusPage" class="block px-4 py-2 rounded-lg hover:bg-blue-600">Thêm tình trạng</a></li>
+                <li><a href="/updateStatusPage" class="block px-4 py-2 rounded-lg hover:bg-blue-600">Thay đổi tình trạng</a></li>
+            </ul>
+        </li>
+        <hr>
+        <li class="menu-item relative">
+            <a href="#" class="block px-4 py-2 rounded-lg hover:bg-blue-600 menu-toggle">Quản lý chương trình</a>
+            <ul class="submenu hidden ml-4 space-y-2">
+                <li><a href="/addProgramPage" class="block px-4 py-2 rounded-lg hover:bg-blue-600">Thêm chương trình</a></li>
+                <li><a href="/updateProgramPage" class="block px-4 py-2 rounded-lg hover:bg-blue-600">Thay đổi chương trình</a></li>
+            </ul>
+        </li>
+    </ul>
 </nav>

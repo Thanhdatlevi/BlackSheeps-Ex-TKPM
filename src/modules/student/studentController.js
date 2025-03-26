@@ -2,6 +2,11 @@ const studentModel = require('../student/studentModel');
 // TODO: migrating these api controller to address controller
 const addressModel = require('../address/addressModel');
 const indentificationModel = require('../identification/identificationModel');
+
+const facultyModel = require('../faculty/facultyModel');
+const programModel = require('../program/programModel');
+const statusModel = require('../status/statusModel');
+
 const logger = require('../../config/logging')
 
 const fastCsv = require('fast-csv');
@@ -172,7 +177,7 @@ class studentController {
             return res.json(results);
     
         } catch (error) {
-            logger.error("Error in searchStudentController:", error.message);
+            logger.error("Error in searchStudentController:", error);
             return res.status(500).json({
                 message: 'Failed to search students. Please try again later.'
             });
@@ -336,100 +341,108 @@ class studentController {
 
     static async exportData(req, res, fetchData, fileName, format) {
         try {
-            const data = await fetchData();
-
-            if (!Array.isArray(data) || data.length === 0) {
-                logger.warn("Not corressponding student");
+            // Lấy danh sách sinh viên
+            const students = await fetchData();
+            if (!Array.isArray(students) || students.length === 0) {
+                logger.warn(`Không có dữ liệu để xuất: ${fileName}`);
                 return res.status(404).send(`Không có dữ liệu để xuất: ${fileName}`);
             }
+    
+            // Định dạng địa chỉ
+            const formatAddress = (address) =>
+                (address)
+                    ? `${address.street_address|| ''}, ${address.ward || ''}, ${address.district || ''}, ${address.city || ''}, ${address.country || ''}`.trim()
+                    : '';
+    
+            // Lấy thông tin bổ sung từng sinh viên
+            const studentData = [];
+            for (const student of students) {
+                const identifications = await indentificationModel.getIdentification(student.student_id);
+                const permanentAddress = await addressModel.getPermanentAddress(student.student_id);
+                const temporaryAddress = await addressModel.getTemporaryAddress(student.student_id);
+                const mailingAddress = await addressModel.getMailingAddress(student.student_id);
 
+                studentData.push({
+                    ...student,
+                    permanentAddress: formatAddress(permanentAddress),
+                    temporaryAddress: formatAddress(temporaryAddress),
+                    mailingAddress: formatAddress(mailingAddress),
+                    ...identifications
+                });
+            }
+    
+            // Xử lý xuất CSV
             if (format === "csv") {
                 res.setHeader("Content-Disposition", `attachment; filename=${fileName}.csv`);
                 res.setHeader("Content-Type", "text/csv");
                 const csvStream = fastCsv.format({ headers: true });
                 csvStream.pipe(res);
-                data.forEach((row) => csvStream.write(row));
+    
+                studentData.forEach((row) => {
+                    csvStream.write(row);
+                });
+    
                 csvStream.end();
-            } else if (format === "excel") {
+            }
+            // Xử lý xuất Excel
+            else if (format === "excel") {
                 res.setHeader("Content-Disposition", `attachment; filename=${fileName}.xlsx`);
                 res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-
+    
+                const worksheetData = studentData.map(row => (row));
+    
                 const workbook = XLSX.utils.book_new();
-                const worksheet = XLSX.utils.json_to_sheet(data);
-                XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-
+                const worksheet = XLSX.utils.json_to_sheet(worksheetData);
+                XLSX.utils.book_append_sheet(workbook, worksheet, "SinhVien");
+    
                 const buffer = XLSX.write(workbook, { type: "buffer", bookType: "xlsx" });
                 res.end(buffer);
-            } else {
-                logger.warn("Not csv or excel file");
+            }
+            // Định dạng không hợp lệ
+            else {
+                logger.warn("Định dạng không hợp lệ, chỉ hỗ trợ CSV và Excel.");
                 return res.status(400).send("Định dạng không hợp lệ. Chỉ hỗ trợ CSV và Excel.");
             }
         } catch (error) {
-            logger.error("Error in exportDataStudentController:", error.message);
+            logger.error("Lỗi khi xuất dữ liệu:", error.message);
             res.status(500).send("Lỗi xuất dữ liệu");
         }
     }
 
     static async exportStudentListCSV(req, res) {
-        logger.info("exportStudentListCSV method got called in studentController");
+        logger.info("Xuất danh sách sinh viên CSV");
         return studentController.exportData(req, res, studentModel.searchStudent, "students", "csv");
     }
-
+    
     static async exportStudentListExcel(req, res) {
-        logger.info("exportStudentListExcel method got called in studentController");
+        logger.info("Xuất danh sách sinh viên Excel");
         return studentController.exportData(req, res, studentModel.searchStudent, "students", "excel");
-    }
-
-    static async exportIdentificationDocumentsCSV(req, res) {
-        logger.info("exportIdentificationDocumentsCSV method got called in studentController");
-        return studentController.exportData(req, res, studentModel.searchStudentIdentification, "identification_documents", "csv");
-    }
-
-    static async exportIdentificationDocumentsExcel(req, res) {
-        logger.info("exportIdentificationDocumentsExcel method got called in studentController");
-        return studentController.exportData(req, res, studentModel.searchStudentIdentification, "identification_documents", "excel");
     }
 
     static async importCSV(req, res) {
         try {
-            logger.info("importCSV method got called in studentController");
-            if (!req.files || !req.files.studentFile || !req.files.docFile) {
+            logger.info("importCSV method called in studentController");
+
+            if (!req.files || !req.files.studentFile) {
                 return res.status(400).json({ message: "Thiếu file cần thiết." });
             }
 
             const studentFile = req.files.studentFile;
-            const docFile = req.files.docFile;
-
-            // Lưu file tạm thời
             const studentPath = `uploads/${studentFile.name}`;
-            const docPath = `uploads/${docFile.name}`;
             await studentFile.mv(studentPath);
-            await docFile.mv(docPath);
 
             const studentData = [];
-            const docData = [];
 
-            // Đọc file CSV student
             fs.createReadStream(studentPath)
                 .pipe(csv())
                 .on("data", (row) => studentData.push(row))
                 .on("end", async () => {
-                    // Đọc file CSV docFile
-                    fs.createReadStream(docPath)
-                        .pipe(csv())
-                        .on("data", (row) => docData.push(row))
-                        .on("end", async () => {
-                            await studentModel.importStudent(studentData);
-                            await studentModel.importIdentificationDocuments(docData);
-                            res.json({ message: "Import CSV thành công!" });
-
-                            // Xoá file sau khi xử lý xong
-                            fs.unlinkSync(studentPath);
-                            fs.unlinkSync(docPath);
-                        });
+                    await studentController.importStudentData(studentData);
+                    fs.unlinkSync(studentPath);
+                    res.json({ message: "Import CSV thành công!" });
                 });
         } catch (error) {
-            logger.error("Error in importCSVStudentController:", error.message);
+            logger.error("Error in importCSVStudentController:", error);
             res.status(500).json({ message: "Lỗi import CSV" });
         }
     }
@@ -437,40 +450,106 @@ class studentController {
     // Xử lý import Excel
     static async importExcel(req, res) {
         try {
-            logger.info("importExcel method got called in studentController");
-            if (!req.files || !req.files.studentFile || !req.files.docFile) {
+            logger.info("importExcel method called in studentController");
+
+            if (!req.files || !req.files.studentFile) {
                 return res.status(400).json({ message: "Thiếu file cần thiết." });
             }
 
             const studentFile = req.files.studentFile;
-            const docFile = req.files.docFile;
-
-            // Lưu file tạm thời
             const studentPath = `uploads/${studentFile.name}`;
-            const docPath = `uploads/${docFile.name}`;
             await studentFile.mv(studentPath);
-            await docFile.mv(docPath);
 
-            // Đọc file Excel student
             const studentWorkbook = XLSX.readFile(studentPath);
             const studentSheet = studentWorkbook.Sheets[studentWorkbook.SheetNames[0]];
             const studentData = XLSX.utils.sheet_to_json(studentSheet);
 
-            // Đọc file Excel docFile
-            const docWorkbook = XLSX.readFile(docPath);
-            const docSheet = docWorkbook.Sheets[docWorkbook.SheetNames[0]];
-            const docData = XLSX.utils.sheet_to_json(docSheet);
-
-            await studentModel.importStudent(studentData);
-            await studentModel.importIdentificationDocuments(docData);
-            res.json({ message: "Import Excel thành công!" });
-
-            // Xoá file sau khi xử lý xong
+            await studentController.importStudentData(studentData);
             fs.unlinkSync(studentPath);
-            fs.unlinkSync(docPath);
+            res.json({ message: "Import Excel thành công!" });
         } catch (error) {
-            logger.error("Error in importExcelStudentController:", error.message);
+            logger.error("Error in importExcelStudentController:", error);
             res.status(500).json({ message: "Lỗi import Excel" });
+        }
+    }
+
+    // Hàm chung để xử lý dữ liệu sinh viên từ file
+    static async importStudentData(studentData) {
+        
+        //Định dạng ngày để ghi vào db
+        const formatDate = (dateStr) => {
+            if (!dateStr) return null;
+        
+            if (typeof dateStr === "number") {
+                const date = new Date((dateStr - 25569) * 86400000);
+                return date.toISOString().split("T")[0];
+            }
+        
+            if (typeof dateStr === "string") {
+                const date = new Date(dateStr);
+                if (!isNaN(date.getTime())) {
+                    return date.toISOString().split("T")[0];
+                }
+            }
+        
+            return null;
+        };
+
+        for (const student of studentData) {
+            if (typeof student.faculty === "string") {
+                const faculty = await facultyModel.searchFacultyByName(student.faculty);
+                student.faculty = faculty ? faculty.faculty_id : null;
+            }
+            if (typeof student.education_program === "string") {
+                const program = await programModel.searchProgramByName(student.education_program);
+                student.education_program = program ? program.program_id : null;
+            }
+            if (typeof student.student_status === "string") {
+                const status = await statusModel.searchStatusByName(student.student_status);
+                student.student_status = status ? status.status_id : null;
+            }
+            await studentModel.addStudent({
+                mssv: student.student_id,
+                name: student.full_name,
+                dob: formatDate(student.date_of_birth),
+                gender: student.gender,
+                course: student.academic_year,
+                address: student.address,
+                email: student.email,
+                phone: student.phone,
+                faculty: student.faculty,
+                program: student.education_program,
+                status: student.student_status
+            });
+            // Xử lý dữ liệu rỗng thành null
+            student.has_chip = student.has_chip === "true" ? true : student.has_chip === "false" ? false : null;
+            student.issue_country = student.issue_country || null;
+            student.note = student.note || null;
+            student.issue_date = formatDate(student.issue_date);
+            student.expiry_date = formatDate(student.expiry_date);
+        
+            await indentificationModel.addIdentification(student);
+            
+            const addressTypes = [
+                { type: "thuongtru", address: student.permanentAddress },
+                { type: "tamtru", address: student.temporaryAddress },
+                { type: "nhanthu", address: student.mailingAddress }
+            ];
+    
+            for (const addr of addressTypes) {
+                if (addr.address) {
+                    const [street, ward, district, city, country] = addr.address.split(", ");
+                    await addressModel.addAddress({
+                        student_id: student.student_id,
+                        address_type: addr.type,
+                        street_address: street,
+                        ward,
+                        district,
+                        city,
+                        country
+                    });
+                }
+            }
         }
     }
 }

@@ -362,16 +362,14 @@ function closeDialog() {
 
 function submitImport() {
     const studentFile = document.getElementById("studentFile").files[0];
-    const docFile = document.getElementById("docFile").files[0];
 
-    if (!studentFile || !docFile) {
+    if (!studentFile) {
         alert("Vui lòng chọn đủ 2 file.");
         return;
     }
 
     const formData = new FormData();
     formData.append("studentFile", studentFile);
-    formData.append("docFile", docFile);
     fetch(`/import/${importType}`, {
         method: "POST",
         body: formData

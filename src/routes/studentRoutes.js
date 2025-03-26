@@ -22,10 +22,8 @@ router.post('/add-identification', identificationController.addIdentification);
 router.post('/add-address', addressController.addAddress);
 
 router.get('/export/csv', studentController.exportStudentListCSV)
-router.get('/export/csv/identification', studentController.exportIdentificationDocumentsCSV)
 
 router.get('/export/excel', studentController.exportStudentListExcel)
-router.get('/export/excel/identification', studentController.exportIdentificationDocumentsExcel)
 
 router.post("/import/csv", studentController.importCSV);
 router.post("/import/excel", studentController.importExcel);
