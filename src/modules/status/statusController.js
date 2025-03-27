@@ -11,7 +11,7 @@ class statusController {
         } catch (error) {
             logger.error("Error in addStatusController:", error.message);
             return res.status(500).json({
-                message: 'Failed to add status of user. Please try again later.'
+                message: "Failed to add status of user. Please try again later."
             });
         }
     }
@@ -24,7 +24,7 @@ class statusController {
                 return res.status(201).json(
                     {
                         success: true,
-                        message: 'Add status successfully',
+                        message: "Add status successfully",
                         status: addedStatus
                     }
                 );
@@ -32,7 +32,7 @@ class statusController {
                 logger.warn("Failed to add status. Please try again later.");
                 return res.status(500).json(
                     {
-                        message: 'Failed to add status. Please try again later.'
+                        message: "Failed to add status. Please try again later."
                     }
                 );
             }
@@ -40,7 +40,7 @@ class statusController {
         catch (error){
             logger.error("Error in addStatusController:", error.message);
             return res.status(500).json({
-                message: 'Failed to add status of user. Please try again later.'
+                message: "Failed to add status of user. Please try again later."
             });
         }
     }
@@ -55,7 +55,7 @@ class statusController {
         catch (error){
             logger.error("Error in updateStatusController:", error.message);
             return res.status(500).json({
-                message: 'Failed to update status of user. Please try again later.'
+                message: "Failed to update status of user. Please try again later."
             });
         }
     }
@@ -69,7 +69,7 @@ class statusController {
                 logger.info("searchStatusByName executed successfully");
                 return res.status(200).json(
                     {
-                        message: 'Search status successfully',
+                        message: "Search status successfully",
                         status: status
                     }
                 );
@@ -77,7 +77,7 @@ class statusController {
                 logger.warn("Failed to search status. Please try again later.");
                 return res.status(500).json(
                     {
-                        message: 'Failed to search status. Please try again later.'
+                        message: "Failed to search status. Please try again later."
                     }
                 );
             }
@@ -85,7 +85,7 @@ class statusController {
         catch (error){
             logger.error("Error in searchStatusController:", error.message);
             return res.status(500).json({
-                message: 'Failed to search status of user. Please try again later.'
+                message: "Failed to search status of user. Please try again later."
             });
         }
     }
@@ -97,7 +97,7 @@ class statusController {
                 logger.warn("No status found to update");
                 return res.status(404).json({
                     success: false,
-                    message: 'Không tìm thấy trạng thái để cập nhật.'
+                    message: "Không tìm thấy trạng thái để cập nhật."
                 });
             }
             const updatedStatus = await statusModel.updateStatus({
@@ -109,7 +109,7 @@ class statusController {
                 return res.status(200).json(
                     {
                         success: true,
-                        message: 'Cập nhật trạng thái thành công',
+                        message: "Cập nhật trạng thái thành công",
                         status: updatedStatus
                     }
                 );
@@ -117,7 +117,7 @@ class statusController {
                 logger.warn("Failed to update status.");
                 return res.status(500).json(
                     {
-                        message: 'Cập nhật trạng thái thất bại. Vui lòng thử lại sau.'
+                        message: "Cập nhật trạng thái thất bại. Vui lòng thử lại sau."
                     }
                 );
             }
@@ -126,7 +126,7 @@ class statusController {
         catch (error){
             logger.error("Error in updateStatusController:", error.message);
             return res.status(500).json({
-                message: 'Failed to update status of user. Please try again later.'
+                message: "Failed to update status of user. Please try again later."
             });
         }
     }
@@ -136,7 +136,7 @@ class statusController {
             logger.info("getAllStatus executed successfully");
             return res.status(200).json(
                 {
-                    message: 'Get all status successfully',
+                    message: "Get all status successfully",
                     status: status
                 }
             );
@@ -144,7 +144,7 @@ class statusController {
         catch (error){
             logger.error("Error in getAllStatus:", error.message);
             return res.status(500).json({
-                message: 'Failed to get all status of user. Please try again later.'
+                message: "Failed to get all status of user. Please try again later."
             });
         }
     }

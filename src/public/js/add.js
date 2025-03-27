@@ -1,8 +1,19 @@
+let allowedDomains = [];
 document.addEventListener('DOMContentLoaded', function() {
     // Load dữ liệu từ database cho các dropdown
     loadFaculties();
     loadPrograms();
     loadStatuses();
+    loadAllowedDomains();
+
+    // Thêm event listener cho input email
+    const emailInput = document.getElementById('email');
+    emailInput.addEventListener('input', function() {
+        // Clear error when user starts typing
+        const emailError = document.getElementById('emailError');
+        emailError.classList.add('hidden');
+        this.classList.remove('border-red-500');
+    });
 
     // Xử lý khi chọn loại giấy tờ
     const idTypeSelect = document.getElementById('id_type');
@@ -25,11 +36,22 @@ document.addEventListener('DOMContentLoaded', function() {
             clearTemporaryAddress();
         }
     });
-
+     
     // Form validation và submit
     document.getElementById("studentForm").addEventListener("submit", addStudent);
 });
-
+async function loadAllowedDomains() {
+    try {
+        const response = await fetch('/emails');
+        const data = await response.json();
+        
+        if (data.domains) {
+            allowedDomains = data.domains.map(d => d.email_domain);
+        }
+    } catch (error) {
+        console.error('Error loading allowed domains:', error);
+    }
+}
 // Functions to load dropdown data
 async function loadFaculties() {
     try {
@@ -46,7 +68,7 @@ async function loadFaculties() {
             });
         } else {
             // Fallback nếu không lấy được dữ liệu từ API
-            const validDepartments = ["Khoa Luật", "Khoa Tiếng Anh thương mại", "Khoa Tiếng Nhật", "Khoa Tiếng Pháp"];
+            const validDepartments = ['Khoa Luật', 'Khoa Tiếng Anh thương mại', 'Khoa Tiếng Nhật', 'Khoa Tiếng Pháp'];
             validDepartments.forEach(dept => {
                 const option = document.createElement('option');
                 option.value = dept;
@@ -57,7 +79,7 @@ async function loadFaculties() {
     } catch (error) {
         console.error('Error loading faculties:', error);
         // Fallback khi có lỗi
-        const validDepartments = ["Khoa Luật", "Khoa Tiếng Anh thương mại", "Khoa Tiếng Nhật", "Khoa Tiếng Pháp"];
+        const validDepartments = ['Khoa Luật', 'Khoa Tiếng Anh thương mại', 'Khoa Tiếng Nhật', 'Khoa Tiếng Pháp'];
         const facultySelect = document.getElementById('faculty');
         validDepartments.forEach(dept => {
             const option = document.createElement('option');
@@ -73,7 +95,6 @@ async function loadPrograms() {
         const response = await fetch('/programs');
         const data = await response.json();
         const programSelect = document.getElementById('program');
-        console.log("API response:", data);
         if (data.programs && data.programs.length > 0) {
             data.programs.forEach(program => {
                 const option = document.createElement('option');
@@ -85,7 +106,7 @@ async function loadPrograms() {
     } catch (error) {
         console.error('Error loading programs:', error);
         // Fallback với một số chương trình mặc định
-        const defaultPrograms = ["Cử nhân", "Kỹ sư", "Cao học"];
+        const defaultPrograms = ['Đại trà', 'Tiên tiến', 'Chất lượng cao'];
         const programSelect = document.getElementById('program');
         defaultPrograms.forEach(prog => {
             const option = document.createElement('option');
@@ -100,12 +121,9 @@ async function loadStatuses() {
     try {
         const response = await fetch('/statuses');
         const data = await response.json();
-        console.log("API response:", data);
         const statusSelect = document.getElementById('status');
-        
         if (data.status && data.status.length > 0) {
             data.status.forEach(status => {
-                console.log("Status object:", status); // Kiểm tra từng đối tượng status
                 const option = document.createElement('option');
                 option.value = status.status_id;
                 option.textContent = status.status_name;
@@ -113,7 +131,7 @@ async function loadStatuses() {
             });
         } else {
             // Fallback nếu không lấy được dữ liệu từ API
-            const validStatuses = ["Đang học", "Đã tốt nghiệp", "Đã thôi học", "Tạm dừng học"];
+            const validStatuses = ['Đang học', 'Đã tốt nghiệp', 'Đã thôi học', 'Tạm dừng học'];
             validStatuses.forEach(status => {
                 const option = document.createElement('option');
                 option.value = status;
@@ -124,7 +142,7 @@ async function loadStatuses() {
     } catch (error) {
         console.error('Error loading statuses:', error);
         // Fallback khi có lỗi
-        const validStatuses = ["Đang học", "Đã tốt nghiệp", "Đã thôi học", "Tạm dừng học"];
+        const validStatuses = ['Đang học', 'Đã tốt nghiệp', 'Đã thôi học', 'Tạm dừng học'];
         const statusSelect = document.getElementById('status');
         validStatuses.forEach(status => {
             const option = document.createElement('option');
@@ -134,7 +152,38 @@ async function loadStatuses() {
         });
     }
 }
+// Hàm validate email
+function validateEmail() {
+    const emailInput = document.getElementById('email');
+    const email = emailInput.value;
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
+    emailError.classList.add('hidden');
+    emailInput.classList.remove('border-red-500');
+    if (!email) return; // Bỏ qua nếu email trống
+
+    if (!emailRegex.test(email)) {
+        showEmailError('Email không đúng định dạng!');
+        return false;
+    }
+
+    // Kiểm tra domain
+    const domain = email.split('@')[1];
+    if (!allowedDomains.includes(domain)) {
+        showEmailError('Domain email không được phép sử dụng!');
+        return false;
+    }
+
+    return true;
+}
+function showEmailError(message) {
+    const emailInput = document.getElementById('email');
+    const emailError = document.getElementById('emailError');
+    
+    emailError.textContent = message;
+    emailError.classList.remove('hidden');
+    emailInput.classList.add('border-red-500');
+}
 // Toggle ID fields based on selection
 function toggleIdFields(idType) {
     // Hide all ID fields first
@@ -188,42 +237,53 @@ async function addStudent(event) {
     const data = Object.fromEntries(formData.entries());
     
     // Validate email
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (!emailRegex.test(data.email)) {
-        alert("Email không hợp lệ!");
+    if (!validateEmail()) {
         return;
     }
 
     // Validate phone
     const phoneRegex = /(84|0[3|5|7|8|9])+([0-9]{8})\b/;
     if (!phoneRegex.test(data.phone)) {
-        alert("Số điện thoại không hợp lệ!");
+        alert('Số điện thoại không hợp lệ!');
         return;
     }
 
     // Validate faculty
-    const validDepartments = ["Khoa Luật", "Khoa Tiếng Anh thương mại", "Khoa Tiếng Nhật", "Khoa Tiếng Pháp"];
-    if (data.faculty === "") {
-        alert("Vui lòng chọn khoa!");
+    if (data.faculty === '') {
+        alert('Vui lòng chọn khoa!');
         return;
     }
 
     // Validate status
-    const validStatuses = ["Đang học", "Đã tốt nghiệp", "Đã thôi học", "Tạm dừng học"];
-    if (data.status === "") {
-        alert("Vui lòng chọn tình trạng sinh viên!");
+    if (data.status === '') {
+        alert('Vui lòng chọn tình trạng sinh viên!');
         return;
     }
 
     // Validate ID document
-    if (data.id_type === "") {
-        alert("Vui lòng chọn loại giấy tờ tùy thân!");
+    if (data.id_type === '') {
+        alert('Vui lòng chọn loại giấy tờ tùy thân!');
         return;
     }
 
     // Prepare the data for address
     const studentData = {
         ...data,
+        information: {
+            mssv: data.mssv,
+            name: data.name,
+            dob: data.dob,
+            gender: data.gender,
+            faculty: data.faculty,
+            course: data.course,
+            program: data.program,
+            status: data.status,
+            email: data.email,
+            phone: data.phone,
+            address: data.permanent_street + ', ' + data.permanent_ward + ', ' 
+            + data.permanent_district + ', ' + data.permanent_city + ', ' + data.permanent_country
+
+        },
         permanent_address: {
             student_id: data.mssv,
             addresstype: 'thuongtru',
@@ -233,7 +293,9 @@ async function addStudent(event) {
             city: data.permanent_city,
             country: data.permanent_country
         },
-        temporary_address: null
+        temporary_address: null,
+        mailing_address: null,
+        ID_info: null
     };
 
     // Add temporary address if provided
@@ -251,11 +313,18 @@ async function addStudent(event) {
 
     // Set mailing address based on selection
     if (data.mailing_address_type === 'permanent') {
-        studentData.mailing_address = studentData.permanent_address;
+        studentData.mailing_address ={
+            ...studentData.permanent_address,
+            addresstype: 'nhanthu'
+        };
     } else if (data.mailing_address_type === 'temporary') {
-        studentData.mailing_address = studentData.temporary_address || studentData.permanent_address;
+        studentData.mailing_address = {
+            ...studentData.temporary_address || studentData.permanent_address,
+            addresstype: 'nhanthu'
+        }
     } else if (data.mailing_address_type === 'other' && data.mailing_street) {
         studentData.mailing_address = {
+            addresstype: 'nhanthu',
             street: data.mailing_street,
             ward: data.mailing_ward,
             district: data.mailing_district,
@@ -268,7 +337,7 @@ async function addStudent(event) {
 
     // Prepare ID document data
     if (data.id_type === 'cmnd') {
-        studentData.id_document = {
+        studentData.ID_info = {
             student_id: data.mssv,
             type: 'CMND',
             number: data.cmnd_number,
@@ -277,7 +346,7 @@ async function addStudent(event) {
             expiry_date: data.cmnd_expiry_date
         };
     } else if (data.id_type === 'cccd') {
-        studentData.id_document = {
+        studentData.ID_info = {
             student_id: data.mssv,
             type: 'CCCD',
             number: data.cccd_number,
@@ -287,7 +356,7 @@ async function addStudent(event) {
             has_chip: data.cccd_has_chip ? true : false
         };
     } else if (data.id_type === 'passport') {
-        studentData.id_document = {
+        studentData.ID_info = {
             student_id: data.mssv,
             type: 'passport',
             number: data.passport_number,
@@ -300,33 +369,37 @@ async function addStudent(event) {
     }
 
     try {
-        console.log("Gửi form:", studentData);
         const response = await fetch(form.action, {
             method: form.method,
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(studentData)
+            body: JSON.stringify(studentData.information)
         });
 
         const result = await response.json();
-        const responseAdress = await fetch('/add-address', {
+        const responseAddress = await fetch('/add-address', {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(studentData.permanent_address)
         });    
         if (studentData.temporary_address) {
-            const responseAdress = await fetch('/add-address', {
+            const responseAddress = await fetch('/add-address', {
                 method: 'POST',
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(studentData.temporary_address)
             });
         }
+        const responseMailingAddress = await fetch('/add-address', {
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(studentData.mailing_address)
+        });
         const responseIdentification = await fetch('/add-identification', {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(studentData.id_document)
+            body: JSON.stringify(studentData.ID_info)
         });
-        if (response.ok && responseAdress.ok && responseIdentification.ok) {
-            alert(result.message || "Thêm sinh viên thành công!"); 
+        if (response.ok && responseAddress.ok && responseIdentification.ok && responseMailingAddress.ok) {
+            alert(result.message || 'Thêm sinh viên thành công!'); 
             form.reset();
             
             // Reset form và ẩn các trường
@@ -334,37 +407,36 @@ async function addStudent(event) {
             document.getElementById('cccd_fields').classList.add('hidden');
             document.getElementById('passport_fields').classList.add('hidden');
             document.getElementById('other_mailing_address').classList.add('hidden');
-            
-            console.log("Form đã reset");
+            console.log('Form đã reset');
         } else {
-            alert(result.message || "Thêm sinh viên thất bại!"); 
+            alert(result.message || 'Thêm sinh viên thất bại!'); 
         }
     } catch (error) {
-        console.error("Lỗi gửi form:", error);
-        alert("Đã xảy ra lỗi, vui lòng thử lại!");
+        console.error('Lỗi gửi form:', error);
+        alert('Đã xảy ra lỗi, vui lòng thử lại!');
     }
 }
 
-document.getElementById("studentForm").addEventListener("submit", addStudent);
+document.getElementById('studentForm').addEventListener('submit', addStudent);
 
 
 let importType = "";
 
 function openImportDialog(type) {
     importType = type;
-    document.getElementById("importTitle").innerText = `Import ${type.toUpperCase()}`;
-    document.getElementById("importDialog").style.display = "block";
+    document.getElementById('importTitle').innerText = `Import ${type.toUpperCase()}`;
+    document.getElementById('importDialog').style.display = 'block';
 }
 
 function closeDialog() {
-    document.getElementById("importDialog").style.display = "none";
+    document.getElementById('importDialog').style.display = 'none';
 }
 
 function submitImport() {
     const studentFile = document.getElementById("studentFile").files[0];
 
     if (!studentFile) {
-        alert("Vui lòng chọn đủ 2 file.");
+        alert("Vui lòng chọn đủ file.");
         return;
     }
 
@@ -380,7 +452,7 @@ function submitImport() {
         closeDialog();
     })
     .catch(error => {
-        console.error("Lỗi import:", error);
-        alert("Import thất bại.");
+        console.error('Lỗi import:', error);
+        alert('Import thất bại.');
     });
 }

@@ -11,7 +11,7 @@ class programController {
         } catch (error) {
             logger.error("Error in addProgramController:", error.message);
             return res.status(500).json({
-                message: 'Failed to add program of user. PLease try again later'
+                message: "Failed to add program of user. PLease try again later"
             });
         }
     }
@@ -23,7 +23,7 @@ class programController {
                 return res.status(201).json(
                     {
                         success: true,
-                        message: 'Add program successfully',
+                        message: "Add program successfully",
                         program: addedProgram
                     }
                 );
@@ -31,7 +31,7 @@ class programController {
                 logger.warn("Failed to add program. Please try again later.");
                 return res.status(500).json(
                     {
-                        mesage: 'Failed to add program. Please try again later.'
+                        mesage: "Failed to add program. Please try again later."
                     }
                 );
             }
@@ -39,7 +39,7 @@ class programController {
         catch (error){
             logger.error("Error in addProgramController:", error.message);
             return res.status(500).json({
-                message: 'Failed to add program of user. Please try again later.'
+                message: "Failed to add program of user. Please try again later."
             });
         }
     }
@@ -54,7 +54,7 @@ class programController {
         catch (error){
             logger.error("Error in updateProgramController:", error.message);
             return res.status(500).json({
-                message: 'Failed to update program of user. Please try again later.'
+                message: "Failed to update program of user. Please try again later."
             });
         }
     }
@@ -66,7 +66,7 @@ class programController {
                 logger.info("searchProgramByName executed successfully");
                 return res.status(200).json(
                     {
-                        message: 'Search program successfully',
+                        message: "Search program successfully",
                         program: program
                     }
                 );
@@ -74,7 +74,7 @@ class programController {
                 logger.warn("Failed to search program. Please try again later.");
                 return res.status(500).json(
                     {
-                        message: 'Failed to search program. Please try again later.'
+                        message: "Failed to search program. Please try again later."
                     }
                 );
             }
@@ -82,7 +82,7 @@ class programController {
         catch (error){
             logger.error("Error in searchProgramController:", error.message);
             return res.status(500).json({
-                message: 'Failed to search program of user. Please try again later.'
+                message: "Failed to search program of user. Please try again later."
             });
         }
     }
@@ -95,7 +95,7 @@ class programController {
                 return res.status(404).json(
                     {
                         success: false,
-                        message: 'Không tim thấy chương trình để cập nhật'  
+                        message: "Không tim thấy chương trình để cập nhật"  
                     }
                 );
             } 
@@ -109,7 +109,7 @@ class programController {
                 return res.status(200).json(
                     {
                         success: true,
-                        message: 'Cập nhật chương trình thành công',
+                        message: "Cập nhật chương trình thành công",
                         program: updatedProgram
                     }
                 );
@@ -117,7 +117,7 @@ class programController {
                 logger.warn("Failed to update program.");
                 return res.status(500).json(
                     {
-                        message: 'Cập nhật chương trình thất bại'
+                        message: "Cập nhật chương trình thất bại"
                     }
                 );
             }
@@ -125,7 +125,7 @@ class programController {
         catch (error){
             logger.error("Error in updateProgramController:", error.message);
             return res.status(500).json({
-                message: 'Failed to update program of user. Please try again later.'
+                message: "Failed to update program of user. Please try again later."
             });
         }
     }
@@ -135,7 +135,7 @@ class programController {
             const programs = await programModel.getAllPrograms();
             return res.status(200).json(
                 {
-                    message: 'Get all programs successfully',
+                    message: "Get all programs successfully",
                     programs: programs
                 }
             );
@@ -143,7 +143,7 @@ class programController {
         catch (error){
             logger.error("Error in getAllProgramsController:", error.message);
             return res.status(500).json({
-                message: 'Failed to get all programs of user. Please try again later.'
+                message: "Failed to get all programs of user. Please try again later."
             });
         }
     }

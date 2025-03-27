@@ -12,7 +12,7 @@ class facultyController {
         } catch (error) {
             logger.error("Error in addFacultyController:", error.message);
             return res.status(500).json({
-                message: 'Failed to add faculty of user. Please try again later.'
+                message: "Failed to add faculty of user. Please try again later."
             });
         }
    }
@@ -20,13 +20,13 @@ class facultyController {
         try {
             logger.info("addFaculty method got called in facultyController");
             const faculty_name = req.body.name;
-            
             const addedFaculty = await facultyModel.addFaculty(faculty_name);
+            
             if (addedFaculty){
                 return res.status(201).json(
                     {
                         success: true,
-                        message: 'Add faculty succcessfully',
+                        message: "Add faculty succcessfully",
                         faculty: addedFaculty
                     }
                 );
@@ -34,7 +34,7 @@ class facultyController {
                 logger.warn("Failed to add faculty. Please try again later.");
                 return res.status(500).json(
                     {
-                        message: 'Failed to add faculty. Please try again later.'
+                        message: "Failed to add faculty. Please try again later."
                     }
                 );
             }
@@ -42,7 +42,7 @@ class facultyController {
         catch (error){
             logger.error("Error in addFacultyController:", error.message);
             return res.status(500).json({
-                message: 'Failed to add faculty of user. Please try again later.'
+                message: "Failed to add faculty of user. Please try again later."
             });
         }
    }   
@@ -57,7 +57,7 @@ class facultyController {
         catch (error){
             logger.error("Error in updateFacultyController:", error.message);
             return res.status(500).json({
-                message: 'Failed to update faculty of user. Please try again later.'
+                message: "Failed to update faculty of user. Please try again later."
             });
         }
    }
@@ -65,7 +65,7 @@ class facultyController {
         try {
             const faculty_name = req.query.searchName;
             const faculty = await facultyModel.searchFacultyByName(faculty_name);
-            console.log(faculty);
+
             if (faculty){
                 logger.info("searchFacultyByName executed successfully");
                 return res.status(200).json(
@@ -77,7 +77,7 @@ class facultyController {
                 logger.warn("Failed to get faculty. Please try again later.");
                 return res.status(500).json(
                     {
-                        message: 'Failed to get faculty. Please try again later.'
+                        message: "Failed to get faculty. Please try again later."
                     }
                 );
             }
@@ -85,7 +85,7 @@ class facultyController {
         catch (error){
             logger.error("Error in getFacultyController:", error.message);
             return res.status(500).json({
-                message: 'Failed to get faculty of user. Please try again later.'
+                message: "Failed to get faculty of user. Please try again later."
             });
         }  
    }
@@ -98,34 +98,33 @@ class facultyController {
             logger.warn("No faculty found to update");
             return res.status(404).json({
                 success: false,
-                message: 'Không tìm thấy khoa để cập nhật'
+                message: "Không tìm thấy khoa để cập nhật"
             });
         }
-        
+
         const updatedFaculty = await facultyModel.updateFaculty({
             faculty_id: faculty[0].faculty_id, // Lấy ID của khoa tìm được
             faculty_name: facultyName // Tên khoa mới
         });
-
         if (updatedFaculty) {
             logger.info("updateFaculty executed successfully");
             return res.status(200).json({
                 success: true,
-                message: 'Cập nhật khoa thành công',
+                message: "Cập nhật khoa thành công",
                 faculty: updatedFaculty
             });
         } else {
             logger.warn("Failed to update faculty.");
             return res.status(500).json({
                 success: false,
-                message: 'Cập nhật khoa thất bại'
+                message: "Cập nhật khoa thất bại"
             });
         }
     } catch (error) {
         logger.error("Error in updateFacultyController:", error.message);
         return res.status(500).json({
             success: false,
-            message: 'Đã xảy ra lỗi khi cập nhật khoa'
+            message: "Đã xảy ra lỗi khi cập nhật khoa"
         });
     }
 }
@@ -133,9 +132,10 @@ class facultyController {
         try {
             const faculties = await facultyModel.getAllFaculties();
             logger.info("getAllFaculties executed successfully");
+
             return res.status(200).json(
                 {
-                    message: 'Get all faculties successfully',
+                    message: "Get all faculties successfully",
                     faculties: faculties
                 }
             );
@@ -143,7 +143,7 @@ class facultyController {
         catch (error){
             logger.error("Error in getAllFacultiesController:", error.message);
             return res.status(500).json({
-                message: 'Failed to get all faculties of user. Please try again later.'
+                message: "Failed to get all faculties of user. Please try again later."
             });
         }
     }

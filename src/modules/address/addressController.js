@@ -12,24 +12,23 @@ class addressController {
                 city: req.body.city,
                 country: req.body.country
             };
-            console.log(newAddress);
             const addedAddress = await addressModel.addAddress(newAddress);
             if (addedAddress) {
                 return res.status(201).json({
                     success: true,
-                    message: 'Add address succcessfully',
+                    message: "Add address succcessfully",
                     address: addedAddress
                 });
             } else {
                 logger.warn("Failed to add address. Please try again later.");
                 return res.status(500).json({
-                    message: 'Failed to add address. Please try again later.'
+                    message: "Failed to add address. Please try again later."
                 });
             }
         } catch (error) {
             logger.error("Error in addAddressController:", error.message);
             return res.status(500).json({
-                message: 'Failed to add address of user. Please try again later.'
+                message: "Failed to add address of user. Please try again later."
             });
         }
     }
