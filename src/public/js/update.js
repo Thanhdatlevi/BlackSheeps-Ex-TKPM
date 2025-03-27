@@ -1,29 +1,28 @@
 window.grayCheckBox = async () => {
     // TODO: fix this please
-    return undefined;
-    value = document.getElementById('updateCardIDType').value;
+    value = document.getElementById('id_type').value;
     if (value !== "CCCD") {
-        document.getElementById('updateCardChip').disabled = "disabled";
-        document.getElementById('updateCardChip').checked = false;
+        document.getElementById('has_chip').disabled = "disabled";
+        document.getElementById('has_chip').checked = false;
     }
     else {
-        document.getElementById('updateCardChip').removeAttribute('disabled');
+        document.getElementById('has_chip').removeAttribute('disabled');
     }
 
     if (value !== "passport") {
-        document.getElementById('updateCardIssueCountry').disabled = "disabled"
-        document.getElementById('updateCardIssueCountry').classList.add('bg-gray-100')
+        document.getElementById('issue_country').disabled = "disabled"
+        document.getElementById('issue_country').classList.add('bg-gray-100')
     }
     else {
-        document.getElementById('updateCardIssueCountry').removeAttribute('disabled');
-        document.getElementById('updateCardIssueCountry').classList.remove('bg-gray-100')
+        document.getElementById('issue_country').removeAttribute('disabled');
+        document.getElementById('issue_country').classList.remove('bg-gray-100')
     }
 }
 // run once everytime this page load 
 grayCheckBox();
 
-window.queryStudentIdentification = async () => {
-    mssv = document.getElementById('student_id').value;
+window.queryStudentIdentification = async (id) => {
+    mssv = document.getElementById(id).value;
     if (!mssv) {
         alert("Vui lòng nhập MSSV để cập nhật!");
         return;
@@ -37,30 +36,45 @@ window.queryStudentIdentification = async () => {
 
     data = await result.json();
 
-    // console.log(data)
     if (data.length === 0) {
         alert('Giấy tờ tuỳ thân của mã số sinh viên tương ứng không tồn tại!');
         return
     }
 
-    // console.log(data[0]);
-    document.getElementById('updateCardIDType').value = data[0].id_type;
-    document.getElementById('updateCardIDNumber').value = data[0].id_number;
-    document.getElementById('updateCardIssueDate').value = data[0].issue_date;
-    document.getElementById('updateCardIssuePlace').value = data[0].issue_place;
-    document.getElementById('updateCardExpireDate').value = data[0].expiry_date;
-    document.getElementById('updateCardChip').checked = data[0].has_chip;
-    document.getElementById('updateCardIssueCountry').value = data[0].issue_country;
-    document.getElementById('updateCardNotes').value = data[0].note;
-
+    data = data[0]
+    // showStudentInfo('ID_info', data);
+    // document.getElementById('updateCardIDType').value = data[0].id_type;
+    // document.getElementById('updateCardIDNumber').value = data[0].id_number;
+    // document.getElementById('updateCardIssueDate').value = data[0].issue_date;
+    // document.getElementById('updateCardIssuePlace').value = data[0].issue_place;
+    // document.getElementById('updateCardExpireDate').value = data[0].expiry_date;
+    // document.getElementById('updateCardChip').checked = data[0].has_chip;
+    // document.getElementById('updateCardIssueCountry').value = data[0].issue_country;
+    // document.getElementById('updateCardNotes').value = data[0].note;
+    //
     grayCheckBox();
 };
 
-window.showStudentInfo = async (data) => {
-    info_elems = document.getElementsByClassName('student_info');
-    for (i = 0; i < info_elems[0].childNodes.length; i++) {
-        let curr_elem = info_elems[0].childNodes[i]
+window.showStudentInfo = async (type, data) => {
+    info_elems = document.getElementById(type);
+    for (i = 0; i < info_elems.childNodes.length; i++) {
+        let curr_elem = info_elems.childNodes[i]
         let node_name = curr_elem.id
+
+        if (['student_id', 'student_id_2', 'student_id_3'].find((name) => name == node_name) != undefined) {
+            // TODO: after merge
+            // console.log(data['student_id']);
+            continue;
+        }
+
+        if (node_name == undefined || node_name == "") {
+            continue;
+        }
+
+        if (node_name == 'has_chip') {
+            curr_elem.checked = data[node_name];
+            continue;
+        }
         curr_elem.value = data[node_name]
     }
 }
@@ -71,6 +85,7 @@ window.showStudentAddress = async (addrType, data) => {
 
     address = data[elem_name].split(', ');
     let add_elems = document.getElementsByClassName(class_name);
+    console.log(address);
     if (address != undefined && address[0] != "") {
         for (i = 0; i < add_elems.length; i++) {
             add_elems[i].value = address[i];
@@ -84,8 +99,8 @@ window.showStudentAddress = async (addrType, data) => {
 
 }
 
-window.queryStudent = async () => {
-    mssv = document.getElementById('student_id').value;
+window.queryStudent = async (id) => {
+    mssv = document.getElementById(id).value;
     if (!mssv) {
         alert("Vui lòng nhập MSSV để cập nhật!");
         return;
@@ -107,7 +122,10 @@ window.queryStudent = async () => {
     }
 
     // info
-    showStudentInfo(data);
+    showStudentInfo('student_info', data);
+
+    // TODO: why identifications is an array ??
+    showStudentInfo('ID_info', data.identifications[0]);
 
     // perm address
     showStudentAddress('permanent', data);
@@ -115,16 +133,24 @@ window.queryStudent = async () => {
     // temp address
     showStudentAddress('temporary', data);
 
+    // mail address
+    showStudentAddress('mailing', data);
+
 };
 
 window.getInformationFromElements = async (object_group) => {
     let inputs = document.getElementById(object_group)
     inputs = inputs.querySelectorAll(['input', 'select']);
-    
-    let information = { };
 
-    for (i = 0; i < inputs.length; i++){
-        if(inputs[i].value == "" || inputs[i].value == undefined){
+    console.log(inputs);
+
+    let information = {};
+
+    for (i = 0; i < inputs.length; i++) {
+        if (inputs[i].value == "" || inputs[i].value == undefined) {
+            if(['note', 'student_id_3', 'issue_country', 'has_chip'].find((element) => element == inputs[i].id) != undefined){
+                continue;
+            }
             information = undefined;
             break;
         }
@@ -146,7 +172,7 @@ window.updateStudent = async () => {
 
     const sinhvien = {
         info: info,
-        ID_info : ID_info,
+        ID_info: ID_info,
         permanent_address: permanent_address,
         temporary_address: temporary_address,
         mailing_address: mailing_address
