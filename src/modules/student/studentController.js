@@ -2,6 +2,7 @@ const studentModel = require('../student/studentModel');
 const emailModel = require('../email/emailModel');
 // TODO: migrating these api controller to address controller
 const addressModel = require('../address/addressModel');
+const indentificationModel = require('../identification/identificationModel');
 const logger = require('../../config/logging')
 
 const fastCsv = require('fast-csv');
@@ -144,17 +145,40 @@ class studentController {
         try {
             logger.info("searchStudent method got called in studentController");
             let { mssv, name, khoa } = req.query;
-            
-            let listStudent = await studentModel.searchStudent(mssv, name, khoa);
-            return res.json(listStudent);
-
+    
+            // Lấy danh sách sinh viên
+            let students = await studentModel.searchStudent(mssv, name, khoa);
+            if (!students || students.length === 0) {
+                logger.error("No students found");
+                return res.status(404).json({ message: 'No students found' });
+            }
+    
+            // Lấy thông tin giấy tờ và địa chỉ cho từng sinh viên
+            let results = await Promise.all(students.map(async (student) => {
+                let studentID = student.student_id; // Lấy MSSV của từng sinh viên
+    
+                let identification = await indentificationModel.getIdentification(studentID);
+                let permanentAddress = await addressModel.getPermanentAddress(studentID);
+                let temporaryAddress = await addressModel.getTemporaryAddress(studentID);
+                let mailingAddress = await addressModel.getMailingAddress(studentID);
+    
+                return {
+                    information: student,
+                    ID_info: identification || undefined,
+                    permanent_address: permanentAddress || undefined,
+                    temporary_address: temporaryAddress || undefined,
+                    mailing_address: mailingAddress || undefined
+                };
+            }));
+    
+            return res.json(results);
+    
         } catch (error) {
             logger.error("Error in searchStudentController:", error.message);
             return res.status(500).json({
-                message: 'Failed to search student of user. Please try again later.'
+                message: 'Failed to search students. Please try again later.'
             });
         }
-
     }
 
     static async searchStudentIdentification(req, res) {
