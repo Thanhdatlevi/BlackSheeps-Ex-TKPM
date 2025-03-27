@@ -1,5 +1,5 @@
 async function deleteStudent() {
-    const deleteId = document.getElementById("deleteId").value.trim();
+    const deleteId = document.getElementById('deleteId').value.trim();
     
     if (!deleteId) {
         alert("Vui lòng nhập MSSV để xóa!");
@@ -25,7 +25,7 @@ async function deleteStudent() {
 
     if (response.ok) {
         alert(`Xóa thành công!\nTên: ${result.deletedStudent.full_name}\nMSSV: ${result.deletedStudent.student_id}`);
-        document.getElementById("deleteId").value = "";
+        document.getElementById('deleteId').value = '';
     } else {
         alert("Lỗi: " + result.message);
     }

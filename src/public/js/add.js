@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
      
     // Form validation và submit
-    document.getElementById("studentForm").addEventListener("submit", addStudent);
+    document.getElementById('studentForm').addEventListener('submit', addStudent);
 });
 async function loadAllowedDomains() {
     try {
@@ -49,7 +49,7 @@ async function loadAllowedDomains() {
             allowedDomains = data.domains.map(d => d.email_domain);
         }
     } catch (error) {
-        console.error('Error loading allowed domains:', error);
+        console.error("Error loading allowed domains:", error);
     }
 }
 // Functions to load dropdown data
@@ -412,8 +412,8 @@ async function addStudent(event) {
             alert(result.message || 'Thêm sinh viên thất bại!'); 
         }
     } catch (error) {
-        console.error('Lỗi gửi form:', error);
-        alert('Đã xảy ra lỗi, vui lòng thử lại!');
+        console.error("Lỗi gửi form:", error);
+        alert("Đã xảy ra lỗi, vui lòng thử lại!");
     }
 }
 
@@ -433,7 +433,7 @@ function closeDialog() {
 }
 
 function submitImport() {
-    const studentFile = document.getElementById("studentFile").files[0];
+    const studentFile = document.getElementById('studentFile').files[0];
 
     if (!studentFile) {
         alert("Vui lòng chọn đủ file.");
@@ -441,7 +441,7 @@ function submitImport() {
     }
 
     const formData = new FormData();
-    formData.append("studentFile", studentFile);
+    formData.append('studentFile', studentFile);
     fetch(`/import/${importType}`, {
         method: "POST",
         body: formData

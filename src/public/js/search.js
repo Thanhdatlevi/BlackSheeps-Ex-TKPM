@@ -1,7 +1,7 @@
 async function searchStudent() { 
-    const khoa = document.getElementById("facultySelect").value.trim();
-    const mssv = document.getElementById("searchMSSV").value.trim();
-    const name = document.getElementById("searchName").value.trim();
+    const khoa = document.getElementById('facultySelect').value.trim();
+    const mssv = document.getElementById('searchMSSV').value.trim();
+    const name = document.getElementById('searchName').value.trim();
 
     // Kiểm tra nếu không nhập gì thì cảnh báo
     if (!mssv && !name && !khoa) {
@@ -11,16 +11,16 @@ async function searchStudent() {
 
     // Tạo query string chỉ chứa tham số có giá trị
     const query = new URLSearchParams();
-    if (mssv) query.append("mssv", mssv);
-    if (name) query.append("name", name);
-    if (khoa) query.append("khoa", khoa);
+    if (mssv) query.append('mssv', mssv);
+    if (name) query.append('name', name);
+    if (khoa) query.append('khoa', khoa);
 
     try {
         const response = await fetch(`/search-student?${query.toString()}`);
         const result = await response.json();
 
-        const studentList = document.getElementById("studentList");
-        studentList.innerHTML = ""; // Xóa nội dung cũ
+        const studentList = document.getElementById('studentList');
+        studentList.innerHTML = ''; // Xóa nội dung cũ
 
         if (!response.ok || !result || !Array.isArray(result) || result.length === 0) {
             studentList.innerHTML = `<p class='text-center text-gray-500'>Không tìm thấy sinh viên nào.</p>`;
@@ -35,14 +35,14 @@ async function searchStudent() {
             const temporary_address = student.temporary_address;
             const mailing_address = student.mailing_address;
 
-            let formattedDate = "N/A";
+            let formattedDate = 'N/A';
             if (information.date_of_birth) {
                 const tempDate = new Date(information.date_of_birth);
                 formattedDate = tempDate.toISOString().split('T')[0];
             }
 
             // Hiển thị giấy tờ tùy thân (nếu có)
-            let idDocsHTML = "";
+            let idDocsHTML = '';
             if (ID_info) {
                 idDocsHTML = `
                     <p><strong>Giấy tờ tùy thân:</strong></p>
@@ -131,14 +131,14 @@ async function exportStudentList(url, filename) {
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
-    const facultySelect = document.getElementById("facultySelect");
+    const facultySelect = document.getElementById('facultySelect');
 
     try {
         const response = await fetch("/faculties"); // Gọi API để lấy danh sách khoa
         const data = await response.json();
         if (response.ok) {
             data.faculties.forEach(faculty => {
-                const option = document.createElement("option");
+                const option = document.createElement('option');
                 option.value = faculty.faculty_id;
                 option.textContent = faculty.faculty_name;
                 facultySelect.appendChild(option);

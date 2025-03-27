@@ -11,7 +11,7 @@ router.get('/delete', studentController.deletePage);
 router.delete('/delete-student', studentController.deleteStudent);
 
 router.get('/search', studentController.searchPage);
-router.get("/search-student", studentController.searchStudent);
+router.get('/search-student', studentController.searchStudent);
 
 router.get('/update', studentController.updateStudentPage);
 router.get('/updateSearch', studentController.searchStudent);
@@ -27,7 +27,7 @@ router.get('/export/csv', studentController.exportStudentListCSV)
 
 router.get('/export/excel', studentController.exportStudentListExcel)
 
-router.post("/import/csv", studentController.importCSV);
-router.post("/import/excel", studentController.importExcel);
+router.post('/import/csv', studentController.importCSV);
+router.post('/import/excel', studentController.importExcel);
 
 module.exports = router;

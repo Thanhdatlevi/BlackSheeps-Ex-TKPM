@@ -1,7 +1,6 @@
 const facultyModel = require('../faculty/facultyModel');
 const logger = require('../../config/logging')
 class facultyController {
-
     static async addPage(req,res){
         try {
             logger.info("addPage method got called in facultyController");
@@ -16,7 +15,8 @@ class facultyController {
             });
         }
    }
-   static async addFaculty(req,res){
+
+    static async addFaculty(req,res){
         try {
             logger.info("addFaculty method got called in facultyController");
             const faculty_name = req.body.name;
@@ -45,7 +45,8 @@ class facultyController {
                 message: "Failed to add faculty of user. Please try again later."
             });
         }
-   }   
+    }   
+
     static async updatePage(req,res){
         try {
             logger.info("updatePage method got called in FacultyController");
@@ -60,8 +61,9 @@ class facultyController {
                 message: "Failed to update faculty of user. Please try again later."
             });
         }
-   }
-   static async searchFacultyByName(req,res){
+    }
+
+    static async searchFacultyByName(req,res){
         try {
             const faculty_name = req.query.searchName;
             const faculty = await facultyModel.searchFacultyByName(faculty_name);
@@ -88,46 +90,48 @@ class facultyController {
                 message: "Failed to get faculty of user. Please try again later."
             });
         }  
-   }
-   static async updateFaculty(req, res) {
-    try {
-        const { searchName, facultyName } = req.body; // Lấy dữ liệu từ request body
-        const faculty = await facultyModel.searchFacultyByName(searchName); // Tìm khoa theo tên cũ
+    }
 
-        if (!faculty || faculty.length === 0) {
-            logger.warn("No faculty found to update");
-            return res.status(404).json({
-                success: false,
-                message: "Không tìm thấy khoa để cập nhật"
-            });
-        }
+    static async updateFaculty(req, res) {
+        try {
+            const { searchName, facultyName } = req.body; // Lấy dữ liệu từ request body
+            const faculty = await facultyModel.searchFacultyByName(searchName); // Tìm khoa theo tên cũ
 
-        const updatedFaculty = await facultyModel.updateFaculty({
-            faculty_id: faculty[0].faculty_id, // Lấy ID của khoa tìm được
-            faculty_name: facultyName // Tên khoa mới
-        });
-        if (updatedFaculty) {
-            logger.info("updateFaculty executed successfully");
-            return res.status(200).json({
-                success: true,
-                message: "Cập nhật khoa thành công",
-                faculty: updatedFaculty
+            if (!faculty || faculty.length === 0) {
+                logger.warn("No faculty found to update");
+                return res.status(404).json({
+                    success: false,
+                    message: "Không tìm thấy khoa để cập nhật"
+                });
+            }
+
+            const updatedFaculty = await facultyModel.updateFaculty({
+                faculty_id: faculty[0].faculty_id, // Lấy ID của khoa tìm được
+                faculty_name: facultyName // Tên khoa mới
             });
-        } else {
-            logger.warn("Failed to update faculty.");
+            if (updatedFaculty) {
+                logger.info("updateFaculty executed successfully");
+                return res.status(200).json({
+                    success: true,
+                    message: "Cập nhật khoa thành công",
+                    faculty: updatedFaculty
+                });
+            } else {
+                logger.warn("Failed to update faculty.");
+                return res.status(500).json({
+                    success: false,
+                    message: "Cập nhật khoa thất bại"
+                });
+            }
+        } catch (error) {
+            logger.error("Error in updateFacultyController:", error.message);
             return res.status(500).json({
                 success: false,
-                message: "Cập nhật khoa thất bại"
+                message: "Đã xảy ra lỗi khi cập nhật khoa"
             });
         }
-    } catch (error) {
-        logger.error("Error in updateFacultyController:", error.message);
-        return res.status(500).json({
-            success: false,
-            message: "Đã xảy ra lỗi khi cập nhật khoa"
-        });
     }
-}
+    
     static async getAllFaculties(req,res){
         try {
             const faculties = await facultyModel.getAllFaculties();

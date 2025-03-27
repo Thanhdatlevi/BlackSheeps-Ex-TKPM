@@ -15,6 +15,7 @@ class statusController {
             });
         }
     }
+
     static async addStatus(req,res){
         try {
             logger.info("addStatus method got called in statusController");
@@ -44,6 +45,7 @@ class statusController {
             });
         }
     }
+
     static async updatePage(req,res){
         try {
             logger.info("updatePage method got called in statusController");
@@ -59,6 +61,7 @@ class statusController {
             });
         }
     }
+
     static async searchStatusByName(req,res){
         try {
             const status_name = req.query.searchName;
@@ -89,6 +92,7 @@ class statusController {
             });
         }
     }
+
     static async updateStatus(req,res){
         try {
             const {searchName, statusName} = req.body;
@@ -130,6 +134,7 @@ class statusController {
             });
         }
     }
+    
     static async getAllStatus(req,res){
         try {
             const status = await statusModel.getAllStatus();

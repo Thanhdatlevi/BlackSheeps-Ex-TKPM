@@ -191,3 +191,49 @@ Chọn vào ô Sửa tương ứng với cái mình muốn sửa. Sau đó, nh�
 Ghi lại thông tin các hoạt động diễn ra trong trang web.
 
 ![Screenshot 2025-03-21 105910](https://github.com/user-attachments/assets/236787dd-640a-46a3-aed1-6db462b4f54b)
+
+# Hướng dẫn sử dụng Version 3.0
+
+## Hướng dẫn cài đặt
+```
+
+Bước 1: Cài đặt NodeJS và npm
+
+Bước 2: Clone repo về máy
+
+Bước 3: Chạy npm install để cài đặt node-modules
+
+Bước 4: Tạo file .env và thêm các nội dung có note bên bài txt đã nộp
+```
+## Chạy chương trình
+
+Trong terminal  
+Nếu là môi trường sản phẩm chạy: npm start  
+Nếu là môi trường developer chạy: npm run start:dev 
+
+## Hướng dẫn sử dụng web
+### MSSV phải là duy nhất:
+Khi người dùng thêm sinh viên mới vào danh sách, nếu mssv đã có trong database thì sẽ hiện thông báo đã tồn tại mã số sinh viên, hãy chọn mssv khác.
+
+  
+### Email phải thuộc một tên miền nhất định và có thể cấu hình động (configurable):  
+Khi người dùng thêm sinh viên vào dánh sách mới, sẽ kiểm tra xem email có đuôi dịnh dạng đúng không.
+Có thêm chức năng thêm, xóa, sửa đuôi email cho phép.
+
+
+  
+### Số điện thoại phải có định dạng hợp lệ theo quốc gia (configurable) :
+Khi người dùng thêm sinh viên vào dánh sách mới, sẽ kiểm tra xem điện thoại có đúng định dạng của Việt Nam không nếu không thì hiện thống báo số điện thoại không hợp lệ
+  
+
+### Tình trạng sinh viên chỉ có thể thay đổi theo một số quy tắc (configurable):
+Khi người dùng cập nhật sinh viên, sẽ kiểm tra xem trạng thái có đổi từ đã tốt nghiệp không. Vì khi đã tốt nghiệp sẽ không đổi được sang các trạng thái khác.
+
+  
+### Báo cáo The Broken Window Theory & The Boy Scout Rule:
+File báo cáo nằm trong folder report
+
+
+### Báo cáo code review and refactor:
+File báo cáo nằm trong folder report
+

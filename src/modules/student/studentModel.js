@@ -4,7 +4,6 @@ const logger = require("../../config/logging");
 const { updateStudent } = require("./studentController");
 
 class studentModel {
-
     static async searchStudent(mssv, name, khoa) {
         try {
             const query = `
@@ -46,7 +45,6 @@ class studentModel {
         }
     }
     
-
     static async searchStudentIdentification(mssv) {
         try {
             const query = `
@@ -138,7 +136,6 @@ class studentModel {
                     student.student_status
                 ]
             );
-
 
             student.education_program = IDResult.rows[0].program_id;
             student.faculty = IDResult.rows[0].faculty_id;

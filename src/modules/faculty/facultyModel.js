@@ -24,6 +24,7 @@ class facultyModel {
             throw new Error(error.message);
         }
     }
+
     static async searchFacultyByName(faculty_name){
         try {
             const query = `
@@ -35,6 +36,7 @@ class facultyModel {
             if (result.rows.length > 0){
                 logger.info("searchFacultyByName executed successfully in facultyModel");
                 logger.info(result.rows);
+                console.log(result.rows)
                 return result.rows;
             }
             return null;
@@ -44,6 +46,7 @@ class facultyModel {
             throw new Error(error.message);
         }
     }
+
     static async updateFaculty(faculty){
         try {
             const query = `
@@ -65,6 +68,7 @@ class facultyModel {
             throw new Error(error.message);
         }
     }
+    
     static async getAllFaculties(){
         try {
             const query = `

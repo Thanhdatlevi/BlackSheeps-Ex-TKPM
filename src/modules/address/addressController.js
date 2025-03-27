@@ -49,13 +49,13 @@ class addressController {
                 let result3 = await addressModel.updateAddress(address.mailing_address)
             }
             return res.status(200).json({
-                message: 'update address successfully'
+                message: "update address successfully"
             })
         }
         catch (error) {
             logger.error("Error in updateStudentController address:", error);
             return res.status(500).json({
-                message: 'Failed to update student of user 1. Please try again later.'
+                message: "Failed to update student of user 1. Please try again later."
             });
         }
     }

@@ -15,7 +15,6 @@ const XLSX = require("xlsx");
 const csv = require("csv-parser");
 const fs = require("fs");
 class studentController {
-
     static async addPage(req, res) {
         try {
             logger.info("addPage method got called in studentController");
@@ -28,10 +27,11 @@ class studentController {
         } catch (error) {
             logger.error("Error in addStudentController:", error.message);
             return res.status(500).json({
-                message: 'Failed to add student. Please try again later.'
+                message: "Failed to add student. Please try again later."
             });
         }
     }
+
     static async addStudent(req, res) {
         try {
             logger.info("addStudent method got called in studentController");
@@ -51,38 +51,38 @@ class studentController {
             const addedStudent = await studentModel.addStudent(newStudent);
             if (addedStudent) {
                 return res.status(201).json({
-                    message: 'Student added successfully',
+                    message: "Student added successfully",
                     student: addedStudent
                 });
             } else {
                 return res.status(500).json({
-                    message: 'Failed to add student. Please try again later.'
+                    message: "Failed to add student. Please try again later."
                 });
             }
         } catch (error) {
-            if (error.message.includes('duplicate key value violates unique constraint')) {
+            if (error.message.includes("duplicate key value violates unique constraint")) {
                 if (error.message.includes('students_pkey')) {
                     logger.warn("Error existing studentID when adding student");
                     return res.status(400).json({
-                        message: 'Student ID already exists. Please use a different ID.'
+                        message: "Mã số sinh viên đã xuất hiện. Hãy dùng mssv khác"
                     });
                 }
                 else if (error.message.includes('students_email_key')) {
                     logger.warn("Error existing student email when adding student");
                     return res.status(400).json({
-                        message: 'Email already exists. Please use a different email.'
+                        message: "Email already exists. Please use a different email."
                     });
                 }
                 else if (error.message.includes('students_phone_key')) {
                     logger.warn("Error existing student phone number when adding student");
                     return res.status(400).json({
-                        message: 'Phone number already exists. Please use a different phone number.'
+                        message: "Phone number already exists. Please use a different phone number."
                     });
                 }
             }
             logger.error("Error in addStudentController:", error.message);
             return res.status(500).json({
-                message: 'Failed to add student. Please try again later.'
+                message: "Failed to add student. Please try again later."
             });
         }
 
@@ -98,7 +98,7 @@ class studentController {
         } catch (error) {
             logger.error("Error in deleteStudentController:", error.message);
             return res.status(500).json({
-                message: 'Failed to delete student of user. Please try again later.'
+                message: "Failed to delete student of user. Please try again later."
             });
         }
 
@@ -123,7 +123,7 @@ class studentController {
         } catch (error) {
             logger.error("Error in deleteStudentController:", error.message);
             return res.status(500).json({
-                message: 'Failed to delete student of user. Please try again later.'
+                message: "Failed to delete student of user. Please try again later."
             });
         }
 
@@ -140,7 +140,7 @@ class studentController {
         } catch (error) {
             logger.error("Error in searchStudentController:", error.message);
             return res.status(500).json({
-                message: 'Failed to search student of user. Please try again later.'
+                message: "Failed to search student of user. Please try again later."
             });
         }
 
@@ -181,13 +181,11 @@ class studentController {
         } catch (error) {
             logger.error("Error in searchStudentController:", error);
             return res.status(500).json({
-                message: 'Failed to search students. Please try again later.'
+                message: "Failed to search students. Please try again later."
             });
         }
     }
 
-
-    //
     static async updateStudentPage(req, res) {
         try {
             logger.info("updateStudentPage method got called in studentController");
@@ -198,7 +196,7 @@ class studentController {
         catch (error) {
             logger.error("Error in updateStudent:", error.message);
             return res.status(500).json({
-                message: 'Student non existed.'
+                message: "Student non existed."
             });
         }
     }
@@ -214,7 +212,7 @@ class studentController {
             if (newStudent[property] == undefined) {
                 logger.warn("Not enough parameters when updating student");
                 return res.status(400).json({
-                    error: 'All information fields are required'
+                    error: "All information fields are required"
                 });
             }
         }
@@ -225,7 +223,7 @@ class studentController {
         catch (error) {
             logger.error("Error in updateStudentController:", error.message);
             return res.status(500).json({
-                message: 'Failed to update student of user 2. Please try again later.'
+                message: error.message
             });
         }
 
@@ -375,12 +373,12 @@ class studentController {
         const formatDate = (dateStr) => {
             if (!dateStr) return null;
 
-            if (typeof dateStr === "number") {
+            if (typeof dateStr === 'number') {
                 const date = new Date((dateStr - 25569) * 86400000);
                 return date.toISOString().split("T")[0];
             }
 
-            if (typeof dateStr === "string") {
+            if (typeof dateStr === 'string') {
                 const date = new Date(dateStr);
                 if (!isNaN(date.getTime())) {
                     return date.toISOString().split("T")[0];
@@ -391,15 +389,17 @@ class studentController {
         };
 
         for (const student of studentData) {
-            if (typeof student.faculty === "string") {
+            console.log(student.faculty, 394)
+            if (typeof student.faculty === 'string') {
                 const faculty = await facultyModel.searchFacultyByName(student.faculty);
-                student.faculty = faculty ? faculty.faculty_id : null;
+                console.log(faculty[0], 398)
+                student.faculty = faculty ? faculty[0].faculty_id : null;
             }
-            if (typeof student.education_program === "string") {
+            if (typeof student.education_program === 'string') {
                 const program = await programModel.searchProgramByName(student.education_program);
                 student.education_program = program ? program.program_id : null;
             }
-            if (typeof student.student_status === "string") {
+            if (typeof student.student_status === 'string') {
                 const status = await statusModel.searchStatusByName(student.student_status);
                 student.student_status = status ? status.status_id : null;
             }
@@ -417,7 +417,7 @@ class studentController {
                 status: student.student_status
             });
             // Xử lý dữ liệu rỗng thành null
-            student.has_chip = student.has_chip === "true" ? true : student.has_chip === "false" ? false : null;
+            student.has_chip = student.has_chip === 'true' ? true : student.has_chip === 'false' ? false : null;
             student.issue_country = student.issue_country || null;
             student.note = student.note || null;
             student.issue_date = formatDate(student.issue_date);
@@ -426,9 +426,9 @@ class studentController {
             await indentificationModel.addIdentification(student);
 
             const addressTypes = [
-                { type: "thuongtru", address: student.permanentAddress },
-                { type: "tamtru", address: student.temporaryAddress },
-                { type: "nhanthu", address: student.mailingAddress }
+                { type: 'thuongtru', address: student.permanentAddress },
+                { type: 'tamtru', address: student.temporaryAddress },
+                { type: 'nhanthu', address: student.mailingAddress }
             ];
 
             for (const addr of addressTypes) {

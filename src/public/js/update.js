@@ -169,8 +169,10 @@ window.updateStudent = async () => {
         body: JSON.stringify(information)
     })
 
-    if (response.status != 200) {
-        alert("Update student failed");
+    if (!response.ok) { 
+        // Lấy chi tiết lỗi từ API nếu có
+        const errorData = await response.json();
+        alert(errorData.message);
     }
     else {
         alert("Update student successfully");

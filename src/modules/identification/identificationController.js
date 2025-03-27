@@ -62,7 +62,7 @@ class identificationController{
             if (!listStudent || listStudent.length === 0) {
                 logger.warn("Not corressponding student with specified ID");
                 return res.status(404).json({
-                    message: 'No student with corressponding id'
+                    message: "No student with corressponding id"
                 })
             }
 
@@ -70,7 +70,7 @@ class identificationController{
             if (!listStudentID || listStudentID.length === 0) {
                 logger.warn("Not corressponding student identification details with specified ID");
                 return res.status(404).json({
-                    message: 'No student with corressponding id'
+                    message: "No student with corressponding id"
                 })
             }
 
@@ -83,7 +83,7 @@ class identificationController{
         } catch (error) {
             logger.error("Error in update identification in StudentController:", error);
             return res.status(500).json({
-                message: 'Failed to search while updating student of user. Please try again later.'
+                message: "Failed to search while updating student of user. Please try again later."
             });
         }
 
@@ -101,7 +101,7 @@ class identificationController{
         } catch (error) {
             logger.error("Error in searchStudentController:", error.message);
             return res.status(500).json({
-                message: 'Failed to search student of user. Please try again later.'
+                message: "Failed to search student of user. Please try again later."
             });
         }
     }

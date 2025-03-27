@@ -24,6 +24,7 @@ class programModel{
             throw new Error(error.message);
         }
     }
+
     static async searchProgramByName(program_name){
         try {
             const query = `
@@ -45,6 +46,7 @@ class programModel{
             throw new Error(error.message);
         }
     }
+
     static async updateProgram(program){
         try {
             const query = `
@@ -66,6 +68,7 @@ class programModel{
             throw new Error(error.message);
         }
     }
+    
     static async getAllPrograms(){
         try {
             const query = `

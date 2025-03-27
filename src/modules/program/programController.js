@@ -15,6 +15,7 @@ class programController {
             });
         }
     }
+    
     static async addProgram(req, res){
         try {
             const program_name = req.body.name
@@ -43,6 +44,7 @@ class programController {
             });
         }
     }
+
     static async updatePage(req,res){
         try {
             logger.info("updatePage method got called in ProgramController");
@@ -58,6 +60,7 @@ class programController {
             });
         }
     }
+
     static async searchProgramByName(req,res){
         try {
             const program_name = req.query.searchName;
@@ -86,6 +89,7 @@ class programController {
             });
         }
     }
+
     static async updateProgram(req,res){
         try {
             const {searchName, programName} = req.body;
@@ -129,6 +133,7 @@ class programController {
             });
         }
     }
+    
     static async getAllPrograms(req,res){
         try {
             logger.info("getAllPrograms executed successfully");

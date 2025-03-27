@@ -24,6 +24,7 @@ class statusModel {
             throw new Error(error.message);
         }
     }
+
     static async searchStatusByName(status_name){
         try {
             const query = `
@@ -44,6 +45,7 @@ class statusModel {
             throw new Error(error.message);
         }
     }
+
     static async updateStatus(status){
         try {
             const query = `
@@ -66,6 +68,7 @@ class statusModel {
             throw new Error(error.mesage);
         }
     }
+    
     static async getAllStatus(){
         try {
             const query = `
