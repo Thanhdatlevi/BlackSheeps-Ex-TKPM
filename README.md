@@ -214,26 +214,29 @@ Nếu là môi trường developer chạy: npm run start:dev
 ## Hướng dẫn sử dụng web
 ### MSSV phải là duy nhất:
 Khi người dùng thêm sinh viên mới vào danh sách, nếu mssv đã có trong database thì sẽ hiện thông báo đã tồn tại mã số sinh viên, hãy chọn mssv khác.
-
+   
+![Screenshot 2025-03-28 010102](https://github.com/user-attachments/assets/de15cf5d-cfee-4df4-a273-df24260d3035)  
   
 ### Email phải thuộc một tên miền nhất định và có thể cấu hình động (configurable):  
 Khi người dùng thêm sinh viên vào dánh sách mới, sẽ kiểm tra xem email có đuôi dịnh dạng đúng không.
 Có thêm chức năng thêm, xóa, sửa đuôi email cho phép.
-
-
+  
+![Screenshot 2025-03-28 010009](https://github.com/user-attachments/assets/bddf8978-2a10-496d-a7b0-42d850aee28a)  
   
 ### Số điện thoại phải có định dạng hợp lệ theo quốc gia (configurable) :
 Khi người dùng thêm sinh viên vào dánh sách mới, sẽ kiểm tra xem điện thoại có đúng định dạng của Việt Nam không nếu không thì hiện thống báo số điện thoại không hợp lệ
   
-
-### Tình trạng sinh viên chỉ có thể thay đổi theo một số quy tắc (configurable):
-Khi người dùng cập nhật sinh viên, sẽ kiểm tra xem trạng thái có đổi từ đã tốt nghiệp không. Vì khi đã tốt nghiệp sẽ không đổi được sang các trạng thái khác.
+![Screenshot 2025-03-28 010037](https://github.com/user-attachments/assets/cdd700b2-5161-4176-926e-51a0e198d5a5)  
 
   
-### Báo cáo The Broken Window Theory & The Boy Scout Rule:
+### Tình trạng sinh viên chỉ có thể thay đổi theo một số quy tắc (configurable):
+Khi người dùng cập nhật sinh viên, sẽ kiểm tra xem trạng thái có đổi từ đã tốt nghiệp không. Vì khi đã tốt nghiệp sẽ không đổi được sang các trạng thái khác.
+  
+![Screenshot 2025-03-28 011126](https://github.com/user-attachments/assets/67226bf4-6b10-4277-a231-e418bd4b9ad8)  
+  
+### Báo cáo The Broken Window Theory & The Boy Scout Rule, code review and refactor:
 File báo cáo nằm trong folder report
-
-
-### Báo cáo code review and refactor:
-File báo cáo nằm trong folder report
+   
+![Screenshot 2025-03-28 012039](https://github.com/user-attachments/assets/3a5f22c6-1f47-4a36-9f30-0b720d175f27)   
+   
 
