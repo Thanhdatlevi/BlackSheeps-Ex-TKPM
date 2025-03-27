@@ -42,16 +42,6 @@ window.queryStudentIdentification = async (id) => {
     }
 
     data = data[0]
-    // showStudentInfo('ID_info', data);
-    // document.getElementById('updateCardIDType').value = data[0].id_type;
-    // document.getElementById('updateCardIDNumber').value = data[0].id_number;
-    // document.getElementById('updateCardIssueDate').value = data[0].issue_date;
-    // document.getElementById('updateCardIssuePlace').value = data[0].issue_place;
-    // document.getElementById('updateCardExpireDate').value = data[0].expiry_date;
-    // document.getElementById('updateCardChip').checked = data[0].has_chip;
-    // document.getElementById('updateCardIssueCountry').value = data[0].issue_country;
-    // document.getElementById('updateCardNotes').value = data[0].note;
-    //
     grayCheckBox();
 };
 
@@ -62,8 +52,7 @@ window.showStudentInfo = async (type, data) => {
         let node_name = curr_elem.id
 
         if (['student_id', 'student_id_2', 'student_id_3'].find((name) => name == node_name) != undefined) {
-            // TODO: after merge
-            // console.log(data['student_id']);
+            curr_elem.value = data['student_id'];
             continue;
         }
 
@@ -77,26 +66,6 @@ window.showStudentInfo = async (type, data) => {
         }
         curr_elem.value = data[node_name]
     }
-}
-
-window.showStudentAddress = async (addrType, data) => {
-    elem_name = addrType + '_address';
-    class_name = addrType + '_address_cl';
-
-    address = data[elem_name].split(', ');
-    let add_elems = document.getElementsByClassName(class_name);
-    console.log(address);
-    if (address != undefined && address[0] != "") {
-        for (i = 0; i < add_elems.length; i++) {
-            add_elems[i].value = address[i];
-        }
-    }
-    else {
-        for (i = 0; i < add_elems.length; i++) {
-            add_elems[i].value = "";
-        }
-    }
-
 }
 
 window.queryStudent = async (id) => {
@@ -122,96 +91,82 @@ window.queryStudent = async (id) => {
     }
 
     // info
-    showStudentInfo('student_info', data);
+    showStudentInfo('student_info', data.information);
 
     // TODO: why identifications is an array ??
-    showStudentInfo('ID_info', data.identifications[0]);
-
-    // perm address
-    showStudentAddress('permanent', data);
-
-    // temp address
-    showStudentAddress('temporary', data);
-
-    // mail address
-    showStudentAddress('mailing', data);
-
+    showStudentInfo('ID_info', data.ID_info);
+    showStudentInfo('address_info', data.ID_info);
+    showStudentInfo('permanent_address_info', data.permanent_address);
+    showStudentInfo('temporary_address_info', data.temporary_address);
+    showStudentInfo('mailing_address_info', data.mailing_address);
 };
 
 window.getInformationFromElements = async (object_group) => {
     let inputs = document.getElementById(object_group)
     inputs = inputs.querySelectorAll(['input', 'select']);
 
-    console.log(inputs);
-
     let information = {};
+
+    if (['permanent_address_info',
+        'temporary_address_info',
+        'mailing_address_info'].find((element) => element == object_group)
+        != undefined) {
+        information['student_id'] = document.getElementById('student_id_2').value;
+    }
 
     for (i = 0; i < inputs.length; i++) {
         if (inputs[i].value == "" || inputs[i].value == undefined) {
-            if(['note', 'student_id_3', 'issue_country', 'has_chip'].find((element) => element == inputs[i].id) != undefined){
+            // prevent id from undefined with non required info
+            if (['note', 'issue_country', 'has_chip'].find((element) => element == inputs[i].id) != undefined) {
                 continue;
             }
             information = undefined;
             break;
         }
-        information[inputs[i].getAttribute('id')] = inputs[i].value;
+        if (['student_id_3'].find((element) => element == inputs[i].id) != undefined) {
+            information['student_id'] = inputs[i].value;
+            continue;
+        }
+        information[inputs[i].id] = inputs[i].value;
     }
 
     return information;
 }
 window.updateStudent = async () => {
-    const info = await getInformationFromElements("student_info");
-
-    const ID_info = await getInformationFromElements('ID_info');
-
-    const permanent_address = await getInformationFromElements('permanent_address_info');
-
-    const temporary_address = await getInformationFromElements('temporary_address_info');
-
-    const mailing_address = await getInformationFromElements('mailing_address_info');
-
-    const sinhvien = {
-        info: info,
-        ID_info: ID_info,
-        permanent_address: permanent_address,
-        temporary_address: temporary_address,
-        mailing_address: mailing_address
-    }
+    const information = await getInformationFromElements("student_info");
 
     // TODO: fix backend controller before deploy this 
-    console.log(sinhvien);
-
-    return undefined;
+    // return undefined;
 
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (!emailRegex.test(sinhvien.email)) {
+    if (!emailRegex.test(information.email)) {
         alert("Email không hợp lệ!");
         return;
     }
     // Kiểm tra sdt có đúng định dạng không
     const phoneRegex = /(84|0[3|5|7|8|9])+([0-9]{8})\b/;
-    if (!phoneRegex.test(sinhvien.phone)) {
+    if (!phoneRegex.test(information.phone)) {
         alert("Số điện thoại không hợp lệ!");
         return;
     }
 
     const validDepartments = ["Khoa Luật", "Khoa Tiếng Anh thương mại", "Khoa Tiếng Nhật", "Khoa Tiếng Pháp"];
-    if (!validDepartments.includes(sinhvien.faculty)) {
+    if (!validDepartments.includes(information.faculty)) {
         alert("Khoa không hợp lệ! Vui lòng chọn một trong các khoa: " + validDepartments.join(", "));
         return;
     }
 
     const validStatuses = ["Đang học", "Đã tốt nghiệp", "Đã thôi học", "Tạm dừng học"];
-    if (!validStatuses.includes(sinhvien.status)) {
+    if (!validStatuses.includes(information.student_status)) {
         alert("Tình trạng sinh viên không hợp lệ! Vui lòng chọn một trong các tình trạng: " + validStatuses.join(", "));
         return;
     }
 
     // console.log(JSON.stringify(sinhvien));
-    const response = await fetch(`/update`, {
+    const response = await fetch(`/update/student`, {
         method: 'PUT',
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(sinhvien)
+        body: JSON.stringify(information)
     })
 
     if (response.status != 200) {
@@ -221,3 +176,53 @@ window.updateStudent = async () => {
         alert("Update student successfully");
     }
 };
+
+window.updateIdentification = async () => {
+    const ID_info = await getInformationFromElements('ID_info');
+
+    const response = await fetch(`/update/identification`, {
+        method: 'PUT',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(ID_info)
+    })
+
+    if (response.status != 200) {
+        alert("Update student identification failed");
+    }
+    else {
+        alert("Update student identification successfully");
+    }
+};
+
+window.updateAddress = async () => {
+    const permanent_address = await getInformationFromElements('permanent_address_info');
+    permanent_address['address_type'] = 'thuongtru'
+
+    const temporary_address = await getInformationFromElements('temporary_address_info');
+    temporary_address['address_type'] = 'tamtru'
+
+    const mailing_address = await getInformationFromElements('mailing_address_info');
+    mailing_address['address_type'] = 'nhanthu'
+
+    address = {
+        permanent_address: permanent_address,
+        temporary_address: temporary_address,
+        mailing_address: mailing_address
+    }
+
+    const ID_info = await getInformationFromElements('ID_info');
+
+    const response = await fetch(`/update/address`, {
+        method: 'PUT',
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(address)
+    })
+
+    if (response.status != 200) {
+        alert("Update student address failed");
+    }
+    else {
+        alert("Update student address successfully");
+    }
+
+}

@@ -16,7 +16,7 @@ class addressController {
             if (addedAddress) {
                 return res.status(201).json({
                     success: true,
-                    message: "Add address succcessfully",
+                    message: "Add address successfully",
                     address: addedAddress
                 });
             } else {
@@ -29,6 +29,33 @@ class addressController {
             logger.error("Error in addAddressController:", error.message);
             return res.status(500).json({
                 message: "Failed to add address of user. Please try again later."
+            });
+        }
+    }
+
+    static async updateAddress(req, res) {
+        const address = req.body
+        // TODO: refactor this controller to a different controller
+        try {
+            if (address.permanent_address !== undefined) {
+                let result = await addressModel.updateAddress(address.permanent_address)
+            }
+
+            if (address.temporary_address !== undefined) {
+                let result2 = await addressModel.updateAddress(address.temporary_address)
+            }
+
+            if (address.mailing_address !== undefined) {
+                let result3 = await addressModel.updateAddress(address.mailing_address)
+            }
+            return res.status(200).json({
+                message: 'update address successfully'
+            })
+        }
+        catch (error) {
+            logger.error("Error in updateStudentController address:", error);
+            return res.status(500).json({
+                message: 'Failed to update student of user 1. Please try again later.'
             });
         }
     }

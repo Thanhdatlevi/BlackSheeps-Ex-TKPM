@@ -122,7 +122,6 @@ class studentModel {
 
     static async updateStudent(student) {
         try {
-            // get faculty_id, status id, education_program_id
             const getIDQuery = `
             SELECT ep.program_id, f.faculty_id, ss.status_id
             FROM education_programs ep
@@ -134,16 +133,16 @@ class studentModel {
             `
             const IDResult = await db.query(getIDQuery, 
                 [
-                    student.program,
+                    student.education_program,
                     student.faculty,
-                    student.status
+                    student.student_status
                 ]
             );
 
 
-            student.program = IDResult.rows[0].program_id;
+            student.education_program = IDResult.rows[0].program_id;
             student.faculty = IDResult.rows[0].faculty_id;
-            student.status = IDResult.rows[0].status_id;
+            student.student_status = IDResult.rows[0].status_id;
 
             // update
             const query = `update public.students 
@@ -163,56 +162,25 @@ class studentModel {
 
             const result = await db.query(query, 
                 [
-                    student.name,
-                    student.dob,
+                    student.full_name,
+                    student.date_of_birth,
                     student.gender,
                     student.faculty,
-                    student.course,
-                    student.program,
+                    student.academic_year,
+                    student.education_program,
                     student.address,
                     student.email,
                     student.phone,
-                    student.status,
-                    student.mssv 
+                    student.student_status,
+                    student.student_id 
                 ]
             );
             if (result.rows.length > 0) {
+                logger.info(result.rows);
                 logger.info("update student info executed successfully in studentmodel");
-                // return result.rows[0];
+                return result.rows[0];
             }
 
-            const idetifyQuery = 
-                `update public.identificationdocument 
-                set id_type = $1,
-                id_number = $2, 
-                issue_date = $3,
-                issue_place = $4,
-                expiry_date = $5, 
-                has_chip = $6, 
-                issue_country = $7, 
-                note = $8
-                where student_id = $9
-                returning *
-            `;
-
-            const Identifyresult = await db.query(idetifyQuery, 
-                [
-                    student.id_type,
-                    student.id_number,
-                    student.issue_date,
-                    student.issue_place,
-                    student.expire_date,
-                    student.card_chip,
-                    student.issue_country,
-                    student.note,
-                    student.mssv 
-                ]
-            );
-            if (result.rows.length > 0) {
-                logger.info("update student \"identity\" executed successfully in studentmodel");
-                logger.info(student);
-                return Identifyresult.rows[0] + result.rows[0];
-            }
         }
         catch(error) {
             logger.error("error updating student in studentmodel:", error);

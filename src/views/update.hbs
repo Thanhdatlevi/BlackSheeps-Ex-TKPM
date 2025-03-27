@@ -1,8 +1,8 @@
 <div class="w-full h-full">
-
-    <button type="button" class='w-20 h-20 rounded-lg bg-green-100 absolute' onclick="switchWindowLeft()"
+    <!-- TODO: fix when click too fast -->
+    <button type="button" class='w-20 h-20 rounded-lg bg-green-100 absolute' onclick="switchWindowLeft();"
         id='left_nav'>left</button>
-    <button type="button" class='w-20 h-20 rounded-lg bg-green-100 absolute' onclick="switchWindowRight()"
+    <button type="button" class='w-20 h-20 rounded-lg bg-green-100 absolute' onclick="switchWindowRight();"
         id='right_nav'>right</button>
 
     <div class="max-w-lg bg-white shadow-lg rounded-lg p-6 transition inline-block mx-auto relative left-1/2 -translate-x-1/2"
@@ -64,67 +64,6 @@
 
     </div>
 
-    <div class="max-w-lg bg-white shadow-lg rounded-lg p-6 transition inline-block mx-auto opacity-0 relative left-1/2 -translate-x-1/2"
-        id='address_window'>
-
-        <h2 class="text-2xl font-bold text-center text-gray-700 mb-4">Cập nhật địa chỉ sinh viên</h2>
-
-        <div class="space-y-3" id='address_info'>
-
-            <input type="text" id="student_id_2" placeholder="Nhập MSSV để cập nhật"
-                class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400">
-
-            <button onclick="queryStudent('student_id_2'); queryStudentIdentification('student_id_2');"
-                class="w-full bg-blue-500 text-gray-800 font-semibold py-2 rounded-lg shadow-md hover:bg-blue-600 transition">
-                Tìm sinh viên
-            </button>
-
-            <div class="mb-4" id="permanent_address_info">
-                <h3 class="text-lg font-semibold mb-2">Địa chỉ thường trú</h3>
-                <input type="text" id="street_address" name="permanent_street" placeholder="Số nhà, Tên đường"
-                    class="permanent_address_cl p-2 border rounded w-full mb-2">
-                <input type="text" id="ward" name="permanent_ward" placeholder="Phường/Xã"
-                    class="permanent_address_cl p-2 border rounded w-full mb-2">
-                <input type="text" id="district" name="permanent_district" placeholder="Quận/Huyện"
-                    class="permanent_address_cl p-2 border rounded w-full mb-2">
-                <input type="text" id="city" name="permanent_city" placeholder="Tỉnh/Thành phố"
-                    class="permanent_address_cl p-2 border rounded w-full mb-2">
-                <input type="text" id="country" name="permanent_country" placeholder="Quốc gia"
-                    class="permanent_address_cl p-2 border rounded w-full mb-2" value="Việt Nam">
-            </div>
-
-            <!-- Địa chỉ tạm trú -->
-            <div class="mb-4" id="temporary_address_info">
-                <h3 class="text-lg font-semibold mb-2">Địa chỉ tạm trú <span class="text-sm font-normal">(không bắt
-                        buộc)</span></h3>
-                <input type="text" id="street_address" name="temporary_street" placeholder="Số nhà, Tên đường"
-                    class="temporary_address_cl p-2 border rounded w-full mb-2">
-                <input type="text" id="ward" name="temporary_ward" placeholder="Phường/Xã"
-                    class="temporary_address_cl p-2 border rounded w-full mb-2">
-                <input type="text" id="district" name="temporary_district" placeholder="Quận/Huyện"
-                    class="temporary_address_cl p-2 border rounded w-full mb-2">
-                <input type="text" id="city" name="temporary_city" placeholder="Tỉnh/Thành phố"
-                    class="temporary_address_cl p-2 border rounded w-full mb-2">
-                <input type="text" id="country" name="temporary_country" placeholder="Quốc gia"
-                    class="temporary_address_cl p-2 border rounded w-full mb-2" value="Việt Nam">
-            </div>
-
-            <div class="mb-4" id="mailing_address_info">
-                <h3 class="text-lg font-semibold mb-2">Địa chỉ gửi thư<span class="text-sm font-normal">(không bắt
-                        buộc)</span></h3>
-                <input type="text" id="street_address" name="mailing_street" placeholder="Số nhà, Tên đường"
-                    class="mailing_address_cl p-2 border rounded w-full mb-2">
-                <input type="text" id="ward" name="mailing_ward" placeholder="Phường/Xã"
-                    class="mailing_address_cl p-2 border rounded w-full mb-2">
-                <input type="text" id="district" name="mailing_district" placeholder="Quận/Huyện"
-                    class="mailing_address_cl p-2 border rounded w-full mb-2">
-                <input type="text" id="city" name="mailing_city" placeholder="Tỉnh/Thành phố"
-                    class="mailing_address_cl p-2 border rounded w-full mb-2">
-                <input type="text" id="country" name="mailing_country" placeholder="Quốc gia"
-                    class="mailing_address_cl p-2 border rounded w-full mb-2" value="Việt Nam">
-            </div>
-        </div>
-    </div>
 
 
     <div class="max-w-lg bg-white shadow-lg rounded-lg p-6 transition inline_block mx-auto opacity-0 relative left-1/2 -translate-x-1/2"
@@ -178,8 +117,80 @@
             <input type="text" id="note" placeholder="Ghi chú"
                 class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400">
 
+
+            <button onclick="updateIdentification()"
+                class="my-3 w-full bg-blue-500 text-white font-semibold py-2 rounded-lg shadow-md hover:bg-blue-600 transition">
+                Cập nhật
+            </button>
         </div>
     </div>
+    <div class="max-w-lg bg-white shadow-lg rounded-lg p-6 transition inline-block mx-auto opacity-0 relative left-1/2"
+        id='address_window'>
+
+        <h2 class="text-2xl font-bold text-center text-gray-700 mb-4">Cập nhật địa chỉ sinh viên</h2>
+
+        <div class="space-y-3" id='address_info'>
+
+            <input type="text" id="student_id_2" placeholder="Nhập MSSV để cập nhật"
+                class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400">
+
+            <button onclick="queryStudent('student_id_2'); queryStudentIdentification('student_id_2');"
+                class="w-full bg-blue-500 text-white font-semibold py-2 rounded-lg shadow-md hover:bg-blue-600 transition">
+                Tìm sinh viên
+            </button>
+
+            <div class="mb-4" id="permanent_address_info">
+                <h3 class="text-lg font-semibold mb-2">Địa chỉ thường trú</h3>
+                <input type="text" id="street_address" name="permanent_street" placeholder="Số nhà, Tên đường"
+                    class="permanent_address_cl p-2 border rounded w-full mb-2">
+                <input type="text" id="ward" name="permanent_ward" placeholder="Phường/Xã"
+                    class="permanent_address_cl p-2 border rounded w-full mb-2">
+                <input type="text" id="district" name="permanent_district" placeholder="Quận/Huyện"
+                    class="permanent_address_cl p-2 border rounded w-full mb-2">
+                <input type="text" id="city" name="permanent_city" placeholder="Tỉnh/Thành phố"
+                    class="permanent_address_cl p-2 border rounded w-full mb-2">
+                <input type="text" id="country" name="permanent_country" placeholder="Quốc gia"
+                    class="permanent_address_cl p-2 border rounded w-full mb-2" value="Việt Nam">
+            </div>
+
+            <!-- Địa chỉ tạm trú -->
+            <div class="mb-4" id="temporary_address_info">
+                <h3 class="text-lg font-semibold mb-2">Địa chỉ tạm trú <span class="text-sm font-normal">(không bắt
+                        buộc)</span></h3>
+                <input type="text" id="street_address" name="temporary_street" placeholder="Số nhà, Tên đường"
+                    class="temporary_address_cl p-2 border rounded w-full mb-2">
+                <input type="text" id="ward" name="temporary_ward" placeholder="Phường/Xã"
+                    class="temporary_address_cl p-2 border rounded w-full mb-2">
+                <input type="text" id="district" name="temporary_district" placeholder="Quận/Huyện"
+                    class="temporary_address_cl p-2 border rounded w-full mb-2">
+                <input type="text" id="city" name="temporary_city" placeholder="Tỉnh/Thành phố"
+                    class="temporary_address_cl p-2 border rounded w-full mb-2">
+                <input type="text" id="country" name="temporary_country" placeholder="Quốc gia"
+                    class="temporary_address_cl p-2 border rounded w-full mb-2" value="Việt Nam">
+            </div>
+
+            <div class="mb-4" id="mailing_address_info">
+                <h3 class="text-lg font-semibold mb-2">Địa chỉ gửi thư<span class="text-sm font-normal">(không bắt
+                        buộc)</span></h3>
+                <input type="text" id="street_address" name="mailing_street" placeholder="Số nhà, Tên đường"
+                    class="mailing_address_cl p-2 border rounded w-full mb-2">
+                <input type="text" id="ward" name="mailing_ward" placeholder="Phường/Xã"
+                    class="mailing_address_cl p-2 border rounded w-full mb-2">
+                <input type="text" id="district" name="mailing_district" placeholder="Quận/Huyện"
+                    class="mailing_address_cl p-2 border rounded w-full mb-2">
+                <input type="text" id="city" name="mailing_city" placeholder="Tỉnh/Thành phố"
+                    class="mailing_address_cl p-2 border rounded w-full mb-2">
+                <input type="text" id="country" name="mailing_country" placeholder="Quốc gia"
+                    class="mailing_address_cl p-2 border rounded w-full mb-2" value="Việt Nam">
+            </div>
+        </div>
+
+        <button onclick="updateAddress()"
+            class="my-3 w-full bg-blue-500 text-white font-semibold py-2 rounded-lg shadow-md hover:bg-blue-600 transition">
+            Cập nhật
+        </button>
+    </div>
+
 
 </div>
 

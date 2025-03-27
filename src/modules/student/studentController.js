@@ -150,23 +150,23 @@ class studentController {
         try {
             logger.info("searchStudent method got called in studentController");
             let { mssv, name, khoa } = req.query;
-    
+
             // Lấy danh sách sinh viên
             let students = await studentModel.searchStudent(mssv, name, khoa);
             if (!students || students.length === 0) {
                 logger.error("No students found");
                 return res.status(404).json({ message: 'No students found' });
             }
-    
+
             // Lấy thông tin giấy tờ và địa chỉ cho từng sinh viên
             let results = await Promise.all(students.map(async (student) => {
                 let studentID = student.student_id; // Lấy MSSV của từng sinh viên
-    
+
                 let identification = await indentificationModel.getIdentification(studentID);
                 let permanentAddress = await addressModel.getPermanentAddress(studentID);
                 let temporaryAddress = await addressModel.getTemporaryAddress(studentID);
                 let mailingAddress = await addressModel.getMailingAddress(studentID);
-    
+
                 return {
                     information: student,
                     ID_info: identification || undefined,
@@ -175,9 +175,9 @@ class studentController {
                     mailing_address: mailingAddress || undefined
                 };
             }));
-    
+
             return res.json(results);
-    
+
         } catch (error) {
             logger.error("Error in searchStudentController:", error);
             return res.status(500).json({
@@ -186,21 +186,6 @@ class studentController {
         }
     }
 
-    static async searchStudentIdentification(req, res) {
-        try {
-            logger.info("searchStudentIdentification method got called in studentController");
-            let { mssv } = req.query;
-
-            let listStudent = await studentModel.searchStudentIdentification(mssv);
-            return res.json(listStudent);
-
-        } catch (error) {
-            logger.error("Error in searchStudentController:", error.message);
-            return res.status(500).json({
-                message: 'Failed to search student of user. Please try again later.'
-            });
-        }
-    }
 
     //
     static async updateStudentPage(req, res) {
@@ -221,109 +206,17 @@ class studentController {
     static async updateStudent(req, res) {
         logger.info("updateStudent method got called in studentController");
 
-        const newStudent = {
-            mssv: req.body.mssv,
-            name: req.body.name,
-            dob: req.body.dob,
-            gender: req.body.gender,
-            faculty: req.body.faculty,
-            course: req.body.course,
-            program: req.body.program,
-            email: req.body.email,
-            phone: req.body.phone,
-            status: req.body.status,
-            id_type: req.body.id_type,
-            id_number: req.body.id_number,
-            issue_date: req.body.issue_date,
-            issue_place: req.body.issue_place,
-            expire_date: req.body.expire_date,
-            card_chip: req.body.card_chip,
-            issue_country: req.body.issue_country,
-            note: req.body.note,
-            // TODO: move these to ID controller and address controller 
-            permanent_address : req.body.permanent_address,
-            temprary_address : req.body.temprary_address,
-            
-        }
 
-        if (!newStudent.mssv ||
-            !newStudent.name ||
-            !newStudent.dob ||
-            !newStudent.gender ||
-            !newStudent.faculty ||
-            !newStudent.course ||
-            !newStudent.program ||
-            !newStudent.email ||
-            !newStudent.phone ||
-            !newStudent.status ||
-            !newStudent.id_type ||
-            !newStudent.id_number ||
-            !newStudent.issue_date ||
-            !newStudent.issue_place ||
-            !newStudent.expire_date
-        ) {
-            logger.warn("Not enough parameters when updating student");
-            return res.status(400).json({
-                error: 'All information fields are required'
-            });
-        }
+        const newStudent = req.body;
+        logger.info(newStudent);
 
-
-        // console.log(newStudent)
-        if (newStudent.id_type != 'CCCD') {
-            newStudent.card_chip = 'NULL'
-        }
-
-        if (newStudent.id_type == 'passport' &&
-            (!newStudent.issue_country || newStudent.issue_country == '')
-        ) {
-            logger.warn("Not exists country parameters for passport when updating student");
-            return res.status(400).json({
-                error: 'Hộ chiếu phải có thông tin quốc tịch'
-            });
-        }
-        else {
-            newStudent.issue_country = '' 
-        }
-
-        try {
-            let listStudent = await studentModel.searchStudent(newStudent.mssv);
-            if (!listStudent || listStudent.length === 0) {
-                logger.warn("Not corressponding student with specified ID");
-                return res.status(404).json({
-                    message: 'No student with corressponding id'
-                })
+        for (const property in newStudent) {
+            if (newStudent[property] == undefined) {
+                logger.warn("Not enough parameters when updating student");
+                return res.status(400).json({
+                    error: 'All information fields are required'
+                });
             }
-
-            let listStudentID = await studentModel.searchStudentIdentification(newStudent.mssv);
-            if (!listStudent || listStudent.length === 0) {
-                logger.warn("Not corressponding student identification details with specified ID");
-                return res.status(404).json({
-                    message: 'No student with corressponding id'
-                })
-            }
-        } catch (error) {
-            logger.error("Error in update(searching)StudentController:", error.message);
-            return res.status(500).json({
-                message: 'Failed to search while updating student of user. Please try again later.'
-            });
-        }
-
-        // TODO: refactor this controller to a different controller
-        try {
-            if (newStudent.permanent_address !== undefined){
-                let result = await addressModel.updateAddress(newStudent.permanent_address)
-            }
-
-            if (newStudent.temprary_address !== undefined){
-                let result2 = await addressModel.updateAddress(newStudent.temprary_address)
-            }
-        }
-        catch (error) {
-            logger.error("Error in updateStudentController address:", error.message);
-            return res.status(500).json({
-                message: 'Failed to update student of user 1. Please try again later.'
-            });
         }
 
         try {
@@ -349,13 +242,13 @@ class studentController {
                 logger.warn(`Không có dữ liệu để xuất: ${fileName}`);
                 return res.status(404).send(`Không có dữ liệu để xuất: ${fileName}`);
             }
-    
+
             // Định dạng địa chỉ
             const formatAddress = (address) =>
                 (address)
-                    ? `${address.street_address|| ''}, ${address.ward || ''}, ${address.district || ''}, ${address.city || ''}, ${address.country || ''}`.trim()
+                    ? `${address.street_address || ''}, ${address.ward || ''}, ${address.district || ''}, ${address.city || ''}, ${address.country || ''}`.trim()
                     : '';
-    
+
             // Lấy thông tin bổ sung từng sinh viên
             const studentData = [];
             for (const student of students) {
@@ -372,31 +265,31 @@ class studentController {
                     ...identifications
                 });
             }
-    
+
             // Xử lý xuất CSV
             if (format === "csv") {
                 res.setHeader("Content-Disposition", `attachment; filename=${fileName}.csv`);
                 res.setHeader("Content-Type", "text/csv");
                 const csvStream = fastCsv.format({ headers: true });
                 csvStream.pipe(res);
-    
+
                 studentData.forEach((row) => {
                     csvStream.write(row);
                 });
-    
+
                 csvStream.end();
             }
             // Xử lý xuất Excel
             else if (format === "excel") {
                 res.setHeader("Content-Disposition", `attachment; filename=${fileName}.xlsx`);
                 res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-    
+
                 const worksheetData = studentData.map(row => (row));
-    
+
                 const workbook = XLSX.utils.book_new();
                 const worksheet = XLSX.utils.json_to_sheet(worksheetData);
                 XLSX.utils.book_append_sheet(workbook, worksheet, "SinhVien");
-    
+
                 const buffer = XLSX.write(workbook, { type: "buffer", bookType: "xlsx" });
                 res.end(buffer);
             }
@@ -415,7 +308,7 @@ class studentController {
         logger.info("Xuất danh sách sinh viên CSV");
         return studentController.exportData(req, res, studentModel.searchStudent, "students", "csv");
     }
-    
+
     static async exportStudentListExcel(req, res) {
         logger.info("Xuất danh sách sinh viên Excel");
         return studentController.exportData(req, res, studentModel.searchStudent, "students", "excel");
@@ -477,23 +370,23 @@ class studentController {
 
     // Hàm chung để xử lý dữ liệu sinh viên từ file
     static async importStudentData(studentData) {
-        
+
         //Định dạng ngày để ghi vào db
         const formatDate = (dateStr) => {
             if (!dateStr) return null;
-        
+
             if (typeof dateStr === "number") {
                 const date = new Date((dateStr - 25569) * 86400000);
                 return date.toISOString().split("T")[0];
             }
-        
+
             if (typeof dateStr === "string") {
                 const date = new Date(dateStr);
                 if (!isNaN(date.getTime())) {
                     return date.toISOString().split("T")[0];
                 }
             }
-        
+
             return null;
         };
 
@@ -529,15 +422,15 @@ class studentController {
             student.note = student.note || null;
             student.issue_date = formatDate(student.issue_date);
             student.expiry_date = formatDate(student.expiry_date);
-        
+
             await indentificationModel.addIdentification(student);
-            
+
             const addressTypes = [
                 { type: "thuongtru", address: student.permanentAddress },
                 { type: "tamtru", address: student.temporaryAddress },
                 { type: "nhanthu", address: student.mailingAddress }
             ];
-    
+
             for (const addr of addressTypes) {
                 if (addr.address) {
                     const [street, ward, district, city, country] = addr.address.split(", ");

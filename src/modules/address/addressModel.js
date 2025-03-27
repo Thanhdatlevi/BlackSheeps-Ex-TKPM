@@ -122,13 +122,13 @@ class addressModel {
             RETURNING *`;
 
             const result = await db.query(query, [
-                info.street,
+                info.street_address,
                 info.ward,
                 info.district,
                 info.city,
                 info.country,
                 info.student_id,
-                info.addresstype
+                info.address_type
             ]);
 
             if (result.rows.length > 0) {
@@ -137,7 +137,7 @@ class addressModel {
             }
         }
         catch (error) {
-            logger.error("Error update Address addressModel:", error.message);
+            logger.error("Error update Address addressModel:", error);
             throw new Error(error.message);
         }
     }
