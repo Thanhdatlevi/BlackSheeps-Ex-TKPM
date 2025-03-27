@@ -159,10 +159,10 @@
             });
 
             const data = await response.json();
-            
+            console.log(data);
             if (data.success) {
                 // Thêm domain mới vào danh sách và hiển thị lại
-                const newId = data.domain.email_id || domains.length + 1;
+                const newId = data.email.email_id || domains.length + 1;
                 domains.push({ email_id: newId, email_domain: domainName });
                 renderDomainTable();
                 domainInput.value = '';
