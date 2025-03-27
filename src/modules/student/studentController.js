@@ -1,4 +1,5 @@
 const studentModel = require('../student/studentModel');
+const emailModel = require('../email/emailModel');
 // TODO: migrating these api controller to address controller
 const addressModel = require('../address/addressModel');
 const logger = require('../../config/logging')
@@ -12,9 +13,11 @@ class studentController {
     static async addPage(req, res) {
         try {
             logger.info("addPage method got called in studentController");
+            const emailDomains = await emailModel.getAllEmails();
             res.render('add', {
                 layout: 'main',
                 title: 'Add Student Page',
+                allowedDomains: emailDomains.map(domain => domain.email_domain)
             });
         } catch (error) {
             logger.error("Error in addStudentController:", error.message);
@@ -38,7 +41,6 @@ class studentController {
                 address: req.body.permanent_street + ', ' + req.body.permanent_ward + ', ' + req.body.permanent_district + ', ' + req.body.permanent_city,
                 email: req.body.email,
                 phone: req.body.phone,
-                
             }
             const addedStudent = await studentModel.addStudent(newStudent);
             if (addedStudent) {

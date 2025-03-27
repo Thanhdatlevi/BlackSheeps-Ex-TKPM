@@ -14,25 +14,25 @@ class identificationController{
                 issue_country: req.body.issue_country,
                 note: req.body.note
             };
-            console.log(newIdentification);
+            
             const addedIdentification = await identificationModel.addIdentification(newIdentification);
             if (addedIdentification) {
                 logger.info("addIdentification executed successfully in identificationController");
                 return res.status(201).json({
                     success: true,
-                    message: 'Add identification succcessfully',
+                    message: "Add identification succcessfully",
                     identification: addedIdentification
                 });
             } else {
                 logger.warn("Failed to add identification. Please try again later.");
                 return res.status(500).json({
-                    message: 'Failed to add identification. Please try again later.'
+                    message: "Failed to add identification. Please try again later."
                 });
             }
         } catch (error) {
             logger.error("Error in addIdentificationController:", error.message);
             return res.status(500).json({
-                message: 'Failed to add identification of user. Please try again later.'
+                message: "Failed to add identification of user. Please try again later."
             });
         }
     }
