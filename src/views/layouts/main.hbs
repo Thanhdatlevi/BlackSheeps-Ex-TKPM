@@ -10,20 +10,37 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,900">
     <link rel="stylesheet" href="/css/output.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".menu-item").forEach(function (item) {
+                item.addEventListener("mouseenter", function () {
+                    let submenu = this.querySelector(".submenu");
+                    if (submenu) {
+                        submenu.classList.remove("hidden");
+                    }
+                });
 
+                item.addEventListener("mouseleave", function () {
+                    let submenu = this.querySelector(".submenu");
+                    if (submenu) {
+                        submenu.classList.add("hidden");
+                    }
+                });
+            });
+        });
+    </script>
 
 </head>
 
-<body class="overflow-x-hidden">
-
+<body class="overflow-x-hidden flex">
     {{> header}}
-
-    <main>
-        {{{body}}}
-    </main>
-{{!-- 
-    {{> footer}} --}}
-
+    
+    <!-- Main Content -->
+    <div class="flex-1 p-4">
+        <main>
+            {{{body}}}
+        </main>
+    </div>
 </body>
 
 </html>

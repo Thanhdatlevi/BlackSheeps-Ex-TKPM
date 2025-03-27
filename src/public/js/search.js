@@ -97,8 +97,6 @@ async function exportCSVList() {
         // Bước 1: Tải danh sách sinh viên
         await exportStudentList('/export/csv', 'students.csv');
 
-        // Bước 2: Tải danh sách giấy tờ
-        await exportStudentList('/export/csv/identification', 'identification_documents.csv');
 
     } catch (error) {
         console.error("Lỗi khi tải file:", error);
@@ -110,8 +108,6 @@ async function exportExcelList() {
         // Bước 1: Tải danh sách sinh viên
         await exportStudentList('/export/excel', 'students.xlsx');
 
-        // Bước 2: Tải danh sách giấy tờ
-        await exportStudentList('/export/excel/identification', 'identification_documents.xlsx');
 
     } catch (error) {
         console.error("Lỗi khi tải file:", error);

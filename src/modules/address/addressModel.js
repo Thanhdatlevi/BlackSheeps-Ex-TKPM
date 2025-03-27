@@ -25,7 +25,7 @@ class addressModel {
             return undefined;
         }
         catch (error) {
-            logger.error("Error get PermanentAddress addressModel:", error.message);
+            logger.error("Error get PermanentAddress addressModel:", error);
             throw new Error(error.message);
         }
     }
@@ -49,11 +49,10 @@ class addressModel {
                 logger.info("getTemporaryAddress executed successfully in addressModel");
                 return result.rows[0];
             }
-    
             return undefined;
         }
         catch (error) {
-            logger.error("Error get TemporaryAddress addressModel:", error.message);
+            logger.error("Error get TemporaryAddress addressModel:", error);
             throw new Error(error.message);
         }
     }
@@ -81,7 +80,7 @@ class addressModel {
             return undefined;
         }
         catch (error) {
-            logger.error("Error get MailingAddress addressModel:", error.message);
+            logger.error("Error get MailingAddress addressModel:", error);
             throw new Error(error.message);
         }
     }

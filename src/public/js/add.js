@@ -433,17 +433,15 @@ function closeDialog() {
 }
 
 function submitImport() {
-    const studentFile = document.getElementById('studentFile').files[0];
-    const docFile = document.getElementById('docFile').files[0];
+    const studentFile = document.getElementById("studentFile").files[0];
 
-    if (!studentFile || !docFile) {
-        alert('Vui lòng chọn đủ 2 file.');
+    if (!studentFile) {
+        alert("Vui lòng chọn đủ file.");
         return;
     }
 
     const formData = new FormData();
-    formData.append('studentFile', studentFile);
-    formData.append('docFile', docFile);
+    formData.append("studentFile", studentFile);
     fetch(`/import/${importType}`, {
         method: "POST",
         body: formData
