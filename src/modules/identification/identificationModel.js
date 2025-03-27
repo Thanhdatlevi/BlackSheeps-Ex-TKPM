@@ -1,9 +1,9 @@
-const {query} = require('express');
+const { query } = require('express');
 const db = require('../../config/db');
 const logger = require('../../config/logging')
 
-class indentificationModel{
-    static async getIdentification(mssv){
+class indentificationModel {
+    static async getIdentification(mssv) {
         try {
             const query = `
             SELECT 
@@ -20,7 +20,7 @@ class indentificationModel{
             WHERE si.student_id = $1;
             `;
             const result = await db.query(query, [mssv]);
-            if (result.rows.length > 0){
+            if (result.rows.length > 0) {
                 logger.info("getIdentification executed successfully in indentificationModel");
                 logger.info(result.rows[0]);
                 return result.rows[0];
@@ -28,13 +28,13 @@ class indentificationModel{
 
             return null;
         }
-        catch(error){
+        catch (error) {
             logger.error("Error get Identification in identificationModel:", error.message);
             throw new Error(error.message);
         }
     }
 
-    static async addIdentification(info){
+    static async addIdentification(info) {
         try {
             const query = `
             INSERT INTO public.identificationdocument (student_id, id_type, id_number, issue_date, issue_place, expiry_date, has_chip, issue_country, note)
@@ -42,7 +42,7 @@ class indentificationModel{
             RETURNING *;
             `;
             const result = await db.query(query, [info.student_id, info.id_type, info.id_number, info.issue_date, info.issue_place, info.expiry_date, info.has_chip, info.issue_country, info.note]);
-            if (result.rows.length > 0){
+            if (result.rows.length > 0) {
                 logger.info("addIdentification executed successfully in indentificationModel");
                 logger.info(result.rows[0]);
                 return result.rows[0];
@@ -50,10 +50,54 @@ class indentificationModel{
 
             return null;
         }
-        catch(error){
+        catch (error) {
             logger.error("Error add Identification in identificationModel:", error.message);
             throw new Error(error.message);
         }
+    }
+
+    static async updateIdentification(info) {
+        try {
+            const query = `
+                update public.identificationdocument 
+                set id_type = $1,
+                id_number = $2, 
+                issue_date = $3,
+                issue_place = $4,
+                expiry_date = $5, 
+                has_chip = $6, 
+                issue_country = $7, 
+                note = $8
+                where student_id = $9
+                RETURNING *;
+            `;
+            const result = await db.query(query,
+                [
+                    info.id_type,
+                    info.id_number,
+                    info.issue_date,
+                    info.issue_place,
+                    info.expiry_date,
+                    info.has_chip,
+                    info.issue_country,
+                    info.note,
+                    info.student_id
+                ]
+            );
+            if (result.rows.length > 0) {
+                logger.info("updateIdentification executed successfully in indentificationModel");
+                logger.info(result.rows[0]);
+                return result.rows[0];
+            }
+
+            return null;
+        }
+        catch (error) {
+            logger.error("Error add Identification in identificationModel:", error.message);
+            throw new Error(error.message);
+        }
+
+
     }
 }
 

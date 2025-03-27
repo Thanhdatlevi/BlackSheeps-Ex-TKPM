@@ -15,8 +15,10 @@ router.get("/search-student", studentController.searchStudent);
 
 router.get('/update', studentController.updateStudentPage);
 router.get('/updateSearch', studentController.searchStudent);
-router.get('/updateSearchID', studentController.searchStudentIdentification);
-router.put('/update', studentController.updateStudent);
+
+router.put('/update/student', studentController.updateStudent);
+router.put('/update/identification', identificationController.updateIdentification);
+router.put('/update/address', addressController.updateAddress);
 
 router.post('/add-identification', identificationController.addIdentification);
 router.post('/add-address', addressController.addAddress);
