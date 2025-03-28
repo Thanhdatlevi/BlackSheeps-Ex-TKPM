@@ -1,3 +1,60 @@
+document.addEventListener("DOMContentLoaded", async function () {
+    const facultySelect = document.getElementById("faculty");
+    const programSelect = document.getElementById("education_program");
+    const statusSelect = document.getElementById("student_status");
+
+    try {
+        // Gọi từng API riêng biệt
+        const faculties = await fetchFaculties();
+        const programs = await fetchPrograms();
+        const statuses = await fetchStatuses();
+        console.log(statuses, programs, 11)
+        // Render dữ liệu vào <select>
+        renderOptions(facultySelect, faculties);
+        renderOptions(programSelect, programs);
+        renderOptions(statusSelect, statuses);
+
+        // Lưu dữ liệu vào biến để kiểm tra hợp lệ
+        window.facultyOptions = faculties.map(f => f.faculty_name);
+        window.statusOptions = statuses.map(s => s.status_name);
+        window.programOptions = programs.map(s => s.program_name);
+
+    } catch (error) {
+        console.error("Lỗi khi tải dữ liệu:", error);
+    }
+});
+
+// Hàm fetch danh sách khoa
+async function fetchFaculties() {
+    const response = await fetch("/faculties");
+    const data = await response.json();
+    if (!response.ok) throw new Error("Lỗi lấy danh sách khoa");
+    return data.faculties;
+}
+
+// Hàm fetch danh sách chương trình đào tạo
+async function fetchPrograms() {
+    const response = await fetch("/programs");
+    const data = await response.json();
+    if (!response.ok) throw new Error("Lỗi lấy danh sách chương trình đào tạo");
+    console.log(data, 'program')
+    return data.programs;
+}
+
+// Hàm fetch danh sách trạng thái sinh viên
+async function fetchStatuses() {
+    const response = await fetch("/statuses");
+    const data = await response.json();
+    if (!response.ok) throw new Error("Lỗi lấy danh sách trạng thái sinh viên");
+    console.log(data, 'status')
+    return data.status;
+}
+
+// Hàm render options vào select
+function renderOptions(selectElement, data) {
+    selectElement.innerHTML = data.map(item => `<option value="${item.faculty_name||item.program_name||item.status_name}">${item.faculty_name||item.program_name||item.status_name}</option>`).join('');
+}
+
 window.grayCheckBox = async () => {
     // TODO: fix this please
     value = document.getElementById('id_type').value;
@@ -28,7 +85,7 @@ window.queryStudentIdentification = async (id) => {
         return;
     }
 
-    const result = await fetch(`/updateSearchID?mssv=${mssv}`, {
+    const result = await fetch(`/updateSearch?mssv=${mssv}`, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
     })
@@ -46,6 +103,7 @@ window.queryStudentIdentification = async (id) => {
 };
 
 window.showStudentInfo = async (type, data) => {
+    console.log(data)
     info_elems = document.getElementById(type);
     for (i = 0; i < info_elems.childNodes.length; i++) {
         let curr_elem = info_elems.childNodes[i]
@@ -150,15 +208,18 @@ window.updateStudent = async () => {
         return;
     }
 
-    const validDepartments = ["Khoa Luật", "Khoa Tiếng Anh thương mại", "Khoa Tiếng Nhật", "Khoa Tiếng Pháp"];
-    if (!validDepartments.includes(information.faculty)) {
-        alert("Khoa không hợp lệ! Vui lòng chọn một trong các khoa: " + validDepartments.join(", "));
+    if (!window.facultyOptions.includes(information.faculty)) {
+        alert("Khoa không hợp lệ! Vui lòng chọn một trong các khoa: " + window.facultyOptions.join(", "));
         return;
     }
 
-    const validStatuses = ["Đang học", "Đã tốt nghiệp", "Đã thôi học", "Tạm dừng học"];
-    if (!validStatuses.includes(information.student_status)) {
-        alert("Tình trạng sinh viên không hợp lệ! Vui lòng chọn một trong các tình trạng: " + validStatuses.join(", "));
+    if (!window.statusOptions.includes(information.student_status)) {
+        alert("Tình trạng sinh viên không hợp lệ! Vui lòng chọn một trong các tình trạng: " + window.statusOptions.join(", "));
+        return;
+    }
+
+    if (!window.programOptions.includes(information.education_program)) {
+        alert("Chương trình sinh viên không hợp lệ! Vui lòng chọn một trong các tình trạng: " + window.programOptions.join(", "));
         return;
     }
 
