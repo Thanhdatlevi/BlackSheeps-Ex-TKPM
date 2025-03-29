@@ -40,10 +40,11 @@
                 class="p-2 border rounded w-full" 
                 required>
             <span id="emailError" class="text-red-500 text-sm hidden absolute -bottom-6 left-0"></span>
-            <span id="allowedDomains" class="text-blue-500 text-sm block mt-6">
-            Các domain được phép: {{#each allowedDomains}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}
-            </span>
+            
         </div>
+        <span id="allowedDomains" class="text-blue-500 text-sm block mt-6">
+            Các domain được phép: {{#each allowedDomains}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}
+        </span>
         <input type="text" id="phone" name="phone" placeholder="Số điện thoại" required class="p-2 border rounded w-full mb-2">
     </div>
     
