@@ -3,6 +3,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     const programSelect = document.getElementById("education_program");
     const statusSelect = document.getElementById("student_status");
 
+    // run once everytime this page load 
+    grayCheckBox();
+
     try {
         // Gọi từng API riêng biệt
         const faculties = await fetchFaculties();
@@ -67,6 +70,7 @@ window.grayCheckBox = async () => {
     }
 
     if (value !== "passport") {
+        document.getElementById('issue_country').value =  '';
         document.getElementById('issue_country').disabled = "disabled"
         document.getElementById('issue_country').classList.add('bg-gray-100')
     }
@@ -75,8 +79,6 @@ window.grayCheckBox = async () => {
         document.getElementById('issue_country').classList.remove('bg-gray-100')
     }
 }
-// run once everytime this page load 
-grayCheckBox();
 
 window.queryStudentIdentification = async (id) => {
     mssv = document.getElementById(id).value;
@@ -89,7 +91,6 @@ window.queryStudentIdentification = async (id) => {
         method: "GET",
         headers: { "Content-Type": "application/json" },
     })
-
 
     data = await result.json();
 

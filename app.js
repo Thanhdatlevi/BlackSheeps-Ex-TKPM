@@ -17,6 +17,7 @@ const facultyRoutes = require('./src/routes/facultyRoutes');
 const programRoutes = require('./src/routes/programRoutes');
 const statusRoutes = require('./src/routes/statusRoutes');
 const emailRoutes = require('./src/routes/emailDomainRoutes');
+const classRoutes = require('./src/routes/classRoutes');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -38,6 +39,7 @@ app.use('/', facultyRoutes);
 app.use('/', programRoutes);
 app.use('/', statusRoutes);
 app.use('/', emailRoutes);
+app.use('/', classRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
