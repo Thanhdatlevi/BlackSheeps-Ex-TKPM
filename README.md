@@ -233,8 +233,53 @@ Khi người dùng thêm sinh viên vào dánh sách mới, sẽ kiểm tra xem 
 Khi người dùng cập nhật sinh viên, sẽ kiểm tra xem trạng thái có đổi từ đã tốt nghiệp không. Vì khi đã tốt nghiệp sẽ không đổi được sang các trạng thái khác.
   
 ![Screenshot 2025-03-28 011126](https://github.com/user-attachments/assets/67226bf4-6b10-4277-a231-e418bd4b9ad8)  
+
+# Hướng dẫn sử dụng Version 4.0
+
+## Hướng dẫn cài đặt
+```
+
+Bước 1: Cài đặt NodeJS và npm
+
+Bước 2: Clone repo về máy
+
+Bước 3: Chạy npm install để cài đặt node-modules
+
+Bước 4: Tạo file .env và thêm các nội dung có note bên bài txt đã nộp
+```
+## Chạy chương trình
+
+Trong terminal  
+Nếu là môi trường sản phẩm chạy: npm start  
+Nếu là môi trường developer chạy: npm run start:dev 
+
+## Hướng dẫn sử dụng web
+### Chức năng hủy đăng ký học phần của sinh viên:
+Khi giáo vụ muốn hủy đăng ký của môn của sinh viên trong kỳ đăng ký. Giáo vụ sẽ tới trang xóa đăng ký, ở đây sẽ hiện ra toàn bộ thông tin đăng ký hiện tại còn được phép xóa (trước hạn đăng ký của học kỳ). Giáo vụ có thể nhập MSSV để lọc theo sinh viên sau đó ấn xóa để hủy đăng ký học phần của sinh viên. Hệ thống sẽ ghi nhận lại lịch sử hủy đăng ký này.
+   
+![Screenshot 2025-04-03 215031](https://github.com/user-attachments/assets/3a7a355e-48a8-402d-8893-e3e6da08cc84)
+
   
-### Báo cáo The Broken Window Theory & The Boy Scout Rule, code review and refactor:
+![Screenshot 2025-04-03 215042](https://github.com/user-attachments/assets/fd849106-5339-4f11-ab86-88d59a18cda4)
+
+    
+![Screenshot 2025-04-03 215118](https://github.com/user-attachments/assets/fdee2de6-4012-4282-89c0-23e191813027)
+  
+  
+### Xem điểm và xuất file điểm cho sinh viên
+Khi giáo vụ muốn xuất một file điểm cho sinh viên thì giáo vụ vào trang tra cứu điểm. Sau đó, giáo vụ nhập mã số sinh viên và trang web sẽ hiện ra thông tin điểm của sinh viên. Giáo vụ có thể ấn Xuất file để tải về file Excel danh sách điểm của sinh viên.
+
+![Screenshot 2025-04-03 215138](https://github.com/user-attachments/assets/9c101c4e-0f95-4396-b4e4-fc16301f092a)
+
+
+![Screenshot 2025-04-03 215149](https://github.com/user-attachments/assets/26208046-fdce-4585-a97f-da5115a11dc9)
+   
+### Sửa lại giao diện phần thông báo lỗi domain email ở add Student
+    
+![Screenshot 2025-04-03 222121](https://github.com/user-attachments/assets/66f59d99-6147-49c9-af69-ea0541a372d3)
+  
+  
+### Báo cáo unit test:
 File báo cáo nằm trong folder report
    
 ![Screenshot 2025-03-28 012039](https://github.com/user-attachments/assets/3a5f22c6-1f47-4a36-9f30-0b720d175f27)   
