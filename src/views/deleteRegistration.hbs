@@ -1,0 +1,23 @@
+<h1 class="text-2xl font-bold mb-4">Danh sách lớp đăng ký</h1>
+
+    <div class="mb-4">
+        <label for="studentId" class="block text-sm font-medium text-gray-700">Mã sinh viên:</label>
+        <input type="text" id="studentId" class="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Nhập mã sinh viên">
+        <button id="searchBtn" class="mt-3 px-6 py-2 bg-blue-500 text-white rounded-lg">Tìm kiếm</button>
+    </div>
+
+    <table id="classTable" class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
+        <thead>
+            <tr class="bg-gray-800 text-white">
+                <th class="px-4 py-2">MSSV</th>  <!-- Cột MSSV -->
+                <th class="px-4 py-2">Mã lớp</th>
+                <th class="px-4 py-2">Mã môn</th>
+                <th class="px-4 py-2">Năm học</th>
+                <th class="px-4 py-2">Học kỳ</th>
+                <th class="px-4 py-2">Hành động</th>
+            </tr>
+        </thead>
+        <tbody id="classListBody"></tbody>
+    </table>
+
+<script src="/js/deleteRegistration.js"></script>
