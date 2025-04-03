@@ -16,7 +16,7 @@ async function loadAllRegisteredClasses() {
                 <td class="px-4 py-2">${deleteRegistration.year}</td>
                 <td class="px-4 py-2">${deleteRegistration.semester}</td>
                 <td class="px-4 py-2">
-                    <button class="px-4 py-2 bg-red-500 text-white rounded-lg" onclick="deleteClass('${deleteRegistration.student_id}', '${deleteRegistration.class_id}', '${deleteRegistration.course_id}', '${deleteRegistration.year}', ${deleteRegistration.semester})">Xóa</button>
+                    <button class="px-4 py-2 bg-red-500 text-white rounded-lg" onclick="deleteRegister('${deleteRegistration.student_id}', '${deleteRegistration.class_id}', '${deleteRegistration.course_id}', '${deleteRegistration.year}', ${deleteRegistration.semester})">Xóa</button>
                 </td>
             `;
             tableBody.appendChild(row);

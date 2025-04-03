@@ -1,7 +1,7 @@
 <div class="max-w-4xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
     <h1 class="text-2xl font-bold mb-4 text-center">Tra cứu điểm sinh viên</h1>
     <div class="flex space-x-4 mb-4">
-        <input id="studentId" type="text" class="border p-2 w-full rounded" placeholder="Nhập MSSV...">
+        <input id="studentId" type="text" class="border p-2 w-1/2 rounded" placeholder="Nhập MSSV...">
         <button onclick="fetchStudentGrades()" class="bg-blue-500 text-white px-4 py-2 rounded">Tra cứu</button>
     </div>
     <table class="w-full border-collapse border">
@@ -18,8 +18,8 @@
         <tbody id="gradesTable" class="text-center bg-white"></tbody>
     </table>
     <div class="mt-4 text-right">
-        <h2 class="text-lg font-semibold">GPA: <span id="gpa" class="text-blue-600"></span></h2>
-        <button onclick="exportStudentGrades()" class="bg-green-500 text-white px-4 py-2 rounded mt-2">Xuất Excel</button>
+        <h2 class="text-lg font-semibold">GPA: <span id="gpa" class="text-blue-600">0</span></h2>
+        <button onclick="exportStudentGrades()" class="bg-blue-500 text-white px-4 py-2 rounded mt-2">Xuất Excel</button>
     </div>
 </div>
 
