@@ -282,6 +282,7 @@ Khi giáo vụ muốn xuất một file điểm cho sinh viên thì giáo vụ v
 ### Báo cáo unit test:
 File báo cáo nằm trong folder report
    
-![Screenshot 2025-03-28 012039](https://github.com/user-attachments/assets/3a5f22c6-1f47-4a36-9f30-0b720d175f27)   
+![Screenshot 2025-04-03 223348](https://github.com/user-attachments/assets/f6f01f50-67ac-40e0-853f-6a5690565cb4)
+
    
 
