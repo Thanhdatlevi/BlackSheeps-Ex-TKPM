@@ -19,6 +19,8 @@ const statusRoutes = require('./src/routes/statusRoutes');
 const emailRoutes = require('./src/routes/emailDomainRoutes');
 const registrationRoutes = require('./src/routes/registerSubjectRoutes');
 const gradeRoutes = require('./src/routes/gradeRoutes');
+const courseRoutes = require('./src/routes/courseRoutes');
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -41,6 +43,7 @@ app.use('/', statusRoutes);
 app.use('/', emailRoutes);
 app.use('/registration', registrationRoutes);
 app.use('/', gradeRoutes);
+app.use('/', courseRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
