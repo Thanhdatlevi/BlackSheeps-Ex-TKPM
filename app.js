@@ -17,7 +17,6 @@ const facultyRoutes = require('./src/routes/facultyRoutes');
 const programRoutes = require('./src/routes/programRoutes');
 const statusRoutes = require('./src/routes/statusRoutes');
 const emailRoutes = require('./src/routes/emailDomainRoutes');
-const classRoutes = require('./src/routes/classRoutes');
 const registrationRoutes = require('./src/routes/registerSubjectRoutes');
 const gradeRoutes = require('./src/routes/gradeRoutes');
 const classRoutes = require('./src/routes/classRoutes');
