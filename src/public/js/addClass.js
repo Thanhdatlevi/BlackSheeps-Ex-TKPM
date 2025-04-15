@@ -84,7 +84,12 @@ window.submitFormData = async () => {
 
     delete formData.time;
 
-    console.log(formData);
+    for (let e in formData){
+        if (!formData[e] || formData[e] == ''){
+            alert('Phải cung cấp đầy đủ thông tin để tạo lớp!');
+            return null
+        }
+    }
 
     try {
         const response = await fetch('/class', {

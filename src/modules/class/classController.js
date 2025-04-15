@@ -156,6 +156,23 @@ class classController {
             });
         }
     }
+    static async getAllClasses(req, res) {
+        try {
+            logger.info("getAllClasses method got called in ClassController");
+            const classes = await classModel.getClasses();
+            logger.info(classes);
+            if (classes) {
+                return res.status(200).json({
+                    classes: classes 
+                });
+            }
+        } catch (error) {
+            logger.error("Error in getAllClasses controller:", error);
+            return res.status(500).json({
+                message: "Failed to get classes. Please try again later."
+            });
+        }
+    }
 }
 
 module.exports = classController;

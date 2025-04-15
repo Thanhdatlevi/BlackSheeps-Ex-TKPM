@@ -1,4 +1,5 @@
 // Function to get all input field values and store them in an object
+const CLASS_URL = '/classes'
 const COURSE_URL = '/class/courses';
 const YEAR_URL = '/class/year';
 
@@ -20,6 +21,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     console.log(options_template('terms', 'year', 'year'));
     const html2 = template2(yearData);
     document.getElementById('year').innerHTML += html2;
+
+    const classData = await getOptions(CLASS_URL);
+    const template3 = Handlebars.compile(options_template('classes', 'class_id', 'class_id'));
+    console.log(options_template('classes', 'class', 'class'));
+    const html3 = template3(classData);
+    document.getElementById('class_id').innerHTML += html3;
 });
 async function getOptions(url) {
     try {
@@ -55,6 +62,13 @@ window.submitFormData = async () => {
     const formData = await getInputValues();
     console.log(formData);
 
+    for (let e in formData){
+        if (!formData[e] || formData[e] == ''){
+            alert('Phải cung cấp đầy đủ thông tin để thêm sinh viên vào lớp!');
+            return null
+        }
+    }
+
     studentList = [{
         student_id: formData['student_id'],
         grade: formData['grade'],
@@ -67,7 +81,7 @@ window.submitFormData = async () => {
         }
         classObject[e] = formData[e];
     }
-
+    
     try {
         const response = await fetch('/class/student', {
             method: 'POST',
@@ -82,6 +96,7 @@ window.submitFormData = async () => {
             if (res.ok) {
                 console.log('Form data submitted successfully!');
                 alert(`Thêm học sinh vào lớp học thành công`);
+                return res.json();
             }
             return res.json().then(text => {throw new Error(text.message)});
         });

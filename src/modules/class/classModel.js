@@ -4,9 +4,40 @@ const logger = require('../../config/logging')
 const studentModel = require('../student/studentModel')
 
 class classModel {
+    static async searchCourse(course_id){
+        try {
+            const query = `
+            SELECT DISTINCT course_id
+            FROM course
+            WHERE course_id = $1
+            `;
+            result = await db.query(query, [course_id]);
+            return result.rows;
+
+        } catch (error) {
+            logger.info(error);
+            return [];
+        }
+    }
     static async addClass(classObject) {
         try {
-            // TODO: check if class existed
+            const class_result = await this.searchClass(
+                classObject.class_id,
+                classObject.course_id,
+                classObject.year,
+                classObject.semester
+            )
+            if (class_result.count != 0) {
+                throw new Error('Class already existed');
+            }
+
+            const courseResult = await this.searchCourse(
+                classObject.course_id,
+            )
+            if (courseResult.length == 0 || !courseResult) {
+                throw new Error('Course with id not existed');
+            }
+
             const query = `
             INSERT INTO class (class_id, course_id, year, semester, lecturer, maximum, schedule, room)
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
@@ -34,7 +65,6 @@ class classModel {
             throw new Error(error);
         }
     }
-
     static async updateClass(classObject) {
         try {
             const query = `
@@ -73,8 +103,7 @@ class classModel {
             throw new Error(error);
         }
     }
-
-    static async searchClass(class_id, course_id, year, semester) {
+    static async countClass(class_id, course_id, year, semester) {
         const class_query = `
         SELECT COUNT(DISTINCT (class_id, course_id, year, semester)) 
         FROM class
@@ -94,8 +123,7 @@ class classModel {
 
         return class_result.rows[0];
     }
-
-    static async searchRegister(student_id, class_id, course_id, year, semester) {
+    static async countRegister(student_id, class_id, course_id, year, semester) {
         const existed_query = `
         select COUNT(DISTINCT (student_id, class_id, course_id, year, semester))
         from register_subject
@@ -118,21 +146,20 @@ class classModel {
 
         return subject_result.rows[0];
     }
-
     static async addStudentToClass(studentList, classObject) {
         try {
             for (let i = 0; i < studentList.length; i++) {
                 let student_result = await studentModel.searchStudent(
                     studentList[i].student_id,
                     '',
-                    '' 
+                    ''
                 )
                 if (student_result.length == 0) {
                     throw new Error('Non-existing Student');
                 }
             }
 
-            const class_result = await this.searchClass(
+            const class_result = await this.countClass(
                 classObject.class_id,
                 classObject.course_id,
                 classObject.year,
@@ -145,7 +172,7 @@ class classModel {
 
 
             for (let i = 0; i < studentList.length; i++) {
-                const subject_result = await this.searchRegister(
+                const subject_result = await this.countRegister(
                     studentList[i].student_id,
                     classObject.class_id,
                     classObject.course_id,
@@ -183,7 +210,6 @@ class classModel {
             throw new Error(error);
         }
     }
-
     static async updateStudentInClass(studentList, classObject) {
         try {
             const query = `
@@ -265,6 +291,26 @@ class classModel {
             logger.error("Error get Year in classModel:", error);
             throw new Error(error);
         }
+    }
+    static async getClasses(){
+        try {
+            const query = `
+            SELECT DISTINCT class_id 
+            FROM class
+            `;
+            const result = await db.query(query);
+            if (result.rows.length > 0) {
+                logger.info("getClasses executed successfully in classModel");
+                logger.info(result.rows);
+                return result.rows;
+            }
+            return [];
+        }
+        catch (error) {
+            logger.error("Error get Classes in classModel:", error);
+            throw new Error(error);
+        }
+
     }
 }
 
