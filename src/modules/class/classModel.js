@@ -1,10 +1,12 @@
 // const {query} = require ('express');
 const db = require('../../config/db');
 const logger = require('../../config/logging')
+const studentModel = require('../student/studentModel')
 
-class emailModel {
+class classModel {
     static async addClass(classObject) {
         try {
+            // TODO: check if class existed
             const query = `
             INSERT INTO class (class_id, course_id, year, semester, lecturer, maximum, schedule, room)
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
@@ -28,8 +30,8 @@ class emailModel {
             return null;
         }
         catch (error) {
-            logger.error("Error add Class in classModel:", error.message);
-            throw new Error(error.message);
+            logger.error("Error add Class in classModel:", error);
+            throw new Error(error);
         }
     }
 
@@ -67,21 +69,103 @@ class emailModel {
             return null;
         }
         catch (error) {
-            logger.error("Error update Class in classModel:", error.message);
-            throw new Error(error.message);
+            logger.error("Error update Class in classModel:", error);
+            throw new Error(error);
         }
+    }
+
+    static async searchClass(class_id, course_id, year, semester) {
+        const class_query = `
+        SELECT COUNT(DISTINCT (class_id, course_id, year, semester)) 
+        FROM class
+        WHERE 
+            class_id = $1 AND
+            course_id = $2 AND
+            year = $3 AND
+            semester = $4
+        `;
+
+        let class_result = await db.query(class_query, [
+            class_id,
+            course_id,
+            year,
+            semester
+        ]);
+
+        return class_result.rows[0];
+    }
+
+    static async searchRegister(student_id, class_id, course_id, year, semester) {
+        const existed_query = `
+        select COUNT(DISTINCT (student_id, class_id, course_id, year, semester))
+        from register_subject
+        WHERE 
+            student_id = $1 AND
+            class_id = $2 AND
+            course_id = $3 AND
+            year = $4 AND
+            semester = $5
+        `;
+
+        const subject_result = await db.query(existed_query, [
+            student_id,
+            class_id,
+            course_id,
+            year,
+            semester
+        ]);
+
+
+        return subject_result.rows[0];
     }
 
     static async addStudentToClass(studentList, classObject) {
         try {
-            const query = `
-            INSERT INTO resister_subject (student_id, class_id, course_id, year, semester, grade)
-            VALUES ($1, $2, $3, $4, $5, $6)
-            RETURNING *;
-            `;
             for (let i = 0; i < studentList.length; i++) {
-                const result = await db.query(query, [
-                    studentList[i],
+                let student_result = await studentModel.searchStudent(
+                    studentList[i].student_id,
+                    '',
+                    '' 
+                )
+                if (student_result.length == 0) {
+                    throw new Error('Non-existing Student');
+                }
+            }
+
+            const class_result = await this.searchClass(
+                classObject.class_id,
+                classObject.course_id,
+                classObject.year,
+                classObject.semester
+            )
+            console.log(class_result);
+            if (class_result.count == 0) {
+                throw new Error('Class not found');
+            }
+
+
+            for (let i = 0; i < studentList.length; i++) {
+                const subject_result = await this.searchRegister(
+                    studentList[i].student_id,
+                    classObject.class_id,
+                    classObject.course_id,
+                    classObject.year,
+                    classObject.semester
+                )
+                console.log(subject_result);
+                if (subject_result.count != 0) {
+                    throw new Error('Student already register this subject');
+                }
+            }
+
+            const query = `
+            INSERT INTO register_subject (student_id, class_id, course_id, year, semester, grade)
+            VALUES ($1, $2, $3, $4, $5, $6)
+            RETURNING *;`;
+
+            for (let i = 0; i < studentList.length; i++) {
+                let result = await db.query(query, [
+                    studentList[i].student_id,
                     classObject.class_id,
                     classObject.course_id,
                     classObject.year,
@@ -90,18 +174,16 @@ class emailModel {
                 ]);
 
                 if (result.rows.length > 0) {
-                    logger.info("addStudentToClass executed successfully in classModel");
-                    logger.info(result.rows[0]);
                     return result.rows[0];
                 }
             }
             return null;
         }
         catch (error) {
-            logger.error("Error add Student to Class in classModel:", error.message);
-            throw new Error(error.message);
+            throw new Error(error);
         }
     }
+
     static async updateStudentInClass(studentList, classObject) {
         try {
             const query = `
@@ -140,10 +222,50 @@ class emailModel {
             return null;
         }
         catch (error) {
-            logger.error("Error update Student in Class in classModel:", error.message);
-            throw new Error(error.message);
+            logger.error("Error update Student in Class in classModel:", error);
+            throw new Error(error);
+        }
+    }
+    static async getCourses() {
+        try {
+            const query = `
+            SELECT course_id, course_name
+            FROM course
+            ORDER BY course_id;
+            `;
+            const result = await db.query(query);
+            if (result.rows.length > 0) {
+                logger.info("getCourses executed successfully in classModel");
+                logger.info(result.rows);
+                return result.rows;
+            }
+            return null;
+        }
+        catch (error) {
+            logger.error("Error get Courses in classModel:", error);
+            throw new Error(error);
+        }
+    }
+    static async getYear() {
+        try {
+            const query = `
+            SELECT DISTINCT year
+            FROM class
+            ORDER BY year;
+            `;
+            const result = await db.query(query);
+            if (result.rows.length > 0) {
+                logger.info("getYear executed successfully in classModel");
+                logger.info(result.rows);
+                return result.rows;
+            }
+            return null;
+        }
+        catch (error) {
+            logger.error("Error get Year in classModel:", error);
+            throw new Error(error);
         }
     }
 }
 
-module.exports = emailModel;
+module.exports = classModel;

@@ -1,7 +1,6 @@
 const classModel = require('../class/classModel');
 const logger = require('../../config/logging')
 class classController {
-
     static async classPage(req, res) {
         try {
             logger.info("classPage method got called in classController");
@@ -16,7 +15,6 @@ class classController {
             });
         }
     }
-
     static async addClass(req, res) {
         try {
             logger.info("addClass method got called in classController");
@@ -28,9 +26,10 @@ class classController {
                 });
             }
         } catch (error) {
-            logger.error("Error in addClass:", error.message);
+            logger.error("Error in addClass:", error);
             return res.status(500).json({
-                message: "Failed to add class. Please try again later."
+                message: "Failed to add class. Please try again later.",
+                error: error
             });
         }
     }
@@ -77,10 +76,33 @@ class classController {
                 });
             }
         } catch (error) {
-            logger.error("Error in addStudentToClass:", error.message);
-            return res.status(500).json({
-                message: "Failed to add students to class. Please try again later."
-            });
+            logger.error("Error in addStudentToClass:", error);
+            switch (error.message) {
+                case 'Error: Non-existing Student':
+                    return res.status(409).json({
+                        message: `Students with ID doesn\'t appear in Database`
+                    })
+                    break;
+
+                case 'Error: Class not found':
+                    return res.status(409).json({
+                        message: `Class with corresponding info doens't appear in Database`
+                    })
+                    break;
+
+                case 'Error: Student already register this subject':
+                    return res.status(409).json({
+                        message: `Students with ID already register the corresponding class`
+                    })
+                    break;
+
+                default:
+
+                    return res.status(500).json({
+                        message: "Failed to add students to class. Please try again later."
+                    });
+                    break;
+            }
         }
     }
     static async updateStudentInClass(req, res) {
@@ -98,6 +120,39 @@ class classController {
             logger.error("Error in updateStudentInClass:", error.message);
             return res.status(500).json({
                 message: "Failed to update students in class. Please try again later."
+            });
+        }
+    }
+    static async getCourses(req, res) {
+        try {
+            logger.info("getCourses method got called in ClassController");
+            const courses = await classModel.getCourses();
+            if (courses) {
+                return res.status(200).json({
+                    courses: courses
+                });
+            }
+        } catch (error) {
+            logger.error("Error in getCourses:", error.message);
+            return res.status(500).json({
+                message: "Failed to get courses. Please try again later."
+            });
+        }
+    }
+    static async getYear(req, res) {
+        try {
+            logger.info("getYear method got called in ClassController");
+            const yearTerm = await classModel.getYear();
+            logger.info(yearTerm);
+            if (yearTerm) {
+                return res.status(200).json({
+                    terms: yearTerm
+                });
+            }
+        } catch (error) {
+            logger.error("Error in getYear controller:", error);
+            return res.status(500).json({
+                message: "Failed to get year. Please try again later."
             });
         }
     }

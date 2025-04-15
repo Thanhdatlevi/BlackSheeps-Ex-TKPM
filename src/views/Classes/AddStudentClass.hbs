@@ -7,70 +7,30 @@
     <!-- <button type="submit" class="bg-blue-500 text-white p-2 rounded w-full">Thêm sinh viên</button> -->
     <!-- Thông tin cơ bản -->
     <div class="mb-4 space-y-4">
-        <!-- <input type="text" id="id" name="mssv" placeholder="Mã số sinh viên" required class="p-2 border rounded w-full mb-2"> -->
+        <input type="text" id="student_id" name="student_id" placeholder="MSSV" required
+            class="p-2 border rounded w-full mb-2">
+
         <input type="text" id="class_id" name="class_id" placeholder="Mã lớp học" required
             class="p-2 border rounded w-full mb-2">
 
         <select id="course_id" name="course_id" required class="p-2 border rounded w-full mb-2">
             <option value="">Chọn khóa học</option>
-            <!-- Các option sẽ được load từ database -->
         </select>
 
-        <input type="text" id="lecturer" name="lecturer" placeholder="Họ tên giảng viên" required
-            class="p-2 border rounded w-full mb-2">
+        <select id="year" name="year" required class="p-2 border rounded w-full mb-2">
+            <option value="">Chọn năm học</option>
+        </select>
 
+        <select class="p-2 border rounded w-full mb-2 max-w-28 mx-auto" id="semester" name="semester">
+            <option value="">Học kì</option>
+            <option value="1">I</option>
+            <option value="2">II</option>
+        </select>
 
-        <div class="mb-4 flex flex-row justify-center items-center">
-            <input type="number" name="year" id="year" placeholder="Năm học" required
-                class="p-2 border rounded w-full mb-2">
-
-            <input type="number" name="year" id="year_2" placeholder="Năm kết thúc" required
-                class="p-2 border rounded w-full mb-2">
-        </div>
-
-        <input type="number" name="semester" value="" id="semester" placeholder="Học kì" required
-            class="p-2 border rounded w-full mb-2">
-
-
-        <input type="text" id="room" name="room" placeholder="Phòng học" required
-            class="p-2 border rounded w-full mb-2">
-
-        <input type="number" id="maximum" name="maximum" placeholder="Số lượng sinh viên tối đa" required
-            class="p-2 border rounded w-full mb-2">
-
-
-        <div class="mb-4 flex flex-row justify-center items-center space-x-9">
-            <label for="schedule2" class="block text-sm font-medium mb-1">T2</label>
-            <label for="schedule3" class="block text-sm font-medium mb-1">T3</label>
-            <label for="schedule4" class="block text-sm font-medium mb-1">T4</label>
-            <label for="schedule5" class="block text-sm font-medium mb-1">T5</label>
-            <label for="schedule6" class="block text-sm font-medium mb-1">T6</label>
-            <label for="schedule7" class="block text-sm font-medium mb-1">T7</label>
-        </div>
-
-        <div class="mb-4 flex flex-row justify-center items-center space-x-10" id="schedule_div">
-            <input type="checkbox" id="schedule2" name="schedule2" class="">
-            <input type="checkbox" id="schedule3" name="schedule3" class="">
-            <input type="checkbox" id="schedule4" name="schedule4" class="">
-            <input type="checkbox" id="schedule5" name="schedule5" class="">
-            <input type="checkbox" id="schedule6" name="schedule6" class="">
-            <input type="checkbox" id="schedule7" name="schedule7" class="">
-        </div>
-
-        <div class="mb-4 flex flex-row justify-center items-center">
-            <label for="time" class="block text-sm font-medium mb-1 mr-24">Giờ bắt đầu</label>
-            <label for="time_2" class="block text-sm font-medium mb-1 ml-24">Giờ kết thúc</label>
-        </div>
-
-        <div class="mb-4 flex flex-row justify-center items-center">
-            <input type="time" name="time" id="time" placeholder="Thời gian học" required
-                class="p-2 border rounded w-full mb-2 max-w-28 mx-20">
-
-            <input type="time" name="time" id="time_2" placeholder="Thời gian kết thúc" required
-                class="p-2 border rounded w-full mb-2 max-w-28 mx-20">
-        </div>
-
-        <button type="submit" class="bg-blue-500 text-white p-2 rounded w-full">Thêm lớp học</button>
+        <button type="submit" class="bg-blue-500 text-white p-2 rounded w-full" onclick="submitFormData()">Thêm lớp học</button>
     </div>
 
 </div>
+
+<script src="/js/addStudentClass.js"></script>
+    
