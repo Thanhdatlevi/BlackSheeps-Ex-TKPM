@@ -25,6 +25,8 @@
   "scripts": {
     "start": "node app.js",
     "start:dev": "concurrently \"npm run build:css\" \"nodemon app.js\"",
-    "build:css": "npx tailwindcss -i ./src/public/css/input.css -o ./src/public/css/output.css --watch"
+    "build:css": "npx tailwindcss -i ./src/public/css/input.css -o ./src/public/css/output.css --watch",
+    "test": "npx jest",
+    "migrate:test": "DB_CONFIG=test npx knex migrate:latest"
   }
 }

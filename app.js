@@ -45,6 +45,13 @@ app.use('/registration', registrationRoutes);
 app.use('/', gradeRoutes);
 app.use('/', classRoutes);
 
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-});
+function areWeTestingWithJest() {
+    return process.env.JEST_WORKER_ID !== undefined;
+}
+if (!areWeTestingWithJest()) {
+    app.listen(PORT, () => {
+        console.log(`Server is running on http://localhost:${PORT}`);
+    });
+}
+
+module.exports = app;

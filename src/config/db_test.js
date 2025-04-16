@@ -7,7 +7,6 @@ const pool = new Pool({
     database: process.env.DB_NAME_TEST,
     password: process.env.DB_PASSWORD_TEST,
     port: process.env.DB_PORT_TEST,
-    ssl: { rejectUnauthorized: false },
     max: 200,
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 20000,
@@ -16,4 +15,5 @@ const pool = new Pool({
 module.exports = {
     query: (text, params) => pool.query(text, params),
     connect: () => pool.connect(),
+    disconnect: () => pool.end(),
 };

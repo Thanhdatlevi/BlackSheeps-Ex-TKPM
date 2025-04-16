@@ -1,16 +1,40 @@
 require('dotenv').config();
 
+const prod_conn = {
+    user: process.env.DB_USER,
+    host: process.env.DB_HOST,
+    database: process.env.DB_NAME,
+    password: process.env.DB_PASSWORD,
+    port: process.env.DB_PORT,
+    ssl: { rejectUnauthorized: false },
+};
+const test_conn = {
+    user: process.env.DB_USER_TEST,
+    host: process.env.DB_HOST_TEST,
+    database: process.env.DB_NAME_TEST,
+    password: process.env.DB_PASSWORD_TEST,
+    port: process.env.DB_PORT_TEST,
+};
+let conn;
+
+function areWeTestingWithJest() {
+    return process.env.JEST_WORKER_ID !== undefined;
+}
+function areWeUsingTestDB(){
+    return process.env.DB_CONFIG !== undefined;
+}
+if(areWeTestingWithJest() || areWeUsingTestDB()){
+    console.log('knex testing database');
+    conn = test_conn;
+}
+else {
+    conn = prod_conn;
+}
+
 module.exports = {
   development: {
     client: 'pg',
-    connection: {
-      host: process.env.DB_HOST,
-      user: process.env.DB_USER,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_NAME,
-      port: process.env.DB_PORT,
-      ssl: { rejectUnauthorized: false }
-    },
+    connection: conn,
     migrations: {
       directory: './migrations'
     },
