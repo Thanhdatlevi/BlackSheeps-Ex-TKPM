@@ -18,11 +18,9 @@ class studentController {
     static async addPage(req, res) {
         try {
             logger.info("addPage method got called in studentController");
-            const emailDomains = await emailModel.getAllEmails();
             res.render('add', {
                 layout: 'main',
                 title: 'Add Student Page',
-                allowedDomains: emailDomains.map(domain => domain.email_domain)
             });
         } catch (error) {
             logger.error("Error in addStudentController:", error.message);
