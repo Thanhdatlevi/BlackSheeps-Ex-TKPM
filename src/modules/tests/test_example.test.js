@@ -3,16 +3,7 @@ const app = require('../../../app');  // Import the app
 const db = require('../../config/db');
 const logger = require('../../config/logging');
 
-// jest.mock('../databaseInit', () => ({
-//     db : jest.fn().mockImplementation(() => {
-//         const sqlite3 = require('sqlite3');
-//         const db = new sqlite3.Database(':memory:'); // Create an in-memory DB for testing
-//         return db;
-//     })
-// }))
-// console.log(typeof db)
-
-PORT = 3001;
+PORT = 3000;
 let server;
 
 beforeAll(async () => {
@@ -21,12 +12,12 @@ beforeAll(async () => {
     SELECT current_database();
     `;
     result = await db.query(check_db_query, []);
-    if (result.rows[0].current_database != 'blacksheep_test') {
+    if (result.rows[0].current_database != 'db_test') {
         throw new Error('Not the testing database! abort immediately');
     }
     else {
         const { exec } = require("child_process");
-        exec("NODE_ENV=development npm run migrate:test", (err, stdout, stderr) => {
+        exec("cross-env NODE_ENV=development npm run migrate:test", (err, stdout, stderr) => {
             if (err) {
                 console.error();
                 console.error("Error:");
