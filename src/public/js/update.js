@@ -1,7 +1,10 @@
-document.addEventListener("DOMContentLoaded", async function () {
+document.addEventListener("DOMContentLoaded", async function() {
     const facultySelect = document.getElementById("faculty");
     const programSelect = document.getElementById("education_program");
     const statusSelect = document.getElementById("student_status");
+
+    // run once everytime this page load 
+    grayCheckBox();
 
     try {
         // Gọi từng API riêng biệt
@@ -52,7 +55,7 @@ async function fetchStatuses() {
 
 // Hàm render options vào select
 function renderOptions(selectElement, data) {
-    selectElement.innerHTML = data.map(item => `<option value="${item.faculty_name||item.program_name||item.status_name}">${item.faculty_name||item.program_name||item.status_name}</option>`).join('');
+    selectElement.innerHTML = data.map(item => `<option value="${item.faculty_name || item.program_name || item.status_name}">${item.faculty_name || item.program_name || item.status_name}</option>`).join('');
 }
 
 window.grayCheckBox = async () => {
@@ -67,6 +70,7 @@ window.grayCheckBox = async () => {
     }
 
     if (value !== "passport") {
+        document.getElementById('issue_country').value = '';
         document.getElementById('issue_country').disabled = "disabled"
         document.getElementById('issue_country').classList.add('bg-gray-100')
     }
@@ -75,8 +79,6 @@ window.grayCheckBox = async () => {
         document.getElementById('issue_country').classList.remove('bg-gray-100')
     }
 }
-// run once everytime this page load 
-grayCheckBox();
 
 window.queryStudentIdentification = async (id) => {
     mssv = document.getElementById(id).value;
@@ -89,7 +91,6 @@ window.queryStudentIdentification = async (id) => {
         method: "GET",
         headers: { "Content-Type": "application/json" },
     })
-
 
     data = await result.json();
 
@@ -230,7 +231,7 @@ window.updateStudent = async () => {
         body: JSON.stringify(information)
     })
 
-    if (!response.ok) { 
+    if (!response.ok) {
         // Lấy chi tiết lỗi từ API nếu có
         const errorData = await response.json();
         alert(errorData.message);

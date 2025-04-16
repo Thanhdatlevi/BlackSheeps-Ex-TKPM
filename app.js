@@ -20,7 +20,7 @@ const emailRoutes = require('./src/routes/emailDomainRoutes');
 const registrationRoutes = require('./src/routes/registerSubjectRoutes');
 const gradeRoutes = require('./src/routes/gradeRoutes');
 const courseRoutes = require('./src/routes/courseRoutes');
-
+const classRoutes = require('./src/routes/classRoutes');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -44,7 +44,15 @@ app.use('/', emailRoutes);
 app.use('/registration', registrationRoutes);
 app.use('/', gradeRoutes);
 app.use('/', courseRoutes);
+app.use('/', classRoutes);
 
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
-});
+function areWeTestingWithJest() {
+    return process.env.JEST_WORKER_ID !== undefined;
+}
+if (!areWeTestingWithJest()) {
+    app.listen(PORT, () => {
+        console.log(`Server is running on http://localhost:${PORT}`);
+    });
+}
+
+module.exports = app;

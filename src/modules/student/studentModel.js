@@ -1,7 +1,7 @@
-const { query } = require("express");
 const db = require("../../config/db");
 const logger = require("../../config/logging");
-const { updateStudent } = require("./studentController");
+// const { query } = require("express");
+// const { updateStudent } = require("./studentController");
 
 class studentModel {
     static async searchStudent(mssv, name, khoa) {
