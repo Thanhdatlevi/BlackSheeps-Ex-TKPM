@@ -218,7 +218,50 @@ describe('add Course API', () => {
         
         return;
     });
+    // Test 5: Check special characters in course name and description
+    it('should handle special characters in course name and description', async () => {
+        // Setup: Insert faculty first
+        await db.query(insert_faculty_query, [
+            faculty.faculty_id,
+            faculty.faculty_name
+        ]);
 
+        // Course with special characters
+        const specialCharCourse = {
+            courseCode: 'CS506',
+            courseName: 'SQL Injection & Security: "Test"; DROP TABLE students;--',
+            credits: 3,
+            faculty: 1,
+            description: '<script>alert("XSS Attack")</script> & Other security concerns. Symbols like ®™©€£¥§±×÷%',
+            prerequisite: null,
+            time_create: '2025-04-17 15:30:45.123+07:00'
+        };
+
+        // Test: Add course with special characters
+        const response = await request(app)
+            .post('/addCourse')
+            .send(specialCharCourse)
+            .expect(201);
+
+        // Verify response
+        expect(response.body.success).toBe(true);
+        expect(response.body.course.course_id).toBe(specialCharCourse.courseCode);
+        
+        // Verify correct storage in database
+        const find_course = await db.query(find_course_query, [specialCharCourse.courseCode]);
+        expect(find_course.rows[0].course_id).toBe(specialCharCourse.courseCode);
+        
+        // Verify special characters were stored correctly
+        // Exact match with original strings
+        expect(find_course.rows[0].course_name).toBe(specialCharCourse.courseName);
+        expect(find_course.rows[0].description).toBe(specialCharCourse.description);
+        
+        // Additional check - character counts should match
+        expect(find_course.rows[0].course_name.length).toBe(specialCharCourse.courseName.length);
+        expect(find_course.rows[0].description.length).toBe(specialCharCourse.description.length);
+        
+        return;
+    });
     
     
 });
