@@ -43,8 +43,16 @@ class registrationModel{
 
     static async deleteRegistration(registration) {
         try {
+            // Kiểm tra xem tất cả các trường bắt buộc có tồn tại trong registration không
             const { student_id, class_id, course_id, year, semester } = registration;
-            console.log(student_id, class_id, course_id, year, semester)
+            if (!student_id || !class_id || !course_id || !year || !semester) {
+                logger.warn("Missing required fields.");
+                return { success: false, message: "Thiếu thông tin đăng ký, vui lòng kiểm tra lại." };
+            }
+    
+            console.log(student_id, class_id, course_id, year, semester);
+    
+            // Kiểm tra đăng ký có tồn tại hay không
             const checkQuery = `
                 SELECT * FROM public.register_subject
                 WHERE student_id = $1 AND class_id = $2 AND course_id = $3 AND year = $4 AND semester = $5;
@@ -56,6 +64,7 @@ class registrationModel{
                 return { success: false, message: "Không tìm thấy đăng ký để xóa." };
             }
     
+            // Lưu thông tin đăng ký vào bảng sao lưu trước khi xóa
             const insertQuery = `
                 INSERT INTO public.delete_register (student_id, class_id, course_id, year, semester, delete_time)
                 VALUES ($1, $2, $3, $4, $5, NOW())
@@ -68,6 +77,7 @@ class registrationModel{
                 return { success: false, message: "Lỗi khi sao lưu dữ liệu trước khi xóa." };
             }
     
+            // Thực hiện xóa đăng ký
             const deleteQuery = `
                 DELETE FROM public.register_subject
                 WHERE student_id = $1 AND class_id = $2 AND course_id = $3 AND year = $4 AND semester = $5
@@ -88,8 +98,9 @@ class registrationModel{
             }
         } catch (error) {
             logger.error("Error deleting registration:", error.message);
-            throw new Error(error.message);
+            throw new Error("Lỗi khi xóa đăng ký: " + error.message);
         }
     }
+    
 }
 module.exports = registrationModel;

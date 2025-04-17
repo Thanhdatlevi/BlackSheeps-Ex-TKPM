@@ -31,35 +31,47 @@ class registrationController {
         }
     }
 
-    static async deleteRegistration(req,res){
+    static async deleteRegistration(req, res) {
         try {
             logger.info("deleteRegistration method got called in registrationController");
             const registration = req.body;
-            const deletedRegistration = await registrationModel.deleteRegistration(registration);
-            if (deletedRegistration){
-                return res.status(200).json(
-                    {
-                        success: true,
-                        message: "Delete Registration succcessfully",
-                        registration: deletedRegistration.deletedRegistration
-                    }
-                );
-            } else {
-                logger.warn("Failed to Delete Registration. Please try again later.");
-                return res.status(500).json(
-                    {
-                        message: "Failed to Delete Registration. Please try again later."
-                    }
-                );
+    
+            // Kiểm tra nếu thiếu thông tin
+            if (!registration.student_id || !registration.class_id || !registration.course_id || !registration.year || !registration.semester) {
+                logger.warn("Missing required fields in the request.");
+                return res.status(500).json({
+                    success: false,
+                    message: "Failed: Thiếu thông tin đăng ký, vui lòng kiểm tra lại."
+                });
             }
-        }
-        catch (error){
+    
+            // Gọi model để xóa đăng ký
+            const deletedRegistration = await registrationModel.deleteRegistration(registration);
+    
+            // Nếu không tìm thấy đăng ký
+            if (!deletedRegistration.success) {
+                return res.status(500).json({
+                    success: false,
+                    message: "Failed: Không tìm thấy đăng ký để xóa."
+                });
+            }
+    
+            // Xóa thành công
+            return res.status(200).json({
+                success: true,
+                message: "Xóa đăng ký thành công.",
+                registration: deletedRegistration.deletedRegistration
+            });
+    
+        } catch (error) {
             logger.error("Error in Delete RegistrationController:", error);
             return res.status(500).json({
-                message: "Failed to delete registration of user. Please try again later."
+                message: "Failed: Lỗi khi xóa đăng ký. Vui lòng thử lại sau."
             });
         }
     }
+    
+    
 }
 
 module.exports = registrationController;

@@ -106,8 +106,9 @@ class studentController {
         try {
             logger.info("deleteStudent method got called in studentController");
             const { mssv } = req.body;
+            console.log(mssv);
             const checkStudent = await studentModel.searchStudent(mssv);
-
+            console.log(checkStudent);
             if (checkStudent.length === 0) {
                 logger.warn("StudentID not exists when deleting");
                 return res.status(404).json({ message: "Mã số sinh viên không tồn tại!" });
@@ -117,7 +118,7 @@ class studentController {
 
             await studentModel.deleteStudent(mssv);
 
-            return res.json({ message: "Xóa thành công!", deletedStudent });
+            return res.status(200).json({ message: "Xóa thành công!", deletedStudent });
         } catch (error) {
             logger.error("Error in deleteStudentController:", error.message);
             return res.status(500).json({
@@ -148,9 +149,10 @@ class studentController {
         try {
             logger.info("searchStudent method got called in studentController");
             let { mssv, name, khoa } = req.query;
-
+            console.log(mssv, name, khoa );
             // Lấy danh sách sinh viên
             let students = await studentModel.searchStudent(mssv, name, khoa);
+            console.log(students);
             if (!students || students.length === 0) {
                 logger.error("No students found");
                 return res.status(404).json({ message: 'No students found' });

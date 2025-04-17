@@ -14,7 +14,7 @@ const test_conn = {
     database: process.env.DB_NAME_TEST,
     password: process.env.DB_PASSWORD,
     port: process.env.DB_PORT,
-    ssl: { rejectUnauthorized: false }
+    ssl: { rejectUnauthorized: false },
 };
 let conn;
 

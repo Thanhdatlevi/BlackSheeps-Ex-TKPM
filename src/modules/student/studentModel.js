@@ -20,9 +20,9 @@ class studentModel {
                 ep.program_name as education_program,
                 ss.status_name as student_status
             FROM public.students s 
-            JOIN faculties f ON f.faculty_id = s.faculty
-            JOIN education_programs ep ON ep.program_id = s.education_program
-            JOIN student_status ss ON ss.status_id = s.student_status
+            LEFT JOIN faculties f ON f.faculty_id = s.faculty
+            LEFT JOIN education_programs ep ON ep.program_id = s.education_program
+            LEFT JOIN student_status ss ON ss.status_id = s.student_status
             WHERE 
                 ($1::TEXT IS NULL OR s.student_id::TEXT = $1::TEXT) 
                 AND ($2::TEXT IS NULL OR s.full_name ILIKE '%' || $2::TEXT || '%')

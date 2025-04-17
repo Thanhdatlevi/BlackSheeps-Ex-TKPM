@@ -1,27 +1,48 @@
 // const {query} = require ('express');
 const db = require('../../config/db');
-const logger = require('../../config/logging')
+const logger = require('../../config/logging');
+const { search } = require('../../routes/classRoutes');
 const studentModel = require('../student/studentModel')
 
 class classModel {
     static async searchCourse(course_id){
         try {
-            const query = `
-            SELECT DISTINCT course_id
-            FROM course
-            WHERE course_id = $1
+            const course_query = `
+                SELECT * FROM course WHERE course_id = $1;
             `;
-            result = await db.query(query, [course_id]);
-            return result.rows;
-
+            let course_result = await db.query(course_query, [course_id]);
+            console.log(course_result.rows);
+            return course_result.rows;
         } catch (error) {
             logger.info(error);
             return [];
         }
     }
+    static async searchYear(year, semester) {
+        try {
+            const year_query = `
+                SELECT * FROM term WHERE year = $1 AND semester = $2;
+            `;
+            let search_year_result = await db.query(year_query , [year, semester]);
+            console.log(search_year_result.rows);
+            return search_year_result.rows;
+        } catch (error) {
+            logger.error(error);
+            return [];
+        }
+    }
     static async addClass(classObject) {
         try {
-            const class_result = await this.searchClass(
+            // TODO: check for year term 
+            // Error: Year Term not found
+            const year_result = await this.searchYear(
+                classObject.year,
+                classObject.semester
+            )
+            if (year_result.length == 0) {
+                throw new Error('Year Term not found');
+            }
+            const class_result = await this.countClass(
                 classObject.class_id,
                 classObject.course_id,
                 classObject.year,
@@ -34,7 +55,7 @@ class classModel {
             const courseResult = await this.searchCourse(
                 classObject.course_id,
             )
-            if (courseResult.length == 0 || !courseResult) {
+            if (courseResult.length == 0) {
                 throw new Error('Course with id not existed');
             }
 
@@ -276,7 +297,7 @@ class classModel {
         try {
             const query = `
             SELECT DISTINCT year
-            FROM class
+            FROM term
             ORDER BY year;
             `;
             const result = await db.query(query);
