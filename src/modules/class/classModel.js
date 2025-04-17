@@ -1,6 +1,7 @@
 // const {query} = require ('express');
 const db = require('../../config/db');
-const logger = require('../../config/logging')
+const logger = require('../../config/logging');
+const { search } = require('../../routes/classRoutes');
 const studentModel = require('../student/studentModel')
 
 class classModel {
@@ -19,14 +20,14 @@ class classModel {
     }
     static async searchYear(year, semester) {
         try {
-            const query = `
+            const year_query = `
                 SELECT * FROM term WHERE year = $1 AND semester = $2;
             `;
-            result = await db.query(query, [year, semester]);
-            return result.rows;
-
+            let search_year_result = await db.query(year_query , [year, semester]);
+            console.log(search_year_result.rows);
+            return search_year_result.rows;
         } catch (error) {
-            logger.info(error);
+            logger.error(error);
             return [];
         }
     }

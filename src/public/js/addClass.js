@@ -62,7 +62,7 @@ async function getInputValues() {
     return formData;
 }
 window.submitFormData = async () => {
-    const formData = await getInputValues();
+    let formData = await getInputValues();
 
     let result = '';
     for (let day in formData.schedule) {
@@ -98,17 +98,17 @@ window.submitFormData = async () => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(formData)
+        }).then(res => {
+            if (res.ok) {
+                console.log('Form data submitted successfully!');
+                alert(`Thêm lớp học thành công`);
+                return res.json();
+            }
+            return res.json().then(text => {throw new Error(text.message)});
         });
-        if (response.status == 200) {
-            console.log('Form data submitted successfully!');
-            // Optionally, you can redirect or show a success message
-        } else {
-            console.error('Failed to submit form data:', response.statusText);
-            alert(`Lỗi khi thêm lớp học: ${response.message}`);
-        }
     } catch (error) {
-        console.error('Error submitting form data:', error);
-        alert('Lỗi khi thêm lớp học');
+        console.error('Error submitting form data:', error.message);
+        alert(`Lỗi khi thêm lớp học:\n${error.message}`);
     }
 }
 
