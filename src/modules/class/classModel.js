@@ -7,12 +7,12 @@ const studentModel = require('../student/studentModel')
 class classModel {
     static async searchCourse(course_id){
         try {
-            const query = `
+            const course_query = `
                 SELECT * FROM course WHERE course_id = $1;
             `;
-            result = await db.query(query, [course_id]);
-            return result.rows;
-
+            let course_result = await db.query(course_query, [course_id]);
+            console.log(course_result.rows);
+            return course_result.rows;
         } catch (error) {
             logger.info(error);
             return [];
