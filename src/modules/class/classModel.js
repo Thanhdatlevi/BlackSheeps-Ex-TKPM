@@ -295,7 +295,7 @@ class classModel {
         try {
             const query = `
             SELECT DISTINCT year
-            FROM class
+            FROM term
             ORDER BY year;
             `;
             const result = await db.query(query);
