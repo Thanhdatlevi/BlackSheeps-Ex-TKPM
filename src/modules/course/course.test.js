@@ -103,6 +103,37 @@ describe('add Course API', () => {
         
         return;
     });
+    // Test 2: Attempting to add a course with a duplicate ID
+    it('should return error when adding a course with duplicate ID', async () => {
+        // Setup: Insert faculty and the first course
+        await db.query(insert_faculty_query, [
+            faculty.faculty_id,
+            faculty.faculty_name
+        ]);
 
+        // Add the first course
+        await request(app)
+            .post('/addCourse')
+            .send(course)
+            .expect(201);
+
+        // Test: Try to add another course with the same ID
+        const duplicateCourse = {
+            ...course,
+            courseName: 'Different Name But Same ID'
+        };
+
+        const response = await request(app)
+            .post('/addCourse')
+            .send(duplicateCourse)
+            .expect(500); // Expecting error status
+
+        // The exact error message may depend on your implementation
+        expect(response.body.message).toBeTruthy();
+        
+        return;
+    });
+
+    
     
 });
