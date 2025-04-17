@@ -133,6 +133,33 @@ describe('add Course API', () => {
         
         return;
     });
+        // Test 3: Attempting to add a course with missing required fields
+    it('should return error when required fields are missing', async () => {
+        // Setup: Insert faculty
+        await db.query(insert_faculty_query, [
+            faculty.faculty_id,
+            faculty.faculty_name
+        ]);
+
+        // Test: Missing courseName
+        const invalidCourse = {
+            courseCode: 'CS502',
+            credits: 3,
+            faculty: 1,
+            description: 'Missing course name test',
+            prerequisite: null,
+            time_create: '2025-04-17 15:30:45.123+07:00'
+        };
+
+        const response = await request(app)
+            .post('/addCourse')
+            .send(invalidCourse)
+            .expect(500); // Expecting error status
+
+        expect(response.body.message).toBeTruthy();
+        
+        return;
+    });
 
     
     
