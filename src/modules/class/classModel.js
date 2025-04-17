@@ -7,9 +7,7 @@ class classModel {
     static async searchCourse(course_id){
         try {
             const query = `
-            SELECT DISTINCT course_id
-            FROM course
-            WHERE course_id = $1
+                SELECT * FROM course WHERE course_id = $1;
             `;
             result = await db.query(query, [course_id]);
             return result.rows;
@@ -19,9 +17,30 @@ class classModel {
             return [];
         }
     }
+    static async searchYear(year) {
+        try {
+            const query = `
+                SELECT * FROM term WHERE year = $1;
+            `;
+            result = await db.query(query, [year]);
+            return result.rows;
+
+        } catch (error) {
+            logger.info(error);
+            return [];
+        }
+    }
     static async addClass(classObject) {
         try {
-            const class_result = await this.searchClass(
+            // TODO: check for year term 
+            // Error: Year Term not found
+            const year_result = await this.searchYear(
+                classObject.year
+            )
+            if (year_result.length == 0) {
+                throw new Error('Year Term not found');
+            }
+            const class_result = await this.countClass(
                 classObject.class_id,
                 classObject.course_id,
                 classObject.year,
@@ -34,7 +53,7 @@ class classModel {
             const courseResult = await this.searchCourse(
                 classObject.course_id,
             )
-            if (courseResult.length == 0 || !courseResult) {
+            if (courseResult.length == 0) {
                 throw new Error('Course with id not existed');
             }
 

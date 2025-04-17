@@ -19,6 +19,7 @@ class classController {
         try {
             logger.info("addClass method got called in classController");
             const classObject = req.body;
+            console.log(classObject);
             const result = await classModel.addClass(classObject);
             if (result) {
                 return res.status(200).json({
@@ -26,11 +27,31 @@ class classController {
                 });
             }
         } catch (error) {
-            logger.error("Error in addClass:", error);
-            return res.status(500).json({
-                message: "Failed to add class. Please try again later.",
-                error: error
-            });
+            switch (error.message) {
+                case 'Error: Course with id not existed':
+                    return res.status(409).json({
+                        message: `Course with id doesn\'t appear in Database`
+                    })
+                    break;
+
+                case 'Error: Class already existed':
+                    return res.status(409).json({
+                        message: `Class with corresponding info already existed in Database`
+                    })
+                    break;
+
+                case 'Error: Year Term not found':
+                    return res.status(409).json({
+                        message: `Year Term not found`
+                    })
+                    break;
+
+                default:
+                    return res.status(500).json({
+                        message: "Failed to add class. Please try again later."
+                    });
+                    break;
+            }
         }
     }
     static async updateClass(req, res) {
