@@ -9,11 +9,12 @@ const prod_conn = {
     ssl: { rejectUnauthorized: false },
 };
 const test_conn = {
-    user: process.env.DB_USER_TEST,
-    host: process.env.DB_HOST_TEST,
+    user: process.env.DB_USER,
+    host: process.env.DB_HOST,
     database: process.env.DB_NAME_TEST,
-    password: process.env.DB_PASSWORD_TEST,
-    port: process.env.DB_PORT_TEST,
+    password: process.env.DB_PASSWORD,
+    port: process.env.DB_PORT,
+    ssl: { rejectUnauthorized: false },
 };
 let conn;
 

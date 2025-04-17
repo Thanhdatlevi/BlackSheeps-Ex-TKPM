@@ -7,6 +7,7 @@ const pool = new Pool({
     database: process.env.DB_NAME_TEST,
     password: process.env.DB_PASSWORD,
     port: process.env.DB_PORT,
+    ssl: { rejectUnauthorized: false },
     max: 200,
     idleTimeoutMillis: 30000,
     connectionTimeoutMillis: 20000,
