@@ -1,10 +1,11 @@
+// test for class modules 
 const request = require('supertest');
 const app = require('../../../app');  // Import the app
 const db = require('../../config/db');
 const logger = require('../../config/logging');
 
 PORT = 3000;
-// let server;
+let server;
 
 beforeAll(async () => {
     // Set up the database before tests (create device table)
@@ -72,5 +73,4 @@ describe('update student API', () => {
         return;
     });
 });
-
 
