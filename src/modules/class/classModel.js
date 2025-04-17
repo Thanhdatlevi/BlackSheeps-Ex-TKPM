@@ -17,12 +17,12 @@ class classModel {
             return [];
         }
     }
-    static async searchYear(year) {
+    static async searchYear(year, semester) {
         try {
             const query = `
-                SELECT * FROM term WHERE year = $1;
+                SELECT * FROM term WHERE year = $1 AND semester = $2;
             `;
-            result = await db.query(query, [year]);
+            result = await db.query(query, [year, semester]);
             return result.rows;
 
         } catch (error) {
@@ -35,7 +35,8 @@ class classModel {
             // TODO: check for year term 
             // Error: Year Term not found
             const year_result = await this.searchYear(
-                classObject.year
+                classObject.year,
+                classObject.semester
             )
             if (year_result.length == 0) {
                 throw new Error('Year Term not found');
