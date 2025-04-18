@@ -322,9 +322,9 @@ Khi có nhu cầu, giáo vụ có thể tiến hành in bảng điểm cho sinh 
 ### Chức năng thêm khóa học:
 Khi muốn tạo 1 khóa học mới cho sinh viên có thể đăng ký học tập, giáo vụ sẽ vào phần **Quản lý khóa học** => **Thêm khóa học**.
 ![image](https://github.com/user-attachments/assets/8f00c45f-bf7d-4682-93cf-3269b5cb4b71)
-
 Khóa học phải có số tín chỉ hợp lệ (>=2).
 ![image](https://github.com/user-attachments/assets/766d5481-6359-43c4-9e75-fc91b3df85fa)
+
 Khóa học tiên quyết phải tồn tại.
 ![image](https://github.com/user-attachments/assets/92755898-7bad-4bfd-b14a-83093ea7b139)
 ### Chức năng xóa khóa học: 
