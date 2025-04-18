@@ -284,5 +284,69 @@ File báo cáo nằm trong folder report
    
 ![Screenshot 2025-04-03 223348](https://github.com/user-attachments/assets/f6f01f50-67ac-40e0-853f-6a5690565cb4)
 
-   
+# Hướng dẫn sử dụng Version 5.0
+
+## Hướng dẫn cài đặt
+```
+
+Bước 1: Cài đặt NodeJS và npm
+
+Bước 2: Clone repo về máy
+
+Bước 3: Chạy npm install để cài đặt node-modules
+
+Bước 4: Tạo file .env và thêm các nội dung có note bên bài txt đã nộp
+```
+## Chạy chương trình
+
+Trong terminal  
+Nếu là môi trường sản phẩm chạy: npm start  
+Nếu là môi trường developer chạy: npm run start:dev 
+
+## Hướng dẫn sử dụng web
+### Chức năng thêm lớp học của giáo vụ: 
+Để mở một lớp của 1 khóa học trong 1 kì cho sinh viên đăng ký, giáo vụ có thể vào phần **Quản lý lớp học** => **Thêm lớp học** và tiến hành điền các trường thông tin cần thiết.
+### Chức năng thêm học sinh vào lớp:
+Sinh viên muốn tham gia 1 khóa học thì phải vào 1 lớp. Giáo vụ sẽ thực hiện đăng ký thủ công cho sinh viên để đảm bảo sinh viên tham gia đúng lớp. Giáo vụ vào phần **Quản lý lớp học** => **Thêm học sinh vào lớp**.
+### Chức năng xóa học sinh khỏi lớp:
+Khi việc đăng ký có sai sót hoặc sinh viên có lý do đặc biệt, giáo vụ có thể tiến hành hủy đăng ký cho sinh viên. Giáo vụ vào phần **Quản lý lớp học** => **Xóa học sinh khỏi lớp**.
+Hệ thống sẽ ghi lại lịch sử hủy đăng ký.
+### Chức năng in bảng điểm cho học sinh:
+Khi có nhu cầu, giáo vụ có thể tiến hành in bảng điểm cho sinh viên ở mục **Xem điểm sinh viên** => **Xuất Excel** .
+### Chức năng thêm khóa học:
+Khi muốn tạo 1 khóa học mới cho sinh viên có thể đăng ký học tập, giáo vụ sẽ vào phần **Quản lý khóa học** => **Thêm khóa học**.
+Khóa học phải có số tín chỉ hợp lệ (>=2).
+Khóa học tiên quyết phải tồn tại.
+### Chức năng xóa khóa học: 
+Khi xảy ra sai sót trong quá trình nhập liệu, Giáo vụ có thể xóa khóa học để sửa lỗi. Giáo vụ có thể vào phần **Quản lý khóa học** => **Chỉnh sửa khóa học** => **Xóa**.
+Chỉ có thể xóa khóa học trong vòng 30 phút sau khi tạo nếu chưa lớp nào được mở cho môn đó.
+Nếu đã được đăng ký thì chỉ có thể sửa trạng thái từ **Active** => **Deactive**
+### Chức năng chỉnh sửa khóa học:
+Nếu trong thông tin khóa học bị sai ở 1 số chỗ nhưng không muốn xóa vì không muốn mất dữ liệu, Giáo vụ sẽ vào phần **Quản lý khóa học** => **Chỉnh sửa khóa học** => **Sửa**.
+Chỉ có thể sửa tín chỉ với các khóa học chưa có lớp đăng ký.
+### Cài đặt unit test
+Viết 23 unit test
+ + Add a student to the class.
+ + Add a class to the database.
+ + Should return 409 error when class already existed.
+ + should return 409 error when course doesn't exist.
+ + Should return 409 error when year doesn't exist.
+ + Adding a course API.
+ + Handling duplicate course ID in add Course API.
+ + Missing required fields in add Course API.
+ + Handling very long course names in add Course API.
+ + Handling special characters in course name and description in add. 
+ + Export grades as an Excel file for valid student_id.
+ + Should return 400 if student_id is missing.
+ + Should return 404 if student exists but has no grades.
+ + Should return 404 if student does not exist.
+ + Delete registration successfully.
+ + Should return 500 if registration does not exist.
+ + Should return 500 if missing required fields.
+ + Should delete a student successfully.
+ + Should return 404 if student does not exist.
+ + Export the student list as an Excel file.
+ + Export the student list as a CSV file.
+ + Should return 404 if no students to export as a CSV file.
+ + Should return 404 if no students to export as a Excel file.
 
