@@ -306,24 +306,40 @@ Nếu là môi trường developer chạy: npm run start:dev
 ## Hướng dẫn sử dụng web
 ### Chức năng thêm lớp học của giáo vụ: 
 Để mở một lớp của 1 khóa học trong 1 kì cho sinh viên đăng ký, giáo vụ có thể vào phần **Quản lý lớp học** => **Thêm lớp học** và tiến hành điền các trường thông tin cần thiết.
+![Screenshot 2025-04-18 072758](https://github.com/user-attachments/assets/0e05488d-bfd8-4c64-893d-bfa294d3f2bb)
 ### Chức năng thêm học sinh vào lớp:
 Sinh viên muốn tham gia 1 khóa học thì phải vào 1 lớp. Giáo vụ sẽ thực hiện đăng ký thủ công cho sinh viên để đảm bảo sinh viên tham gia đúng lớp. Giáo vụ vào phần **Quản lý lớp học** => **Thêm học sinh vào lớp**.
+![Screenshot 2025-04-18 072919](https://github.com/user-attachments/assets/7c8f0040-21a3-4c0d-bbc8-9ba1d929b06d)
 ### Chức năng xóa học sinh khỏi lớp:
 Khi việc đăng ký có sai sót hoặc sinh viên có lý do đặc biệt, giáo vụ có thể tiến hành hủy đăng ký cho sinh viên. Giáo vụ vào phần **Quản lý lớp học** => **Xóa học sinh khỏi lớp**.
+![Screenshot 2025-04-18 073008](https://github.com/user-attachments/assets/d55f1dd3-fe99-4154-a5d3-7712677a1d4f)
+![Screenshot 2025-04-18 073017](https://github.com/user-attachments/assets/fa799b8b-8b7a-4f32-b415-a60621c8ef54)
 Hệ thống sẽ ghi lại lịch sử hủy đăng ký.
+![image](https://github.com/user-attachments/assets/5169f7cc-49c1-43c6-8283-08fda21c2a5e)
 ### Chức năng in bảng điểm cho học sinh:
 Khi có nhu cầu, giáo vụ có thể tiến hành in bảng điểm cho sinh viên ở mục **Xem điểm sinh viên** => **Xuất Excel** .
+![image](https://github.com/user-attachments/assets/880ef62c-15f0-4f2c-815b-61fecfec0edc)
 ### Chức năng thêm khóa học:
 Khi muốn tạo 1 khóa học mới cho sinh viên có thể đăng ký học tập, giáo vụ sẽ vào phần **Quản lý khóa học** => **Thêm khóa học**.
+![image](https://github.com/user-attachments/assets/8f00c45f-bf7d-4682-93cf-3269b5cb4b71)
 Khóa học phải có số tín chỉ hợp lệ (>=2).
+![image](https://github.com/user-attachments/assets/766d5481-6359-43c4-9e75-fc91b3df85fa)
 Khóa học tiên quyết phải tồn tại.
+![image](https://github.com/user-attachments/assets/92755898-7bad-4bfd-b14a-83093ea7b139)
 ### Chức năng xóa khóa học: 
 Khi xảy ra sai sót trong quá trình nhập liệu, Giáo vụ có thể xóa khóa học để sửa lỗi. Giáo vụ có thể vào phần **Quản lý khóa học** => **Chỉnh sửa khóa học** => **Xóa**.
+![image](https://github.com/user-attachments/assets/f803cdfc-0953-4665-b719-27cdb4bc9d3b)
 Chỉ có thể xóa khóa học trong vòng 30 phút sau khi tạo nếu chưa lớp nào được mở cho môn đó.
+![image](https://github.com/user-attachments/assets/7e44b175-1672-439a-a03e-1241bc85d319)
 Nếu đã được đăng ký thì chỉ có thể sửa trạng thái từ **Active** => **Deactive**
+![image](https://github.com/user-attachments/assets/3525ba30-b0fd-4c63-a1a1-221b213feb50)
+![image](https://github.com/user-attachments/assets/69bb03aa-9cc6-45be-8ab9-d876a0c6d70b)
 ### Chức năng chỉnh sửa khóa học:
 Nếu trong thông tin khóa học bị sai ở 1 số chỗ nhưng không muốn xóa vì không muốn mất dữ liệu, Giáo vụ sẽ vào phần **Quản lý khóa học** => **Chỉnh sửa khóa học** => **Sửa**.
+![image](https://github.com/user-attachments/assets/014ef491-ff0d-4b11-b520-e4420dc198ad)
+![image](https://github.com/user-attachments/assets/2c4e6907-2b71-4b42-89c8-13a64ac343af)
 Chỉ có thể sửa tín chỉ với các khóa học chưa có lớp đăng ký.
+![image](https://github.com/user-attachments/assets/b27a23cd-adf9-45ce-b755-ec96475dd065)
 ### Cài đặt unit test
 Viết 23 unit test
  + Add a student to the class.
@@ -349,4 +365,5 @@ Viết 23 unit test
  + Export the student list as a CSV file.
  + Should return 404 if no students to export as a CSV file.
  + Should return 404 if no students to export as a Excel file.
+![image](https://github.com/user-attachments/assets/cfcde36f-7b20-49fb-a135-cbb3319132ea)
 
