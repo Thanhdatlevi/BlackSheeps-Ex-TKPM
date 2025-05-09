@@ -2,10 +2,11 @@ const request = require('supertest');
 const app = require('../../../app');
 const db = require('../../config/db');
 const logger = require('../../config/logging');
+require('dotenv').config();
 
 beforeAll(async () => {
     const result = await db.query('SELECT current_database()');
-    if (result.rows[0].current_database !== 'db_test') {
+    if (result.rows[0].current_database != process.env.DB_NAME_TEST) {
         throw new Error('Not the testing database! Abort immediately');
     }
 });

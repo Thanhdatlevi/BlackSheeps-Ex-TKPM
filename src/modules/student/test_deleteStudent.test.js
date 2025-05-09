@@ -5,12 +5,13 @@ const logger = require('../../config/logging');
 
 PORT = 3001;
 let server;
+require('dotenv').config();
 
 beforeAll(async () => {
     // Kiểm tra DB đúng là db_test chưa
     const check_db_query = `SELECT current_database();`;
     const result = await db.query(check_db_query, []);
-    if (result.rows[0].current_database !== 'db_test') {
+    if (result.rows[0].current_database != process.env.DB_NAME_TEST) {
         throw new Error('Not the testing database! Abort immediately');
     } else {
         // Tạo bảng students nếu chưa tồn tại

@@ -4,12 +4,13 @@ const db = require('../../config/db');
 const logger = require('../../config/logging');
 const fs = require('fs');
 const path = require('path');
+require('dotenv').config();
 
 beforeAll(async () => {
     // Kiểm tra nếu cơ sở dữ liệu đã sẵn sàng
     const checkDbQuery = 'SELECT current_database();';
     const result = await db.query(checkDbQuery);
-    if (result.rows[0].current_database !== 'db_test') {
+    if (result.rows[0].current_database != process.env.DB_NAME_TEST) {
         throw new Error('Not the testing database! Abort immediately');
     } else {
         // Tạo bảng students nếu chưa tồn tại
