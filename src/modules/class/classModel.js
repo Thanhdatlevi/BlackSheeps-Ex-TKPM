@@ -48,7 +48,7 @@ class classModel {
                 classObject.year,
                 classObject.semester
             )
-            if (class_result.count != 0) {
+            if (class_result.length != 0) {
                 throw new Error('Class already existed');
             }
 
@@ -142,7 +142,7 @@ class classModel {
             semester
         ]);
 
-        return class_result.rows[0];
+        return class_result.rows;
     }
     static async countRegister(student_id, class_id, course_id, year, semester) {
         const existed_query = `
@@ -187,7 +187,7 @@ class classModel {
                 classObject.semester
             )
             console.log(class_result);
-            if (class_result.count == 0) {
+            if (class_result.length == 0) {
                 throw new Error('Class not found');
             }
 
