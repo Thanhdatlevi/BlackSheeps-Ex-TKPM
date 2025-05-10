@@ -1,32 +1,33 @@
 // const {query} = require ('express');
 const db = require('../../config/db');
-const logger = require('../../config/logging')
+const logger = require('../../config/logging');
+const { search } = require('../../routes/classRoutes');
 const studentModel = require('../student/studentModel')
 
 class classModel {
     static async searchCourse(course_id){
         try {
-            const query = `
+            const course_query = `
                 SELECT * FROM course WHERE course_id = $1;
             `;
-            result = await db.query(query, [course_id]);
-            return result.rows;
-
+            let course_result = await db.query(course_query, [course_id]);
+            console.log(course_result.rows);
+            return course_result.rows;
         } catch (error) {
             logger.info(error);
             return [];
         }
     }
-    static async searchYear(year) {
+    static async searchYear(year, semester) {
         try {
-            const query = `
-                SELECT * FROM term WHERE year = $1;
+            const year_query = `
+                SELECT * FROM term WHERE year = $1 AND semester = $2;
             `;
-            result = await db.query(query, [year]);
-            return result.rows;
-
+            let search_year_result = await db.query(year_query , [year, semester]);
+            console.log(search_year_result.rows);
+            return search_year_result.rows;
         } catch (error) {
-            logger.info(error);
+            logger.error(error);
             return [];
         }
     }
@@ -35,7 +36,8 @@ class classModel {
             // TODO: check for year term 
             // Error: Year Term not found
             const year_result = await this.searchYear(
-                classObject.year
+                classObject.year,
+                classObject.semester
             )
             if (year_result.length == 0) {
                 throw new Error('Year Term not found');
@@ -295,7 +297,7 @@ class classModel {
         try {
             const query = `
             SELECT DISTINCT year
-            FROM class
+            FROM term
             ORDER BY year;
             `;
             const result = await db.query(query);
