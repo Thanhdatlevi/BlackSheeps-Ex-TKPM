@@ -1,8 +1,8 @@
 <div class="max-w-3xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
-    <h2 class="text-xl font-bold">Thêm chương trình</h2>
+    <h2 class="text-xl font-bold">{{__ "PROGRAM.add"}}</h2>
     <form id="programForm" class="mt-4" action="/addProgram" method="POST">
-        <input type="text" id="name" name="name" placeholder="Tên chương trình" required class="p-2 border rounded w-full mb-2">
-        <button type="submit" class="bg-blue-500 text-white p-2 rounded">Thêm chương trình</button>
+        <input type="text" id="name" name="name" placeholder="{{__ "PROGRAM.inputProgramName"}}" required class="p-2 border rounded w-full mb-2">
+        <button type="submit" class="bg-blue-500 text-white p-2 rounded">{{__ "PROGRAM.add"}}</button>
 </div>
 <script>
     const programForm = document.getElementById('programForm');

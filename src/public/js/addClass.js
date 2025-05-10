@@ -86,7 +86,7 @@ window.submitFormData = async () => {
 
     for (let e in formData){
         if (!formData[e] || formData[e] == ''){
-            alert('Phải cung cấp đầy đủ thông tin để tạo lớp!');
+            alert(i18next.t('alert.notFill'));
             return null
         }
     }
@@ -104,11 +104,11 @@ window.submitFormData = async () => {
             // Optionally, you can redirect or show a success message
         } else {
             console.error('Failed to submit form data:', response.statusText);
-            alert(`Lỗi khi thêm lớp học: ${response.message}`);
+            alert(`${i18next.t('alert.addFaultClass')}: ${response.message}`);
         }
     } catch (error) {
         console.error('Error submitting form data:', error);
-        alert('Lỗi khi thêm lớp học');
+        alert(i18next.t('alert.addFaultClass'));
     }
 }
 

@@ -1,58 +1,59 @@
 
 <div class="bg-blue-500 text-white w-64 min-h-screen p-4">
+    <a href="?lang=vi">Tiếng Việt</a> | <a href="?lang=en">English</a>
     <ul class="space-y-2">
         <li class="menu-item relative">
-            <a href="#" class="block px-4 py-2 rounded-lg hover:bg-blue-600 menu-toggle">Quản lý sinh viên</a>
+            <a href="#" class="block px-4 py-2 rounded-lg hover:bg-blue-600 menu-toggle">{{__ "HEADER.studentManagement"}}</a>
             <ul class="submenu hidden ml-4 space-y-2">
-                <li><a href="/" class="block px-4 py-2 rounded-lg hover:bg-blue-600">Thêm sinh viên</a></li>
-                <li><a href="/delete" class="block px-4 py-2 rounded-lg hover:bg-blue-600">Xóa sinh viên</a></li>
-                <li><a href="/update" class="block px-4 py-2 rounded-lg hover:bg-blue-600">Cập nhật sinh viên</a></li>
-                <li><a href="/search" class="block px-4 py-2 rounded-lg hover:bg-blue-600">Tìm kiếm sinh viên</a></li>
+                <li><a href="/" class="block px-4 py-2 rounded-lg hover:bg-blue-600">{{__ "HEADER.addStudent"}}</a></li>
+                <li><a href="/delete" class="block px-4 py-2 rounded-lg hover:bg-blue-600">{{__ "HEADER.deleteStudent"}}</a></li>
+                <li><a href="/update" class="block px-4 py-2 rounded-lg hover:bg-blue-600">{{__ "HEADER.updateStudent"}}</a></li>
+                <li><a href="/search" class="block px-4 py-2 rounded-lg hover:bg-blue-600">{{__ "HEADER.searchStudent"}}</a></li>
             </ul>
         </li>
         <hr>
         <li class="menu-item relative">
-            <a href="#" class="block px-4 py-2 rounded-lg hover:bg-blue-600 menu-toggle">Quản lý lớp học</a>
+            <a href="#" class="block px-4 py-2 rounded-lg hover:bg-blue-600 menu-toggle">{{__ "HEADER.classManagement"}}</a>
             <ul class="submenu hidden ml-4 space-y-2">
-                <li><a href="/class" class="block px-4 py-2 rounded-lg hover:bg-blue-600">Thêm lớp học</a></li>
-                <li><a href="/class/student" class="block px-4 py-2 rounded-lg hover:bg-blue-600">Thêm học sinh vào lớp</a></li>
-                <li><a href="/registration/deleteRegistrationPage" class="block px-4 py-2 rounded-lg hover:bg-blue-600">Xóa học sinh khỏi lớp</a></li>
+                <li><a href="/class" class="block px-4 py-2 rounded-lg hover:bg-blue-600">{{__ "HEADER.addClass"}}</a></li>
+                <li><a href="/class/student" class="block px-4 py-2 rounded-lg hover:bg-blue-600">{{__ "HEADER.addStudentToClass"}}</a></li>
+                <li><a href="/registration/deleteRegistrationPage" class="block px-4 py-2 rounded-lg hover:bg-blue-600">{{__ "HEADER.removeStudentFromClass"}}</a></li>
             </ul>
         </li>
         <hr>
         <li class="menu-item relative">
-            <a href="#" class="block px-4 py-2 rounded-lg hover:bg-blue-600 menu-toggle">Quản lý khoa</a>
+            <a href="#" class="block px-4 py-2 rounded-lg hover:bg-blue-600 menu-toggle">{{__ "HEADER.facultyManagement"}}</a>
             <ul class="submenu hidden ml-4 space-y-2">
-                <li><a href="/addFacultyPage" class="block px-4 py-2 rounded-lg hover:bg-blue-600">Thêm khoa</a></li>
-                <li><a href="/updateFacultyPage" class="block px-4 py-2 rounded-lg hover:bg-blue-600">Thay đổi khoa</a></li>
+                <li><a href="/addFacultyPage" class="block px-4 py-2 rounded-lg hover:bg-blue-600">{{__ "HEADER.addFaculty"}}</a></li>
+                <li><a href="/updateFacultyPage" class="block px-4 py-2 rounded-lg hover:bg-blue-600">{{__ "HEADER.updateFaculty"}}</a></li>
             </ul>
         </li>
         <hr>
         <li class="menu-item relative">
-            <a href="#" class="block px-4 py-2 rounded-lg hover:bg-blue-600 menu-toggle">Quản lý tình trạng</a>
+            <a href="#" class="block px-4 py-2 rounded-lg hover:bg-blue-600 menu-toggle">{{__ "HEADER.statusManagement"}}</a>
             <ul class="submenu hidden ml-4 space-y-2">
-                <li><a href="/addStatusPage" class="block px-4 py-2 rounded-lg hover:bg-blue-600">Thêm tình trạng</a></li>
-                <li><a href="/updateStatusPage" class="block px-4 py-2 rounded-lg hover:bg-blue-600">Thay đổi tình trạng</a></li>
+                <li><a href="/addStatusPage" class="block px-4 py-2 rounded-lg hover:bg-blue-600">{{__ "HEADER.addStatus"}}</a></li>
+                <li><a href="/updateStatusPage" class="block px-4 py-2 rounded-lg hover:bg-blue-600">{{__ "HEADER.updateStatus"}}</a></li>
             </ul>
         </li>
         <hr>
         <li class="menu-item relative">
-            <a href="#" class="block px-4 py-2 rounded-lg hover:bg-blue-600 menu-toggle">Quản lý chương trình</a>
+            <a href="#" class="block px-4 py-2 rounded-lg hover:bg-blue-600 menu-toggle">{{__ "HEADER.programManagement"}}</a>
             <ul class="submenu hidden ml-4 space-y-2">
-                <li><a href="/addProgramPage" class="block px-4 py-2 rounded-lg hover:bg-blue-600">Thêm chương trình</a></li>
-                <li><a href="/updateProgramPage" class="block px-4 py-2 rounded-lg hover:bg-blue-600">Thay đổi chương trình</a></li>
+                <li><a href="/addProgramPage" class="block px-4 py-2 rounded-lg hover:bg-blue-600">{{__ "HEADER.addProgram"}}</a></li>
+                <li><a href="/updateProgramPage" class="block px-4 py-2 rounded-lg hover:bg-blue-600">{{__ "HEADER.updateProgram"}}</a></li>
             </ul>
         </li>
         <hr>
-        <a href="/configEmailPage" class="block px-4 py-2 rounded-lg hover:bg-blue-600 menu-toggle">Cấu hình email</a>
+        <a href="/configEmailPage" class="block px-4 py-2 rounded-lg hover:bg-blue-600 menu-toggle">{{__ "HEADER.emailConfig"}}</a>
         <hr>
-        <a href="/gradePage" class="block px-4 py-2 rounded-lg hover:bg-blue-600 menu-toggle">Xem điểm sinh viên</a>
+        <a href="/gradePage" class="block px-4 py-2 rounded-lg hover:bg-blue-600 menu-toggle">{{__ "HEADER.viewGrades"}}</a>
         <hr>
         <li class="menu-item relative">
-            <a href="#" class="block px-4 py-2 rounded-lg hover:bg-blue-600 menu-toggle">Quản lý khóa học</a>
+            <a href="#" class="block px-4 py-2 rounded-lg hover:bg-blue-600 menu-toggle">{{__ "HEADER.courseManagement"}}</a>
             <ul class="submenu hidden ml-4 space-y-2">
-                <li><a href="/addCoursePage" class="block px-4 py-2 rounded-lg hover:bg-blue-600">Thêm khóa học</a></li>
-                <li><a href="/editCoursePage" class="block px-4 py-2 rounded-lg hover:bg-blue-600">Chỉnh sửa khóa học</a></li>
+                <li><a href="/addCoursePage" class="block px-4 py-2 rounded-lg hover:bg-blue-600">{{__ "HEADER.addCourse"}}</a></li>
+                <li><a href="/editCoursePage" class="block px-4 py-2 rounded-lg hover:bg-blue-600">{{__ "HEADER.editCourse"}}</a></li>
             </ul>
         </li>
     </ul>

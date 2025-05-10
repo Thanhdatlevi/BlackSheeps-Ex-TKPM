@@ -1,25 +1,25 @@
 <div class="max-w-4xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
-    <h1 class="text-2xl font-bold mb-4 text-center">Tra cứu điểm sinh viên</h1>
+    <h1 class="text-2xl font-bold mb-4 text-center">{{__ "GRADE.title"}}</h1>
     <div class="flex space-x-4 mb-4">
-        <input id="studentId" type="text" class="border p-2 w-1/2 rounded" placeholder="Nhập MSSV...">
-        <button onclick="fetchStudentGrades()" class="bg-blue-500 text-white px-4 py-2 rounded">Tra cứu</button>
+        <input id="studentId" type="text" class="border p-2 w-1/2 rounded" placeholder="{{__ "inforStudent.studentID"}}">
+        <button onclick="fetchStudentGrades()" class="bg-blue-500 text-white px-4 py-2 rounded">{{__ "GRADE.search"}}</button>
     </div>
     <table class="w-full border-collapse border">
         <thead>
             <tr class="bg-gray-200">
-                <th class="border p-2">Mã môn</th>
-                <th class="border p-2">Tên môn</th>
-                <th class="border p-2">Năm</th>
-                <th class="border p-2">Học kỳ</th>
-                <th class="border p-2">Số tín chỉ</th>
-                <th class="border p-2">Điểm</th>
+                <th class="border p-2">{{__ "COURSE.courseCode"}}</th>
+                <th class="border p-2">{{__ "COURSE.courseName"}}</th>
+                <th class="border p-2">{{__ "CLASS.year"}}</th>
+                <th class="border p-2">{{__ "CLASS.semester"}}</th>
+                <th class="border p-2">{{__ "COURSE.credits"}}</th>
+                <th class="border p-2">{{__ "GRADE.grade"}}</th>
             </tr>
         </thead>
         <tbody id="gradesTable" class="text-center bg-white"></tbody>
     </table>
     <div class="mt-4 text-right">
         <h2 class="text-lg font-semibold">GPA: <span id="gpa" class="text-blue-600">0</span></h2>
-        <button onclick="exportStudentGrades()" class="bg-blue-500 text-white px-4 py-2 rounded mt-2">Xuất Excel</button>
+        <button onclick="exportStudentGrades()" class="bg-blue-500 text-white px-4 py-2 rounded mt-2">Export Excel</button>
     </div>
 </div>
 

@@ -1,11 +1,15 @@
 <div class="max-w-md mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
-    <h2 class="text-2xl font-bold text-center text-gray-700 mb-4">Xóa Sinh Viên</h2>
-    <input type="text" id="deleteId" placeholder="Nhập MSSV để xóa" 
+    <h2 class="text-2xl font-bold text-center text-gray-700 mb-4">{{__ "DELETESTUDENT.title"}}</h2>
+    <input type="text" id="deleteId" placeholder="{{__ "inforStudent.studentID"}}" 
         class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4">
-    <button onclick="deleteStudent()" 
+    <button onclick="deleteStudent()"
         class="w-full bg-blue-500 hover:bg-blue-800 text-white font-bold py-3 rounded-lg transition duration-300">
-        Xóa Sinh Viên
+        {{__ "DELETESTUDENT.deleteStudent"}}
     </button>
 </div>
 
+<script src="https://unpkg.com/i18next@21.6.3/i18next.min.js"></script>
+<script src="https://unpkg.com/i18next-http-backend@1.4.3/i18nextHttpBackend.min.js"></script>
+<script src="https://unpkg.com/i18next-browser-languagedetector@6.1.2/i18nextBrowserLanguageDetector.min.js"></script>
+<script src="/js/i18n-init.js"></script>
 <script src="/js/delete.js"></script>'

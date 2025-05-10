@@ -1,8 +1,8 @@
 <div class="max-w-3xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
-    <h2 class="text-xl font-bold">Thêm khoa</h2>
+    <h2 class="text-xl font-bold">{{__ "FACULTY.add"}}</h2>
     <form id = "facultyForm" class="mt-4" action="/addFaculty" method="POST">
-        <input type="text" id="name" name="name" placeholder="Tên khoa" required class="p-2 border rounded w-full mb-2">
-        <button type="submit" class="bg-blue-500 text-white p-2 rounded">Thêm khoa</button>
+        <input type="text" id="name" name="name" placeholder="{{__ "FACULTY.inputFacultyName"}}" required class="p-2 border rounded w-full mb-2">
+        <button type="submit" class="bg-blue-500 text-white p-2 rounded">{{__ "FACULTY.add"}}</button>
 </div>
 <script>
     const facultyForm = document.getElementById('facultyForm');

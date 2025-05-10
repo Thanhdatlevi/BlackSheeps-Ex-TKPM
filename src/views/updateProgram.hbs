@@ -1,19 +1,19 @@
 <div class="max-w-3xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
-    <h2 class="text-xl font-bold mb-4">Sửa Chương trình</h2>
+    <h2 class="text-xl font-bold mb-4">{{__ "PROGRAM.update"}}</h2>
     
     <!-- Form tìm kiếm chương trình -->
     <form id="searchProgramForm" class="mb-6" action="/searchProgramByName" method="GET">
-        <input type="text" id="searchName" name="searchName" placeholder="Nhập tên chương trình để tìm kiếm" required class="p-2 border rounded w-full mb-2">
-        <button type="submit" class="bg-blue-500 text-white p-2 rounded w-full">Tìm kiếm</button>
+        <input type="text" id="searchName" name="searchName" placeholder="{{__ "PROGRAM.inputProgramName"}}" required class="p-2 border rounded w-full mb-2">
+        <button type="submit" class="bg-blue-500 text-white p-2 rounded w-full">{{__ "PROGRAM.search"}}</button>
     </form>
 
     <!-- Hiển thị thông tin chương trình để chỉnh sửa -->
     <form id="updateProgramForm" action="/updateProgram" method="POST">
         <div class="mb-4">
-            <label for="programName" class="block text-sm font-medium">Tên chương trình:</label>
-            <input type="text" id="programName" name="programName" placeholder="Tên chương trình" required class="p-2 border rounded w-full">
+            <label for="programName" class="block text-sm font-medium">{{__ "PROGRAM.programName"}}:</label>
+            <input type="text" id="programName" name="programName" placeholder="{{__ "PROGRAM.programName"}}" required class="p-2 border rounded w-full">
         </div>
-        <button type="submit" class="bg-blue-500 text-white p-2 rounded w-full">Cập nhật</button>
+        <button type="submit" class="bg-blue-500 text-white p-2 rounded w-full">{{__ "PROGRAM.updateButton"}}</button>
     </form>
 </div>
 <script>

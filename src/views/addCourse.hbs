@@ -1,48 +1,48 @@
 <div class="max-w-3xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
-    <h2 class="text-xl font-bold">Thêm khóa học</h2>
+    <h2 class="text-xl font-bold">{{__ "COURSE.add"}}</h2>
     <form action="/addCourse" method="POST">
         <!-- Course Code -->
         <div>
-            <label for="courseCode">Mã khóa học:</label>
+            <label for="courseCode">{{__ "COURSE.courseCode"}}:</label>
             <input type="text" id="courseCode" name="courseCode" required class="p-2 border rounded w-full mb-2">
         </div>
 
         <!-- Course Name -->
         <div>
-            <label for="courseName">Tên khóa học:</label>
+            <label for="courseName">{{__ "COURSE.courseName"}}:</label>
             <input type="text" id="courseName" name="courseName" required class="p-2 border rounded w-full mb-2">
         </div>
 
         <!-- Credits -->
         <div>
-            <label for="credits">Số tín chỉ:</label>
+            <label for="credits">{{__ "COURSE.credits"}}:</label>
             <input type="number" id="credits" name="credits" min="2" required class="p-2 border rounded w-full mb-2">
         </div>
 
         <!-- Department -->
         <div>
-            <label for="department">Khoa phụ trách:</label>
+            <label for="department">{{__ "COURSE.faculty"}}:</label>
             <select id="faculty" name="faculty" required class="p-2 border rounded w-full mb-2">
-                <option value="">Chọn khoa</option>
+                <option value="">{{__ "inforStudent.faculty"}}</option>
                 <!-- Các option sẽ được load từ database -->
             </select>
         </div>
 
         <!-- Description -->
         <div>
-            <label for="description">Mô tả:</label>
+            <label for="description">{{__ "COURSE.description"}}:</label>
             <textarea id="description" name="description" rows="4" required class="p-2 border rounded w-full mb-2"></textarea>
         </div>
 
         <!-- Prerequisite Course -->
         <div>
-            <label for="prerequisite">Môn tiên quyết (nếu có):</label>
+            <label for="prerequisite">{{__ "COURSE.prerequisite"}}:</label>
             <input type="text" id="prerequisite" name="prerequisite" class="p-2 border rounded w-full mb-2">
         </div>
 
         <!-- Submit Button -->
         <div>
-            <button type="submit" class="bg-blue-500 text-white p-2 rounded">Thêm khóa học</button>
+            <button type="submit" class="bg-blue-500 text-white p-2 rounded">{{__ "COURSE.submitButton"}}</button>
         </div>
     </form>
 </div>

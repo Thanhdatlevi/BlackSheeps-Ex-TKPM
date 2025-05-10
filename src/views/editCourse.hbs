@@ -1,18 +1,18 @@
 <div class="max-w-5xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
-    <h1 class="text-2xl font-bold mb-6">Quản Lý Khóa Học</h1>
+    <h1 class="text-2xl font-bold mb-6">{{__ "COURSE.manage"}}</h1>
 
     <!-- Danh sách các khóa học -->
     <div class="mb-8">
-        <h3 class="text-xl font-semibold mb-4">Danh sách Khóa Học</h3>
+        <h3 class="text-xl font-semibold mb-4">{{__ "COURSE.listCourse"}}</h3>
         <div class="overflow-x-auto">
             <table class="min-w-full bg-white">
                 <thead class="bg-gray-100">
                     <tr>
-                        <th class="py-2 px-4 border-b text-left">Mã Khóa Học</th>
-                        <th class="py-2 px-4 border-b text-left">Tên Khóa Học</th>
-                        <th class="py-2 px-4 border-b text-left">Khoa Phụ Trách</th>
-                        <th class="py-2 px-4 border-b text-left">Trạng thái</th>
-                        <th class="py-2 px-4 border-b text-center">Thao Tác</th>
+                        <th class="py-2 px-4 border-b text-left">{{__ "COURSE.courseCode"}}</th>
+                        <th class="py-2 px-4 border-b text-left">{{__ "COURSE.courseName"}}</th>
+                        <th class="py-2 px-4 border-b text-left">{{__ "COURSE.faculty"}}</th>
+                        <th class="py-2 px-4 border-b text-left">{{__ "COURSE.status"}}</th>
+                        <th class="py-2 px-4 border-b text-center">{{__ "COURSE.action"}}</th>
                     </tr>
                 </thead>
                 <tbody id="courseTableBody">
@@ -25,33 +25,33 @@
     <!-- Form chỉnh sửa khóa học -->
     <div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex justify-center items-center">
         <div class="bg-white rounded-lg p-6 shadow-lg w-96">
-            <h3 class="text-xl font-semibold mb-4">Chỉnh sửa Khóa Học</h3>
+            <h3 class="text-xl font-semibold mb-4">{{__ "COURSE.update"}}</h3>
             <form id="editCourseForm">
                 <input type="hidden" id="editCourseId">
                 <div class="mb-4">
-                    <label for="editCourseName" class="block text-sm font-medium mb-1">Tên Khóa Học:</label>
+                    <label for="editCourseName" class="block text-sm font-medium mb-1">{{__ "COURSE.courseName"}}:</label>
                     <input type="text" id="editCourseName" name="courseName" required class="p-2 border rounded w-full">
                 </div>
                 <div class="mb-4">
-                    <label for="editDescription" class="block text-sm font-medium mb-1">Mô Tả:</label>
+                    <label for="editDescription" class="block text-sm font-medium mb-1">{{__ "COURSE.description"}}:</label>
                     <textarea id="editDescription" name="description" required class="p-2 border rounded w-full"></textarea>
                 </div>
                 <div class="mb-4">
-                    <label for="editDepartment" class="block text-sm font-medium mb-1">Khoa Phụ Trách:</label>
+                    <label for="editDepartment" class="block text-sm font-medium mb-1">{{__ "COURSE.faculty"}}:</label>
                     <select id="editDepartment" name="department" required class="p-2 border rounded w-full">
                         <!-- Danh sách khoa phụ trách sẽ được thêm vào đây -->
                     </select>
                 </div>
                 <div class="mb-4">
-                    <label for="editCredit" class="block text-sm font-medium mb-1">Số Tín Chỉ:</label>
+                    <label for="editCredit" class="block text-sm font-medium mb-1">{{__ "COURSE.credits"}}:</label>
                     <textarea id="editCredit" name="credit" required class="p-2 border rounded w-full"></textarea>  
                 </div>
                 <div class="flex justify-end space-x-2">
                     <button type="button" onclick="closeEditModal()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded">
-                        Hủy
+                        {{__ "COURSE.cancleButton"}}
                     </button>
                     <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
-                        Lưu
+                        {{__ "COURSE.saveButton"}}
                     </button>
                 </div>
             </form>

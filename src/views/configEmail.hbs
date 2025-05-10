@@ -1,17 +1,17 @@
 <div class="max-w-4xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
-    <h2 class="text-2xl font-bold mb-6">Quản lý Email Domain</h2>
+    <h2 class="text-2xl font-bold mb-6">{{__ "EMAIL.title"}}</h2>
 
     <!-- Thêm Email Domain mới -->
     <div class="mb-8 p-4 border rounded-lg bg-gray-50">
-        <h3 class="text-xl font-semibold mb-4">Thêm Email Domain</h3>
+        <h3 class="text-xl font-semibold mb-4">{{__ "EMAIL.addTitle"}}</h3>
         <form id="addDomainForm" class="flex flex-col space-y-4">
             <div>
-                <label for="newDomain" class="block text-sm font-medium mb-1">Tên domain:</label>
+                <label for="newDomain" class="block text-sm font-medium mb-1">{{__ "EMAIL.domainLabel"}}:</label>
                 <div class="flex">
                     <input type="text" id="newDomain" name="domain" placeholder="example.com" 
                            required class="p-2 border rounded-l flex-grow">
                     <button type="submit" class="bg-green-500 hover:bg-green-600 text-white p-2 rounded-r px-4">
-                        Thêm
+                        {{__ "EMAIL.addButton"}}
                     </button>
                 </div>
             </div>
@@ -20,14 +20,14 @@
 
     <!-- Danh sách Email Domain -->
     <div class="mb-4">
-        <h3 class="text-xl font-semibold mb-4">Danh sách Email Domain</h3>
+        <h3 class="text-xl font-semibold mb-4">{{__ "EMAIL.listTitle"}}</h3>
         <div class="overflow-x-auto">
             <table class="min-w-full bg-white">
                 <thead class="bg-gray-100">
                     <tr>
-                        <th class="py-2 px-4 border-b text-left">STT</th>
-                        <th class="py-2 px-4 border-b text-left">Domain</th>
-                        <th class="py-2 px-4 border-b text-center">Thao tác</th>
+                        <th class="py-2 px-4 border-b text-left">{{__ "EMAIL.table.index"}}</th>
+                        <th class="py-2 px-4 border-b text-left">{{__ "EMAIL.table.domain"}}</th>
+                        <th class="py-2 px-4 border-b text-center">{{__ "EMAIL.table.actions"}}</th>
                     </tr>
                 </thead>
                 <tbody id="domainTableBody">
@@ -41,19 +41,19 @@
 <!-- Modal chỉnh sửa domain -->
 <div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex justify-center items-center">
     <div class="bg-white rounded-lg p-6 shadow-lg w-96">
-        <h3 class="text-xl font-semibold mb-4">Chỉnh sửa Domain</h3>
+        <h3 class="text-xl font-semibold mb-4">{{__ "EMAIL.editTitle"}}</h3>
         <form id="editDomainForm">
             <input type="hidden" id="editDomainId">
             <div class="mb-4">
-                <label for="editDomainName" class="block text-sm font-medium mb-1">Tên domain:</label>
+                <label for="editDomainName" class="block text-sm font-medium mb-1">{{__ "EMAIL.editLabel"}}:</label>
                 <input type="text" id="editDomainName" name="domain" required class="p-2 border rounded w-full">
             </div>
             <div class="flex justify-end space-x-2">
                 <button type="button" onclick="closeEditModal()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded">
-                    Hủy
+                    {{__ "EMAIL.cancelButton"}}
                 </button>
                 <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
-                    Lưu
+                    {{__ "EMAIL.saveButton"}}
                 </button>
             </div>
         </form>
