@@ -11,6 +11,8 @@ const options_template = (obj, prop1, prop2) => {
     `;
 }
 document.addEventListener('DOMContentLoaded', async () => {
+    await window.i18nReady;
+    
     const courseData = await getOptions(COURSE_URL);
     const template = Handlebars.compile(options_template('courses', 'course_id', 'course_name'));
     const html = template(courseData);
@@ -64,7 +66,7 @@ window.submitFormData = async () => {
 
     for (let e in formData){
         if (!formData[e] || formData[e] == ''){
-            alert('Phải cung cấp đầy đủ thông tin để thêm sinh viên vào lớp!');
+            alert(i18next.t('alert.notFill'));
             return null
         }
     }
@@ -95,14 +97,14 @@ window.submitFormData = async () => {
         }).then(res => {
             if (res.ok) {
                 console.log('Form data submitted successfully!');
-                alert(`Thêm học sinh vào lớp học thành công`);
+                alert(i18next.t('alert.addSuccStuToClass'));
                 return res.json();
             }
             return res.json().then(text => {throw new Error(text.message)});
         });
     } catch (error) {
         console.error('Error submitting form data:', error.message);
-        alert(`Lỗi khi thêm học sinh vào lớp học:\n${error.message}`);
+        alert(`${i18next.t('alert.addFaultStuToClass')}:\n${error.message}`);
     }
 }
 

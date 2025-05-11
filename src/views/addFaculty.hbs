@@ -4,7 +4,14 @@
         <input type="text" id="name" name="name" placeholder="{{__ "FACULTY.inputFacultyName"}}" required class="p-2 border rounded w-full mb-2">
         <button type="submit" class="bg-blue-500 text-white p-2 rounded">{{__ "FACULTY.add"}}</button>
 </div>
+<script src="https://unpkg.com/i18next@21.6.3/i18next.min.js"></script>
+<script src="https://unpkg.com/i18next-http-backend@1.4.3/i18nextHttpBackend.min.js"></script>
+<script src="https://unpkg.com/i18next-browser-languagedetector@6.1.2/i18nextBrowserLanguageDetector.min.js"></script>
+<script src="/js/i18n-init.js"></script>
 <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        await window.i18nReady;
+    });
     const facultyForm = document.getElementById('facultyForm');
     facultyForm.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -19,9 +26,9 @@
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
-                    alert('Thêm khoa thành công');
+                    alert(i18next.t('alert.addSucc'));
                 } else {
-                    alert('Thêm khoa thất bại');
+                    alert(i18next.t('alert.addFault'));
                 }
                 facultyForm.reset();
             });

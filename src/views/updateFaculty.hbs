@@ -16,7 +16,14 @@
         <button type="submit" class="bg-blue-500 text-white p-2 rounded w-full">{{__ "FACULTY.updateButton"}}</button>
     </form>
 </div>
+<script src="https://unpkg.com/i18next@21.6.3/i18next.min.js"></script>
+<script src="https://unpkg.com/i18next-http-backend@1.4.3/i18nextHttpBackend.min.js"></script>
+<script src="https://unpkg.com/i18next-browser-languagedetector@6.1.2/i18nextBrowserLanguageDetector.min.js"></script>
+<script src="/js/i18n-init.js"></script>
 <script>
+     document.addEventListener('DOMContentLoaded', async () => {
+        await window.i18nReady;
+    });
     const searchFacultyForm = document.getElementById('searchFacultyForm');
     const updateFacultyForm = document.getElementById('updateFacultyForm');
     const facultyName = document.getElementById('facultyName');
@@ -32,7 +39,7 @@
                     console.log(data.faculty);
                     facultyName.value = data.faculty[0].faculty_name;
                 } else {
-                    alert('Không tìm thấy khoa');
+                    alert(i18next.t('alert.noInfoStudent'));
                 }
             });
     });
@@ -54,9 +61,9 @@
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
-                    alert('Cập nhật khoa thành công');
+                    alert(i18next.t('alert.updateSucc'));
                 } else {
-                    alert('Cập nhật khoa thất bại');
+                    alert(i18next.t('alert.updateFault'));
                 }
                 searchFacultyForm.reset();
                 updateFacultyForm.reset();

@@ -30,7 +30,7 @@ async function loadAllRegisteredClasses() {
 document.getElementById('searchBtn').addEventListener('click', async function() {
     const studentId = document.getElementById('studentId').value.trim();
     if (!studentId) {
-        alert("Vui lòng nhập mã sinh viên.");
+        alert(i18next.t('alert.notFill'));
         return;
     }
 
@@ -62,7 +62,7 @@ document.getElementById('searchBtn').addEventListener('click', async function() 
 
 // Hàm xóa lớp đăng ký
 async function deleteRegister(student_id, class_id, course_id, year, semester) {
-    const isConfirmed = confirm(`Bạn có chắc chắn muốn xóa đăng ký ${student_id}, ${class_id}, ${course_id} này không?`);
+    const isConfirmed = confirm(`${i18next.t('alert.suredDeleteRegister')} ${student_id}, ${class_id}, ${course_id} ?`);
 
     if (!isConfirmed) return;
 
@@ -77,8 +77,12 @@ async function deleteRegister(student_id, class_id, course_id, year, semester) {
         alert(result.message);
         loadAllRegisteredClasses();
     } else {
-        alert(result.message || 'Lỗi khi xóa lớp.');
+        alert(result.message || i18next.t('alert.error'));
     }
 }
+
+document.addEventListener("DOMContentLoaded", async function() {
+    await window.i18nReady; // Đảm bảo i18next đã sẵn sàng
+});
 
 window.onload = loadAllRegisteredClasses;

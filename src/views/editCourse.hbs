@@ -59,6 +59,10 @@
     </div>
 </div>
 
+<script src="https://unpkg.com/i18next@21.6.3/i18next.min.js"></script>
+<script src="https://unpkg.com/i18next-http-backend@1.4.3/i18nextHttpBackend.min.js"></script>
+<script src="https://unpkg.com/i18next-browser-languagedetector@6.1.2/i18nextBrowserLanguageDetector.min.js"></script>
+<script src="/js/i18n-init.js"></script>
 <script>
     function formatDateWithTimezone(date) {
         const offset = -date.getTimezoneOffset(); // Lấy timezone offset (phút)
@@ -73,7 +77,8 @@
     let departments = [];
 
     // Tải danh sách khóa học và khoa phụ trách khi trang được load
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', async function () {
+        await window.i18nReady;
         loadCourses();
         loadDepartments();
 
@@ -190,7 +195,7 @@
         }
     } catch (error) {
         console.error('Error checking course existence in class:', error);
-        alert('Có lỗi xảy ra khi kiểm tra khóa học!');
+        alert(i18next.t('alert.error'));
     }
 }
 
@@ -209,11 +214,11 @@
         const credit = document.getElementById('editCredit').value.trim();
         const validCredits = parseInt(document.getElementById('editCredit').value,10);
         if (isNaN(validCredits) || validCredits < 2) {
-            alert('Số tín chỉ phải >= 2');
+            alert(i18next.t('alert.notCredit'));
             return;
         }
         if (!courseName || !description || !faculty) {
-            alert('Vui lòng điền đầy đủ thông tin!');
+            alert(i18next.t('alert.notFill'));
             return;
         }
 
@@ -235,9 +240,9 @@
                 
                 renderCourseTable();
                 closeEditModal();
-                alert('Cập nhật khóa học thành công!');
+                alert(i18next.t('alert.updateSuccCourse'));
             } else {
-                alert('Lỗi: ' + (data.message || 'Không thể cập nhật khóa học'));
+                alert('Error: ' + (data.message || i18next.t('alert.updateFaultCourse')));
             }
         } catch (error) {
             console.error('Error updating course:', error);
@@ -254,7 +259,7 @@
         const diffMinutes = (currentTime - createdTime) / (1000 * 60);
         if (diffMinutes <= 30) {
             if (!data.exists) {
-                if (confirm('Bạn có chắc chắn muốn xóa khóa học này?')) {
+                if (confirm(i18next.t('alert.suredDeleteStudent'))) {
                 try {
                     const response = await fetch(`/deleteCourse`, {
                 method: 'DELETE',
@@ -268,9 +273,9 @@
                         await loadCourses();
                         courses = courses.filter(c => c.course_id != courseId);
                         renderCourseTable();
-                        alert('Xóa khóa học thành công!');
+                        alert(i18next.t('alert.deleteSuccCourse'));
                     } else {
-                        alert('Lỗi: ' + (data.message || 'Không thể xóa khóa học'));
+                        alert('Lỗi: ' + (data.message || i18next.t('alert.deleteFaultCourse')));
                     }
                 } catch (error) {
                     console.error('Error deleting course:', error);
@@ -278,7 +283,7 @@
             }
             }
             else {
-                if (confirm('Khóa học đã được đăng ký lớp. Bạn có muốn chuyển trạng thái sang Deactivate không?.')) {
+                if (confirm(i18next.t('alert.DeactivateCourse'))) {
                 try {
                     const response = await fetch(`/updateCourseStatus`, {
                 method: 'PUT',
@@ -296,9 +301,9 @@
                             courses[index].status = 'Deactivated';
                         }
                         renderCourseTable();
-                        alert('Khóa học đã được chuyển sang trạng thái Deactivate!');
+                        alert(i18next.t('alert.DeactivateSuccCourse'));
                     } else {
-                        alert('Lỗi: ' + (data.message || 'Không thể chuyển trạng thái khóa học'));
+                        alert('Lỗi: ' + (data.message || i18next.t('alert.DeactivateFaultCourse')));
                     }
                 } catch (error) {
                     console.error('Error deactivating course:', error);
@@ -306,7 +311,7 @@
             }
             }
         } else {
-                alert('Khóa học đã được tạo hơn 30 phút. Không thể thực hiện hành động này!');
+                alert(i18next.t('alert.cantDeleteCourse'));
             }
     }
 </script>
