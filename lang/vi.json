@@ -36,7 +36,15 @@
     "addSucc": "Thêm khóa thành công",
     "addFault": "Thêm khóa thất bại",
     "updateSucc": "Cập nhật thành công",
-    "updateFault": "Cập nhật thất bại"
+    "updateFault": "Cập nhật thất bại",
+    "confirmDeleteEmail": "Bạn có chắc chắn muốn xóa email này không?",
+    "deleteEmailSucc": "Xóa email thành công",
+    "deleteEmailFault": "Xóa email thất bại",
+    "generalEmailError": "Lỗi chung",
+    "addEmailSuccess": "Thêm email thành công",
+    "addEmailError": "Thêm email thất bại",
+    "updateEmailSuccess": "Cập nhật email thành công",
+    "updateEmailError": "Cập nhật email thất bại"
   },
   "inforStudent":{
     "studentID": "Mã số sinh viên",
@@ -200,7 +208,11 @@
     "editTitle": "Chỉnh sửa Domain",
     "editLabel": "Tên domain",
     "cancelButton": "Hủy",
-    "saveButton": "Lưu"
+    "saveButton": "Lưu",
+    "deleteButton": "Xóa",
+    "deleteTitle": "Xóa domain",
+    "editButton": "Sửa"
+    
   },
 
   "HEADER": {
