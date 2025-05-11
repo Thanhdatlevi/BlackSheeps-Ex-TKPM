@@ -28,12 +28,12 @@ class studentModel {
                 AND ($2::TEXT IS NULL OR s.full_name ILIKE '%' || $2::TEXT || '%')
                 AND ($3::INT IS NULL OR s.faculty = $3::INT);
             `;
-    
+
             // Chuyển `khoa` từ string sang số hoặc null
             const khoaParsed = khoa ? parseInt(khoa, 10) : null;
-    
+
             const result = await db.query(query, [mssv || null, name || null, khoaParsed]);
-            
+
             if (result.rows.length > 0) {
                 logger.info("searchStudent executed successfully in studentModel");
                 return result.rows;
@@ -44,7 +44,7 @@ class studentModel {
             throw new Error("Error search Student in studentModel.");
         }
     }
-    
+
     static async searchStudentIdentification(mssv) {
         try {
             const query = `
@@ -102,9 +102,9 @@ class studentModel {
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
             RETURNING *;
             `;
-            const result = await db.query(query, [student.mssv, student.name,student.dob,
-                student.gender, student.course, student.address, student.email, student.phone, student.faculty,
-                student.program, student.status]);
+            const result = await db.query(query, [student.mssv, student.name, student.dob,
+            student.gender, student.course, student.address, student.email, student.phone, student.faculty,
+            student.program, student.status]);
             if (result.rows.length > 0) {
                 logger.info("addStudent executed successfully in studentModel");
                 return result.rows[0];
@@ -112,15 +112,14 @@ class studentModel {
 
             return null;
         }
-        catch(error) {
+        catch (error) {
             logger.error("Error add Student in studentModel:", error);
             throw new Error(error.message);
         }
     }
 
-    static async updateStudent(student) {
-        try {
-            const getIDQuery = `
+    static async replaceStudentExternalInfo(student) {
+        const getIDQuery = `
             SELECT ep.program_id, f.faculty_id, ss.status_id
             FROM education_programs ep
             JOIN faculties f ON 1=1
@@ -129,17 +128,32 @@ class studentModel {
             AND f.faculty_name = $2
             AND ss.status_name = $3
             `
-            const IDResult = await db.query(getIDQuery, 
-                [
-                    student.education_program,
-                    student.faculty,
-                    student.student_status
-                ]
-            );
+        const IDResult = await db.query(getIDQuery,
+            [
+                student.education_program,
+                student.faculty,
+                student.student_status
+            ]
+        );
 
-            student.education_program = IDResult.rows[0].program_id;
-            student.faculty = IDResult.rows[0].faculty_id;
-            student.student_status = IDResult.rows[0].status_id;
+        if (IDResult.rows.length <= 0) {
+            throw new Error('There\'s no program or faculty or status')
+        };
+
+        student.education_program = IDResult.rows[0].program_id;
+        student.faculty = IDResult.rows[0].faculty_id;
+        student.student_status = IDResult.rows[0].status_id;
+    }
+
+    static async updateStudent(student) {
+        try {
+            await this.replaceStudentExternalInfo(student);
+
+            // MUST have parentheses wrapping await with function before call length
+            // will have bug if you dare remove it !
+            if((await this.searchStudent(student.student_id)).length <= 0) {
+                throw new Error('Student does not exist');
+            };
 
             // update
             const query = `update public.students 
@@ -157,7 +171,7 @@ class studentModel {
             returning *
             `;
 
-            const result = await db.query(query, 
+            const result = await db.query(query,
                 [
                     student.full_name,
                     student.date_of_birth,
@@ -169,9 +183,10 @@ class studentModel {
                     student.email,
                     student.phone,
                     student.student_status,
-                    student.student_id 
+                    student.student_id
                 ]
             );
+
             if (result.rows.length > 0) {
                 logger.info(result.rows);
                 logger.info("update student info executed successfully in studentmodel");
@@ -179,7 +194,7 @@ class studentModel {
             }
 
         }
-        catch(error) {
+        catch (error) {
             logger.error("error updating student in studentmodel:", error);
             throw new Error(error.message);
         }
