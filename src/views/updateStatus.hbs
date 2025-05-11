@@ -1,22 +1,29 @@
 <div class="max-w-3xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
-    <h2 class="text-xl font-bold mb-4">Sửa Trạng thái</h2>
+    <h2 class="text-xl font-bold mb-4">{{__ "STATUS.update"}}</h2>
     
     <!-- Form tìm kiếm trạng thái -->
     <form id="searchStatusForm" class="mb-6" action="/searchStatusByName" method="GET">
-        <input type="text" id="searchName" name="searchName" placeholder="Nhập tên trạng thái để tìm kiếm" required class="p-2 border rounded w-full mb-2">
-        <button type="submit" class="bg-blue-500 text-white p-2 rounded w-full">Tìm kiếm</button>
+        <input type="text" id="searchName" name="searchName" placeholder="{{__ "STATUS.inputStatusName"}}" required class="p-2 border rounded w-full mb-2">
+        <button type="submit" class="bg-blue-500 text-white p-2 rounded w-full">{{__ "STATUS.search"}}</button>
     </form>
 
     <!-- Hiển thị thông tin trạng thái để chỉnh sửa -->
     <form id="updateStatusForm" action="/updateStatus" method="POST">
         <div class="mb-4">
-            <label for="statusName" class="block text-sm font-medium">Tên trạng thái:</label>
-            <input type="text" id="statusName" name="statusName" placeholder="Tên trạng thái" required class="p-2 border rounded w-full">
+            <label for="statusName" class="block text-sm font-medium">{{__ "STATUS.statusName"}}:</label>
+            <input type="text" id="statusName" name="statusName" placeholder="{{__ "STATUS.statusName"}}" required class="p-2 border rounded w-full">
         </div>
-        <button type="submit" class="bg-blue-500 text-white p-2 rounded w-full">Cập nhật</button>
+        <button type="submit" class="bg-blue-500 text-white p-2 rounded w-full">{{__ "STATUS.updateButton"}}</button>
     </form>
 </div>
+<script src="https://unpkg.com/i18next@21.6.3/i18next.min.js"></script>
+<script src="https://unpkg.com/i18next-http-backend@1.4.3/i18nextHttpBackend.min.js"></script>
+<script src="https://unpkg.com/i18next-browser-languagedetector@6.1.2/i18nextBrowserLanguageDetector.min.js"></script>
+<script src="/js/i18n-init.js"></script>
 <script>
+     document.addEventListener('DOMContentLoaded', async () => {
+        await window.i18nReady;
+    });
     const searchStatusForm = document.getElementById('searchStatusForm');
     const updateStatusForm = document.getElementById('updateStatusForm');
     const statusName = document.getElementById('statusName');
@@ -33,7 +40,7 @@
                     console.log("data: ",data.status.status_name);
                     statusName.value = data.status.status_name;
                 } else {
-                    alert('Không tìm thấy trạng thái');
+                    alert(i18next.t('alert.noInfoStudent'));
                 }
             });
     });
@@ -55,9 +62,9 @@
             .then(res => res.json())
             .then(data => {
                 if (data.success) {
-                    alert('Cập nhật trạng thái thành công');
+                    alert(i18next.t('alert.updateSucc'));
                 } else {
-                    alert('Cập nhật trạng thái thất bại');
+                    alert(i18next.t('alert.updateFault'));
                 }
                 searchStatusForm.reset();
                 updateStatusForm.reset();

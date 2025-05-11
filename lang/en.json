@@ -1,0 +1,235 @@
+{
+    "alert":{
+        "notFill": "Information filled in is not complete. Please fill in the information completely",
+        "error": "An error occurred, please try again",
+        "notConnectServer": "Error: unable to connect to server",
+        "errorFormatEmail": "Error: Invalid Email Format",
+        "cantUseEmail": "Error: Cannot Use This Email Domain",
+        "errorPhone": "Error: This phone number is not available",
+        "addSuccStudent": "Added student successfully",
+        "addFaultStudent": "Added student failed",
+        "suredDeleteStudent": "Are you sure you want to delete this student?",
+        "deleteSuccStudent": "Deleted student successfully",
+        "noInfoStudent": "No student information",
+        "invalidFaculty": "Invalid faculty! Please select one of the faculties: ",
+        "invalidStatus": "Invalid student status! Please select one of the statuses: ",
+        "invalidProgram": "Invalid student program! Please select one of the statuses: ",
+        "updateSuccStudent": "Updated student successfully",
+        "updateFaultStudent": "Updated student failed",
+        "addFaultClass": "Added class failed",
+        "addSuccStuToClass": "Added student to class successfully",
+        "addFaultStuToClass": "Added student to class failed",
+        "suredDeleteRegister": "Are you sure you want to delete this registration?",
+        "cantDownloadStudent": "Could not download transcript. Please try again later.",
+        "notPreCourse": "This prerequisite course does not exist",
+        "notCredit": "Credits must be greater than 2",
+        "addSuccCourse": "Added course successfully",
+        "addFaultCourse": "Added course failed",
+        "updateSuccCourse": "Updated course successfully",
+        "updateFaultCourse": "Updated course failed",
+        "deleteSuccCourse": "Deleted course successfully",
+        "deleteFaultCourse": "Deleted course failed",
+        "DeactivateCourse": "The course has been registered. Do you want to change the status to Deactivate?",
+        "DeactivateSuccCourse": "The course has been changed to Deactivate status!",
+        "DeactivateFaultCourse": "Course status cannot be changed",
+        "cantDeleteCourse": "It has been more than 30 minutes and the course cannot be deleted anymore"
+    },
+    "inforStudent":{
+        "studentID": "Student ID",
+        "name": "Full Name",
+        "dob": "Date of Birth",
+        "gender": "Gender",
+        "male": "Male",
+        "female": "Female",
+        "faculty": "Faculty",
+        "course": "Course",
+        "program": "Program",
+        "status": "Status",
+        "nationality": "Nationality",
+        "contactInfo": "Contact Information",
+        "email": "Email",
+        "phone": "Phone Number",
+        "listStudent": "List Student",
+        "address": {
+            "inforAddress": "Student's Address",
+            "temporaryAddress": "Temporary Address",
+            "sameAsPermanent": "Same as Permanent Address",
+            "mailingAddress": "Mailing Address",
+            "permanentAddress": "Permanent Address",
+            "permanentStreet": "Street Number, Street Name",
+            "permanentWard": "Ward/Commune",
+            "permanentDistrict": "District",
+            "permanentCity": "City/Province",
+            "permanentCountry": "Country"
+        },
+        "ID" : {
+            "idDoc": "Identification Documents",
+            "cmnd": "Identity Card (CMND)",
+            "cccd": "Citizen Identification Card (CCCD)",
+            "passport": "Passport",
+            "number": "Number",
+            "createDate": "Date of Issue",
+            "expireDate": "Expiration Date",
+            "issuePlace": "Place of Issue",
+            "hasChip": "Has Chip",
+            "country": "Country",
+            "note": "Note"
+        }
+    },
+
+    "ADDSTUDENT": {
+    "title": "Add Student",
+    "importCSV": "Import CSV",
+    "importExcel": "Import Excel",
+    "basicInfo": "Basic Information",
+    "mailingAddressType": "Select Mailing Address",
+    "usePermanent": "Use Permanent Address",
+    "useTemporary": "Use Temporary Address",
+    "useOther": "Use Other Address",
+    "idType": "ID Type",
+    "addStudent": "Add Student",
+    "selectFile": "Select Student List File",
+    "close": "Close"
+    },
+
+    "UPDATESTUDENT": {
+        "title": "Update student's information",
+        "udpateStudent": "Update Student"
+    },
+
+    "SEARCHSTUDENT": {
+        "title": "Search Student",
+        "searchStudent": "Search Student",
+        "noListStudent": "Don't have any student"
+    },
+
+    "DELETESTUDENT": {
+        "title": "Delete Student",
+        "deleteStudent": "Delete student"
+    },
+
+    "COURSE": {
+        "add": "Add Course",
+        "manage": "Manage Course",
+        "update": "Update course",
+        "listCourse": "List Course",
+        "courseCode": "Course Code",
+        "courseName": "Course Name",
+        "credits": "Number of Credits",
+        "faculty": "Faculty in charge",
+        "description": "Description",
+        "prerequisite": "Best decision (if any)",
+        "submitButton": "Add Course",
+        "cancleButton": "Cancle",
+        "saveButton": "Save",
+        "status": "Status",
+        "action": "Action"
+    },
+
+    
+    "FACULTY": {
+        "search": "Search",
+        "update": "Edit faculty",
+        "add": "Add faculty",
+        "inputFacultyName": "Enter faculty name",
+        "facultyName": "Faculty name",
+        "updateButton": "Save"
+    },
+
+    "STATUS": {
+        "search": "Search",
+        "update": "Edit status",
+        "add": "Add status",
+        "inputStatusName": "Enter status name",
+        "statusName": "Status name",
+        "updateButton": "Save"
+    },
+
+    "PROGRAM": {
+        "search": "Search",
+        "update": "Edit program",
+        "add": "Add program",
+        "inputProgramName": "Enter program name",
+        "programName": "Program name",
+        "updateButton": "Save"
+    },
+
+    
+    "GRADE": {
+        "title": "Search student grades",
+        "search": "Search",
+        "grade": "Grade"
+    },
+
+    "CLASS": {
+        "registeredClass": "List of registered classes",
+        "addStudent": "Add student to class",
+        "addClass": "Add class",
+        "classId": "Class code",
+        "lecturer": "Lecturer",
+        "year": "School year",
+        "semester": "Semester",
+        "room": "Classroom",
+        "maximum": "Maximum number of students",
+        "schedule": "Schedule",
+        "mon": "Mon",
+        "tue": "Tue",
+        "wed": "Wed",
+        "thu": "Thu",
+        "fri": "Fri",
+        "sat": "Sat",
+        "startTimeLabel": "Start time",
+        "endTimeLabel": "End time",
+        "startTimePlaceholder": "Start Time Placeholder",
+        "endTimePlaceholder": "End Time Placeholder",
+        "submitButton": "Add class"
+    },
+    "EMAIL": {
+        "title": "Domain Email Management",
+        "addTitle": "Add Domain Email",
+        "domainLabel": "Domain Name",
+        "addButton": "Add",
+        "listTitle": "Domain Email List",
+        "table": {
+        "index": "Number",
+        "domain": "Domain",
+        "actions": "Actions"
+        },
+        "editTitle": "Edit Domain",
+        "editLabel": "Domain Name",
+        "cancelButton": "Cancel",
+        "saveButton": "Save"
+    },
+
+    "HEADER": {
+        "studentManagement": "Student Management",
+        "addStudent": "Add Student",
+        "deleteStudent": "Delete Student",
+        "updateStudent": "Update Student",
+        "searchStudent": "Search Student",
+
+        "classManagement": "Class Management",
+        "addClass": "Add Class",
+        "addStudentToClass": "Add Student to Class",
+        "removeStudentFromClass": "Remove Student from Class",
+
+        "facultyManagement": "Faculty Management",
+        "addFaculty": "Add Faculty",
+        "updateFaculty": "Change Faculty",
+
+        "statusManagement": "Status Management",
+        "addStatus": "Add Status",
+        "updateStatus": "Change Status",
+
+        "programManagement": "Program Management",
+        "addProgram": "Add Program",
+        "updateProgram": "Change Program",
+
+        "emailConfig": "Email Configuration",
+        "viewGrades": "View Student Grades",
+
+        "courseManagement": "Course Management",
+        "addCourse": "Add Course",
+        "editCourse": "Edit Course"
+    }
+}

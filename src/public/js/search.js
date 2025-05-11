@@ -1,11 +1,12 @@
-async function searchStudent() { 
+async function searchStudent() {
+
     const khoa = document.getElementById('facultySelect').value.trim();
     const mssv = document.getElementById('searchMSSV').value.trim();
     const name = document.getElementById('searchName').value.trim();
 
     // Kiểm tra nếu không nhập gì thì cảnh báo
     if (!mssv && !name && !khoa) {
-        alert("Vui lòng nhập MSSV hoặc Họ Tên hoặc Khoa để tìm kiếm!");
+        alert(i18next.t('alert.notFill'));
         return;
     }
 
@@ -23,7 +24,7 @@ async function searchStudent() {
         studentList.innerHTML = ''; // Xóa nội dung cũ
 
         if (!response.ok || !result || !Array.isArray(result) || result.length === 0) {
-            studentList.innerHTML = `<p class='text-center text-gray-500'>Không tìm thấy sinh viên nào.</p>`;
+            studentList.innerHTML = `<p class='text-center text-gray-500'>${i18next.t('SEARCHSTUDENT.noListStudent')}.</p>`;
             return;
         }
         console.log(result)
@@ -45,17 +46,17 @@ async function searchStudent() {
             let idDocsHTML = '';
             if (ID_info) {
                 idDocsHTML = `
-                    <p><strong>Giấy tờ tùy thân:</strong></p>
+                    <p><strong>${i18next.t('inforStudent.ID.idDoc')}:</strong></p>
                     <ul class="ml-4 list-disc grid grid-cols-2">
                         <li>
-                            <p><strong>Loại:</strong> ${ID_info.id_type}</p>
-                            <p><strong>Số:</strong> ${ID_info.id_number}</p>
-                            <p><strong>Ngày cấp:</strong> ${ID_info.issue_date || 'Không có'}</p>
-                            <p><strong>Hạn sử dụng:</strong> ${ID_info.expiry_date || 'Không có'}</p>
-                            <p><strong>Nơi cấp:</strong> ${ID_info.issue_place || 'Không có'}</p>
-                            <p><strong>Quốc gia:</strong> ${ID_info.issue_country || 'Không có'}</p>
-                            <p><strong>Chip:</strong> ${ID_info.has_chip ? 'Có' : 'Không'}</p>
-                            <p><strong>Ghi chú:</strong> ${ID_info.note || 'Không có'}</p>
+                            <p><strong>${i18next.t('ADDSTUDENT.idType')}:</strong> ${ID_info.id_type}</p>
+                            <p><strong>${i18next.t('inforStudent.ID.number')}:</strong> ${ID_info.id_number}</p>
+                            <p><strong>${i18next.t('inforStudent.ID.createDate')}:</strong> ${ID_info.issue_date || 'Không có'}</p>
+                            <p><strong>${i18next.t('inforStudent.ID.expireDate')}:</strong> ${ID_info.expiry_date || 'Không có'}</p>
+                            <p><strong>${i18next.t('inforStudent.ID.issuePlace')}:</strong> ${ID_info.issue_place || 'Không có'}</p>
+                            <p><strong>${i18next.t('inforStudent.ID.hasChip')}:</strong> ${ID_info.issue_country || 'Không có'}</p>
+                            <p><strong>${i18next.t('inforStudent.ID.country')}:</strong> ${ID_info.has_chip ? 'Có' : 'Không'}</p>
+                            <p><strong>${i18next.t('inforStudent.ID.note')}:</strong> ${ID_info.note || 'Không có'}</p>
                         </li>
                     </ul>
                 `;
@@ -68,26 +69,26 @@ async function searchStudent() {
 
             return `
                 <li class='p-4 border-b bg-white shadow rounded-lg mb-2'>
-                    <p><strong>MSSV:</strong> ${information.student_id}</p>
-                    <p><strong>Họ tên:</strong> ${information.full_name}</p>
-                    <p><strong>Ngày sinh:</strong> ${formattedDate}</p>
-                    <p><strong>Giới tính:</strong> ${information.gender}</p>
-                    <p><strong>Khoa:</strong> ${information.faculty}</p>
-                    <p><strong>Khóa:</strong> ${information.academic_year}</p>
-                    <p><strong>Chương trình:</strong> ${information.education_program}</p>
-                    <p><strong>Email:</strong> ${information.email}</p>
-                    <p><strong>Số điện thoại:</strong> ${information.phone}</p>
-                    <p><strong>Tình trạng sinh viên:</strong> ${information.student_status}</p>
-                    ${addressHTML(permanent_address, "Địa chỉ thường trú")}
-                    ${addressHTML(temporary_address, "Địa chỉ tạm trú")}
-                    ${addressHTML(mailing_address, "Địa chỉ nhận thư")}
+                    <p><strong>${i18next.t('inforStudent.studentID')}:</strong> ${information.student_id}</p>
+                    <p><strong>${i18next.t('inforStudent.name')}:</strong> ${information.full_name}</p>
+                    <p><strong>${i18next.t('inforStudent.dob')}:</strong> ${formattedDate}</p>
+                    <p><strong>${i18next.t('inforStudent.gender')}:</strong> ${information.gender}</p>
+                    <p><strong>${i18next.t('inforStudent.faculty')}:</strong> ${information.faculty}</p>
+                    <p><strong>${i18next.t('inforStudent.course')}:</strong> ${information.academic_year}</p>
+                    <p><strong>${i18next.t('inforStudent.program')}:</strong> ${information.education_program}</p>
+                    <p><strong>${i18next.t('inforStudent.email')}:</strong> ${information.email}</p>
+                    <p><strong>${i18next.t('inforStudent.phone')}:</strong> ${information.phone}</p>
+                    <p><strong>${i18next.t('inforStudent.status')}:</strong> ${information.student_status}</p>
+                    ${addressHTML(permanent_address, i18next.t('inforStudent.address.permanentAddress'))}
+                    ${addressHTML(temporary_address, i18next.t('inforStudent.address.temporaryAddress'))}
+                    ${addressHTML(mailing_address, i18next.t('inforStudent.address.mailingAddress'))}
                     ${idDocsHTML}
                 </li>
             `;
         }).join("");
 
     } catch (error) {
-        alert("Lỗi: Không thể kết nối với máy chủ!");
+        alert(i18next.t('alert.notConnectServer'));
         console.error(error);
     }
 }
@@ -131,6 +132,8 @@ async function exportStudentList(url, filename) {
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
+    
+    await window.i18nReady; //Đảm bảo i18next đã sẵn sàng
     const facultySelect = document.getElementById('facultySelect');
 
     try {

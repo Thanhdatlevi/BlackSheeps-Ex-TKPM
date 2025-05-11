@@ -1,51 +1,55 @@
 <div class="max-w-3xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
-    <h2 class="text-xl font-bold">Thêm khóa học</h2>
+    <h2 class="text-xl font-bold">{{__ "COURSE.add"}}</h2>
     <form action="/addCourse" method="POST">
         <!-- Course Code -->
         <div>
-            <label for="courseCode">Mã khóa học:</label>
+            <label for="courseCode">{{__ "COURSE.courseCode"}}:</label>
             <input type="text" id="courseCode" name="courseCode" required class="p-2 border rounded w-full mb-2">
         </div>
 
         <!-- Course Name -->
         <div>
-            <label for="courseName">Tên khóa học:</label>
+            <label for="courseName">{{__ "COURSE.courseName"}}:</label>
             <input type="text" id="courseName" name="courseName" required class="p-2 border rounded w-full mb-2">
         </div>
 
         <!-- Credits -->
         <div>
-            <label for="credits">Số tín chỉ:</label>
+            <label for="credits">{{__ "COURSE.credits"}}:</label>
             <input type="number" id="credits" name="credits" min="2" required class="p-2 border rounded w-full mb-2">
         </div>
 
         <!-- Department -->
         <div>
-            <label for="department">Khoa phụ trách:</label>
+            <label for="department">{{__ "COURSE.faculty"}}:</label>
             <select id="faculty" name="faculty" required class="p-2 border rounded w-full mb-2">
-                <option value="">Chọn khoa</option>
+                <option value="">{{__ "inforStudent.faculty"}}</option>
                 <!-- Các option sẽ được load từ database -->
             </select>
         </div>
 
         <!-- Description -->
         <div>
-            <label for="description">Mô tả:</label>
+            <label for="description">{{__ "COURSE.description"}}:</label>
             <textarea id="description" name="description" rows="4" required class="p-2 border rounded w-full mb-2"></textarea>
         </div>
 
         <!-- Prerequisite Course -->
         <div>
-            <label for="prerequisite">Môn tiên quyết (nếu có):</label>
+            <label for="prerequisite">{{__ "COURSE.prerequisite"}}:</label>
             <input type="text" id="prerequisite" name="prerequisite" class="p-2 border rounded w-full mb-2">
         </div>
 
         <!-- Submit Button -->
         <div>
-            <button type="submit" class="bg-blue-500 text-white p-2 rounded">Thêm khóa học</button>
+            <button type="submit" class="bg-blue-500 text-white p-2 rounded">{{__ "COURSE.submitButton"}}</button>
         </div>
     </form>
 </div>
+<script src="https://unpkg.com/i18next@21.6.3/i18next.min.js"></script>
+<script src="https://unpkg.com/i18next-http-backend@1.4.3/i18nextHttpBackend.min.js"></script>
+<script src="https://unpkg.com/i18next-browser-languagedetector@6.1.2/i18nextBrowserLanguageDetector.min.js"></script>
+<script src="/js/i18n-init.js"></script>
 <script>
 async function loadFaculties() {
     try {
@@ -94,7 +98,7 @@ async function validPrerequisite(prerequisite){
         const data = await response.json();
         if (!data.success) {
             console.error('Failed to fetch prerequisite course:', response.message);
-            alert('Khóa học tiên quyết không tồn tại!');
+            alert(i18next.t('alert.notPreCourse'));
             return false;
         }
 
@@ -117,7 +121,8 @@ function formatDateWithTimezone(date) {
     // Định dạng ngày giờ: YYYY-MM-DD HH:mm:ss.SSS±TZD
     return date.toISOString().replace('T', ' ').replace('Z', '') + `${sign}${hours}:${minutes}`;
 }
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    await window.i18nReady;
     loadFaculties();
 });
 // Example script to validate prerequisite course existence
@@ -126,7 +131,7 @@ document.querySelector('form').addEventListener('submit', (e) => {
 
     const validCredits = parseInt(document.getElementById('credits').value,10);
     if (isNaN(validCredits) || validCredits < 2) {
-        alert('Số tín chỉ phải >= 2');
+        alert(i18next.t('alert.notCredit'));
         return;
     }
 
@@ -162,16 +167,16 @@ document.querySelector('form').addEventListener('submit', (e) => {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            alert('Khóa học đã được thêm thành công!');
+            alert(i18next.t('alert.addSuccCourse'));
             // Optionally, redirect or refresh the page
             document.querySelector('form').reset(); // Reset form after successful submission
         } else {
-            alert('Có lỗi xảy ra khi thêm khóa học: ' + data.message);
+            alert(i18next.t('alert.addFaultCourse') + data.message);
         }
     })
     .catch(error => {
         console.error('Error adding course:', error);
-        alert('Có lỗi xảy ra khi thêm khóa học!');
+        alert(i18next.t('alert.addFaultCourse'));
     });
 
 });
