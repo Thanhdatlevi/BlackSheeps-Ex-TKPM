@@ -2,7 +2,7 @@ const classController = require('./classController');
 const classModel = require('./classModel');
 const httpMocks = require('node-mocks-http');
 
-jest.mock('../class/classModel');
+jest.mock('./classModel');
 
 describe('classController', () => {
     let req, res;

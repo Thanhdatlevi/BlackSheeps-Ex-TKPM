@@ -1,10 +1,7 @@
 const classModel = require('./classModel');
 const db = require('../../config/db');
-const logger = require('../../config/logging');
-const studentModel = require('../student/studentModel');
 
 jest.mock('../../config/db');
-jest.mock('../../config/logging');
 jest.mock('../student/studentModel');
 
 describe('classModel', () => {
