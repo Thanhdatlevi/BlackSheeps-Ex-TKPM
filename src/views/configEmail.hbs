@@ -59,13 +59,19 @@
         </form>
     </div>
 </div>
-
+<script src="https://unpkg.com/i18next@21.6.3/i18next.min.js"></script>
+<script src="https://unpkg.com/i18next-http-backend@1.4.3/i18nextHttpBackend.min.js"></script>
+<script src="https://unpkg.com/i18next-browser-languagedetector@6.1.2/i18nextBrowserLanguageDetector.min.js"></script>
+<script src="/js/i18n-init.js"></script>
 <script>
     // Danh sách domains - sẽ được thay thế bằng dữ liệu từ API
     let domains = [];
 
     // Tải danh sách domains khi trang được load
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', async function() {
+        // Wait for i18next to be ready
+        await window.i18nReady;
+        
         loadDomains();
 
         // Xử lý form thêm domain
@@ -79,6 +85,8 @@
             e.preventDefault();
             updateDomain();
         });
+        
+        
     });
 
     // Tải danh sách domains từ API
@@ -118,7 +126,6 @@
     function renderDomainTable() {
         const tableBody = document.getElementById('domainTableBody');
         tableBody.innerHTML = '';
-        console.log(domains);
         domains.forEach((domain, index) => {
             const row = document.createElement('tr');
             row.innerHTML = `
@@ -127,11 +134,11 @@
                 <td class="py-2 px-4 border-b text-center">
                     <button onclick="openEditModal(${domain.email_id}, '${domain.email_domain}')" 
                             class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded mr-2">
-                        Sửa
+                        ${i18next.t('EMAIL.editButton')}
                     </button>
                     <button onclick="deleteDomain(${domain.email_id})" 
                             class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded">
-                        Xóa
+                        ${i18next.t('EMAIL.deleteButton')}
                     </button>
                 </td>
             `;
@@ -145,7 +152,7 @@
         const domainName = domainInput.value.trim();
         
         if (!domainName) {
-            alert('Vui lòng nhập tên domain!');
+            alert(i18next.t('EMAIL.domainRequired'));
             return;
         }
 
@@ -166,12 +173,13 @@
                 domains.push({ email_id: newId, email_domain: domainName });
                 renderDomainTable();
                 domainInput.value = '';
-                alert('Thêm domain thành công!');
+                alert(i18next.t('alert.addEmailSuccess'));
             } else {
-                alert('Lỗi: ' + (data.message || 'Không thể thêm domain'));
+                alert(i18next.t('alert.addEmailError') + ': ' + (data.message || i18next.t('alert.generalEmailError')));
             }
         } catch (error) {
             console.error('Error adding domain:', error);
+            alert(i18next.t('alert.generalEmailError'));
         }
     }
 
@@ -195,7 +203,7 @@
         const newDomainName = document.getElementById('editDomainName').value.trim();
         
         if (!newDomainName) {
-            alert('Vui lòng nhập tên domain!');
+            alert(i18next.t('EMAIL.domainRequired'));
             return;
         }
 
@@ -219,18 +227,19 @@
                 console.log("domain:",domains);
                 renderDomainTable();
                 closeEditModal();
-                alert('Cập nhật domain thành công!');
+                alert(i18next.t('alert.updateEmailSuccess'));
             } else {
-                alert('Lỗi: ' + (data.message || 'Không thể cập nhật domain'));
+                alert(i18next.t('alert.updateEmailError') + ': ' + (data.message || i18next.t('alert.generalEmailError')));
             }
         } catch (error) {
             console.error('Error updating domain:', error);
+            alert(i18next.t('alert.generalEmailError'));
         }
     }
 
     // Xóa domain
     async function deleteDomain(id) {
-        if (!confirm('Bạn có chắc chắn muốn xóa domain này?')) {
+        if (!confirm(i18next.t('alert.confirmDeleteEmail'))) {
             return;
         }
 
@@ -249,12 +258,13 @@
                 // Xóa domain khỏi danh sách và hiển thị lại
                 domains = domains.filter(d => d.email_id != id);
                 renderDomainTable();
-                alert('Xóa domain thành công!');
+                alert(i18next.t('alert.deleteEmailSucc'));
             } else {
-                alert('Lỗi: ' + (data.message || 'Không thể xóa domain'));
+                alert(i18next.t('alert.deleteEmailFault') + ': ' + (data.message || i18next.t('alert.generalEmailError')));
             }
         } catch (error) {
             console.error('Error deleting domain:', error);
+            alert(i18next.t('alert.generalEmailError'));
         }
     }
 </script>
