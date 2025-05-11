@@ -8,29 +8,4 @@
 <script src="https://unpkg.com/i18next-http-backend@1.4.3/i18nextHttpBackend.min.js"></script>
 <script src="https://unpkg.com/i18next-browser-languagedetector@6.1.2/i18nextBrowserLanguageDetector.min.js"></script>
 <script src="/js/i18n-init.js"></script>
-<script>
-     document.addEventListener('DOMContentLoaded', async () => {
-        await window.i18nReady;
-    });
-    const programForm = document.getElementById('programForm');
-    programForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const name = document.getElementById('name').value;
-        fetch('/addProgram', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({name})
-        })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    alert(i18next.t('alert.addSucc'));
-                } else {
-                    alert(i18next.t('alert.addFault'));
-                }
-                programForm.reset();
-            });
-    });
-</script>
+<script src="/js/addProgram.js"></script>
