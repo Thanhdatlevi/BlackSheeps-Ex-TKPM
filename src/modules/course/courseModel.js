@@ -12,7 +12,7 @@ class courseModel {
             RETURNING *;
             `;
             const result = await db.query(query, [course.courseCode, course.courseName, course.credits, course.faculty, course.description, course.prerequisite,'Active', course.time_create]);
-            console.log("result: ", result.rows[0]);
+            
             if (result.rows.length > 0){
                 logger.info("addCourse executed successfully in courseModel");
                 logger.info(result.rows[0]);
@@ -21,7 +21,7 @@ class courseModel {
             return null;
         }
         catch(error){
-            logger.infor("Error add Course in courseModel: ", error.message);
+            logger.error("Error add Course in courseModel: ", error.message);
             throw new Error(error.message);
         }
     }
@@ -33,7 +33,7 @@ class courseModel {
             WHERE course_id = $1;
             `;
             const result = await db.query(query, [courseId.courseId]);
-            console.log("result: ", result.rows[0]);
+            
             if (result.rows.length > 0){
                 logger.info("searchCourseById executed successfully in courseModel");
                 logger.info(result.rows[0]);

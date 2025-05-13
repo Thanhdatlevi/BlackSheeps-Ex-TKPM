@@ -268,9 +268,7 @@ async function addStudent(event) {
             program: data.program,
             status: data.status,
             email: data.email,
-            phone: data.phone,
-            address: data.permanent_street + ', ' + data.permanent_ward + ', ' 
-            + data.permanent_district + ', ' + data.permanent_city + ', ' + data.permanent_country
+            phone: data.phone
 
         },
         permanent_address: {

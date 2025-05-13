@@ -118,7 +118,7 @@ document.querySelector('form').addEventListener('submit', (e) => {
             // Optionally, redirect or refresh the page
             document.querySelector('form').reset(); // Reset form after successful submission
         } else {
-            alert(i18next.t('alert.addFaultCourse') + data.message);
+            alert(i18next.t('alert.addFaultCourse') +": " +data.message);
         }
     })
     .catch(error => {

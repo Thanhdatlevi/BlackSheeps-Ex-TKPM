@@ -3,7 +3,7 @@ const router = express.Router();
 const courseController = require('../modules/course/courseController');
 
 router.get('/addCoursePage', courseController.addCoursePage);
-router.post('/addCourse', courseController.addCouse);
+router.post('/addCourse', courseController.addCourse);
 
 router.get('/searchCourseById', courseController.searchCourseById);
 
