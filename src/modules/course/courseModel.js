@@ -7,11 +7,12 @@ class courseModel {
         console.log("course: ", course);
         try {
             const query = `
-            INSERT INTO public.course (course_id, course_name, credit, faculty, description, prerequisite, status, time_create)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+            INSERT INTO public.course (course_id, course_name, credit, faculty, description, prerequisite, status, time_create, en_course_name, en_description)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
             RETURNING *;
             `;
-            const result = await db.query(query, [course.courseCode, course.courseName, course.credits, course.faculty, course.description, course.prerequisite,'Active', course.time_create]);
+            const result = await db.query(query, [course.courseCode, course.courseName, course.credits, course.faculty, 
+                course.description, course.prerequisite,'Active', course.time_create, course.courseNameEn, course.descriptionEn]);
             
             if (result.rows.length > 0){
                 logger.info("addCourse executed successfully in courseModel");
@@ -46,15 +47,18 @@ class courseModel {
             throw new Error(error.message);
         }
     }
-    static async getAllCourses(){
+    static async getAllCourses(lang){
+        if(lang==="en") lang+="_";
+        else lang = "";
+        console.log("lang in model: ", lang);
         try {
             const query =`
             SELECT
             c.course_id,
-            c.course_name,
+            c.${lang}course_name,
             c.credit,
             c.faculty,
-            c.description,
+            c.${lang}description,
             c.prerequisite,
             c.status,
             c.time_create,
@@ -99,11 +103,13 @@ class courseModel {
             throw new Error(error.message);
         }
     }
-    static async updateCourse(course){
+    static async updateCourse(course,lang){
+        if(lang==="en") lang+="_";
+        else lang = "";
         try {
             const query = `
             UPDATE public.course
-            SET course_name = $1, description = $2, faculty = $3, credit = $4
+            SET ${lang}course_name = $1, ${lang}description = $2, faculty = $3, credit = $4
             WHERE course_id = $5
             RETURNING *;
             `;
