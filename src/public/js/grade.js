@@ -1,3 +1,8 @@
+function getLangFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get('lang') || 'vi';
+}
+
 async function fetchStudentGrades() {
     const studentId = document.getElementById("studentId").value;
     if (!studentId) {
@@ -5,7 +10,7 @@ async function fetchStudentGrades() {
         return;
     }
     
-    const response = await fetch(`/searchGrade?student_id=${studentId}`);
+    const response = await fetch(`/searchGrade?student_id=${studentId}&lang=${getLangFromURL()}`);
     const data = await response.json();
     console.log(data)
 
@@ -18,7 +23,7 @@ async function fetchStudentGrades() {
         data.grades.forEach((grade) => {
             const row = `<tr>
             <td class="border p-2">${grade.course_id}</td>
-            <td class="border p-2">${grade.course_name}</td>
+            <td class="border p-2">${grade.course_name||grade.en_course_name}</td>
             <td class="border p-2">${grade.year}</td>
             <td class="border p-2">${grade.semester}</td>
             <td class="border p-2">${grade.credit}</td>
@@ -44,7 +49,7 @@ async function exportStudentGrades() {
         return;
     }
 
-    const url = `/exportGrades?student_id=${studentId}`;
+    const url = `/exportGrades?student_id=${studentId}&lang=${getLangFromURL()}`;
     
     try {
         const response = await fetch(url);

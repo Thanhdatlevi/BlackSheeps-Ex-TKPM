@@ -20,8 +20,11 @@ class gradeController {
 
     static async searchGrade(req,res){
         try {
+            console.log(req.query.lang)
+            let lang = req.query.lang || "en";
+
             const student_id = req.query.student_id;
-            const grades = await gradeModel.getStudentGrades(student_id);
+            const grades = await gradeModel.getStudentGrades(student_id,lang);
             return res.status(200).json(grades);
         }
         catch (error){
@@ -35,14 +38,16 @@ class gradeController {
 
     static async exportStudentGrades(req, res) {
         try {
+            let lang = req.query.lang || "en";
+
             const student_id = req.query.student_id;
             if (!student_id) {
                 return res.status(400).send("Thiếu mã số sinh viên.");
             }
 
-            let studentData = await gradeModel.getStudentGrades(student_id);
+            let studentData = await gradeModel.getStudentGrades(student_id,lang);
             studentData = studentData.grades;
-
+            console.log(studentData)
             let studentInformation = await studentModel.searchStudent(student_id);
             studentInformation =studentInformation[0];
             if (!studentData || studentData.length === 0) {
@@ -91,7 +96,7 @@ function createExcelFile(studentData, studentInformation, gpa) {
         ["GPA:", gpa],
         [],
         ["Mã môn", "Tên môn học", "Số tín chỉ", "Điểm số"],
-        ...studentData.map(({ course_id, course_name, credit, grade }) => [course_id, course_name, credit, grade])
+        ...studentData.map(({ course_id, course_name, en_course_name, credit, grade }) => [course_id, course_name||en_course_name, credit, grade])
     ];
 
     const workbook = XLSX.utils.book_new();
