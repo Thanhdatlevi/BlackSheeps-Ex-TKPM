@@ -126,15 +126,18 @@
     "listCourse": "Danh sách khóa học",
     "courseCode": "Mã khóa học",
     "courseName": "Tên khóa học",
+    "courseNameEn": "Tên khóa học tiếng Anh",
     "credits": "Số tín chỉ",
     "faculty": "Khoa phụ trách",
     "description": "Mô tả",
+    "descriptionEn": "Mô tả tiếng Anh",
     "prerequisite": "Môn tiên quyết (nếu có)",
     "submitButton": "Thêm khóa học",
     "cancleButton": "Hủy",
     "saveButton": "Lưu",
     "status": "Trạng thái",
     "action": "Hành động"
+
   },
 
   "FACULTY": {

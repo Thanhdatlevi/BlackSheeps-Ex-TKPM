@@ -1,3 +1,8 @@
+function getLangFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get('lang') || 'vi';
+}
+
 async function loadFaculties() {
     try {
         const response = await fetch('/faculties');
@@ -89,11 +94,14 @@ document.querySelector('form').addEventListener('submit', (e) => {
     const course = {
         courseCode: document.getElementById('courseCode').value,
         courseName: document.getElementById('courseName').value,
+        courseNameEn: document.getElementById('courseNameEn').value,
         credits: validCredits,
         faculty: document.getElementById('faculty').value,
         description: document.getElementById('description').value,
+        descriptionEn: document.getElementById('descriptionEn').value,
         prerequisite: null,
-        time_create:currentTime
+        time_create:currentTime,
+        
     };
     if (document.getElementById('prerequisite').value){
        const isvalid = validPrerequisite(document.getElementById('prerequisite').value);

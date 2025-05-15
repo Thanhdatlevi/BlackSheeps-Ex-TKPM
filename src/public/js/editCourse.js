@@ -1,3 +1,7 @@
+function getLangFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get('lang') || 'vi';
+}
 function formatDateWithTimezone(date) {
     const offset = -date.getTimezoneOffset(); // Lấy timezone offset (phút)
     const sign = offset >= 0 ? '+' : '-'; // Dấu (+/-) cho timezone
@@ -26,7 +30,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 // Tải danh sách khóa học từ API
 async function loadCourses() {
     try {
-        const response = await fetch('/getAllCourses');
+        const response = await fetch(`/getAllCourses?lang=${getLangFromURL()}`);
         const data = await response.json();
         if (data.success && data.courses) {
             courses = data.courses;
@@ -59,14 +63,19 @@ async function loadDepartments() {
 
 // Hiển thị danh sách khóa học trong bảng
 function renderCourseTable() {
+    let lang = getLangFromURL();
+    
+    
+
     console.log("renderCourseTable called");
     const tableBody = document.getElementById('courseTableBody');
     tableBody.innerHTML = '';
     courses.forEach((course, index) => {
+        const courseName = lang === 'en' ? course.en_course_name || course.course_name : course.course_name;
         const row = document.createElement('tr');
         row.innerHTML = `
             <td class="py-2 px-4 border-b">${course.course_id}</td>
-            <td class="py-2 px-4 border-b">${course.course_name}</td>
+            <td class="py-2 px-4 border-b">${courseName}</td>
             <td class="py-2 px-4 border-b">${course.faculty_name}</td>
             <td class="py-2 px-4 border-b">${course.status}</td>
             <td class="py-2 px-4 border-b text-center">
@@ -99,6 +108,7 @@ function renderDepartmentOptions() {
 // Mở modal chỉnh sửa khóa học
 async function openEditModal(courseId) {
 try {
+    const lang = getLangFromURL();
     // Gửi yêu cầu kiểm tra xem khóa học có tồn tại trong bảng class không
     const response = await fetch(`/isCourseNameExists?courseId=${courseId}`);
 
@@ -107,10 +117,12 @@ try {
     // Tìm khóa học trong danh sách courses
     const course = courses.find(c => c.course_id === courseId);
     if (course) {
+        let courseName = lang === 'en' ? course.en_course_name || course.course_name : course.course_name;
+        let description = lang === 'en' ? course.en_description || course.description : course.description;
         // Điền thông tin khóa học vào modal
         document.getElementById('editCourseId').value = course.course_id;
-        document.getElementById('editCourseName').value = course.course_name;
-        document.getElementById('editDescription').value = course.description;
+        document.getElementById('editCourseName').value = courseName;
+        document.getElementById('editDescription').value = description;
         document.getElementById('editDepartment').value = course.faculty;
         document.getElementById('editCredit').value = course.credit;
 
@@ -141,6 +153,7 @@ function closeEditModal() {
 
 // Cập nhật khóa học
 async function updateCourse() {
+    const lang = getLangFromURL();
     const id = document.getElementById('editCourseId').value;
     const courseName = document.getElementById('editCourseName').value.trim();
     const description = document.getElementById('editDescription').value.trim();
@@ -156,13 +169,23 @@ async function updateCourse() {
         return;
     }
 
+    // Prepare update data based on language
+    const updateData = {
+        id: id,
+        faculty: faculty,
+        credit: credit,
+        courseName: courseName,
+        description: description
+    };
+    console.log("updateData: ", updateData);
+
     try {
-        const response = await fetch(`/updateCourse`, {
+        const response = await fetch(`/updateCourse?lang=${lang}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ id ,courseName, description, faculty, credit })
+            body: JSON.stringify(updateData)
         });
         const data = await response.json();
         if (data.success) {

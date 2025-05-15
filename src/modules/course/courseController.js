@@ -125,8 +125,10 @@ class courseController {
     }
     static async getAllCourses(req, res){
         try {
+            let lang = req.query.lang || "en";
+            console.log("lang: ", lang);
             logger.info("getAllCourses method got called in courseController");
-            const courses = await courseModel.getAllCourses();
+            const courses = await courseModel.getAllCourses(lang);
             if (courses){
                 return res.status(200).json(
                     {
@@ -190,9 +192,10 @@ class courseController {
     }
     static async updateCourse(req, res){
         try {
+            let lang = req.query.lang || "en";
             logger.info("updateCourse method got called in courseController");
             const course = req.body;
-            const updatedCourse = await courseModel.updateCourse(course);
+            const updatedCourse = await courseModel.updateCourse(course, lang);
             if (updatedCourse){
                 return res.status(200).json(
                     {
