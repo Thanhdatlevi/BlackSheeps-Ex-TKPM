@@ -15,12 +15,14 @@ class courseController {
             });
         }
     }
-    static async addCouse(req, res){
+    static async addCourse(req, res){
         try {
             logger.info("addCouse method got called in courseController");
+
             const course = req.body;
-            console.log("course: ", course);
+
             const addedCourse = await courseModel.addCourse(course);
+
             if (addedCourse){
                 return res.status(201).json(
                     {
@@ -39,13 +41,28 @@ class courseController {
                 );
             }
         }
-        catch (error){
+        catch (error) {
             logger.error("Error in addCourseController:", error.message);
-            return res.status(500).json (
-                {
-                    message:"Failed to add course. Please try again later."
+            
+            if (error.message.includes("duplicate key value violates unique constraint")) {
+                if (error.message.includes("course_pkey") || 
+                    error.message.includes("course_id_key") || 
+                    error.message.toLowerCase().includes("course_id")) {
+                    
+                    logger.warn(`Attempt to add duplicate course ID: ${req.body.courseCode}`);
+                    return res.status(409).json({
+                        success: false,
+                        message: "Course ID already exists. Please use a different course code.",
+                        error: "DUPLICATE_COURSE_ID"
+                    });
                 }
-            );
+            }
+            
+            // Generic error response
+            return res.status(500).json({
+                success: false,
+                message: "Failed to add course. Please try again later."
+            });
         }
     }
     static async searchCourseById(req, res){

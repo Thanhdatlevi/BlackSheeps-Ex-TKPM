@@ -98,12 +98,12 @@ class studentModel {
         try {
             const query = `
             INSERT INTO public.students (student_id, full_name, date_of_birth, 
-            gender, academic_year, address, email, phone, faculty, education_program, student_status) 
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+            gender, academic_year, email, phone, faculty, education_program, student_status) 
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
             RETURNING *;
             `;
             const result = await db.query(query, [student.mssv, student.name,student.dob,
-                student.gender, student.course, student.address, student.email, student.phone, student.faculty,
+                student.gender, student.course, student.email, student.phone, student.faculty,
                 student.program, student.status]);
             if (result.rows.length > 0) {
                 logger.info("addStudent executed successfully in studentModel");

@@ -33,6 +33,7 @@ class studentController {
     static async addStudent(req, res) {
         try {
             logger.info("addStudent method got called in studentController");
+
             const newStudent = {
                 mssv: req.body.mssv,
                 name: req.body.name,
@@ -42,11 +43,12 @@ class studentController {
                 course: req.body.course,
                 program: req.body.program,
                 status: req.body.status,
-                address: req.body.permanent_street + ', ' + req.body.permanent_ward + ', ' + req.body.permanent_district + ', ' + req.body.permanent_city,
                 email: req.body.email,
                 phone: req.body.phone,
             }
+
             const addedStudent = await studentModel.addStudent(newStudent);
+
             if (addedStudent) {
                 return res.status(201).json({
                     message: "Student added successfully",
@@ -60,21 +62,9 @@ class studentController {
         } catch (error) {
             if (error.message.includes("duplicate key value violates unique constraint")) {
                 if (error.message.includes('students_pkey')) {
-                    logger.warn("Error existing studentID when adding student");
+                    logger.warn("Error: Student ID already exists");
                     return res.status(400).json({
-                        message: "Mã số sinh viên đã xuất hiện. Hãy dùng mssv khác"
-                    });
-                }
-                else if (error.message.includes('students_email_key')) {
-                    logger.warn("Error existing student email when adding student");
-                    return res.status(400).json({
-                        message: "Email already exists. Please use a different email."
-                    });
-                }
-                else if (error.message.includes('students_phone_key')) {
-                    logger.warn("Error existing student phone number when adding student");
-                    return res.status(400).json({
-                        message: "Phone number already exists. Please use a different phone number."
+                        message: "Student ID already exists. Please use a different ID."
                     });
                 }
             }
