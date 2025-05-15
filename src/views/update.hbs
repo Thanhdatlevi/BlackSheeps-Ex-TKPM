@@ -7,28 +7,28 @@
 
     <div class="max-w-lg bg-white shadow-lg rounded-lg p-6 transition inline-block mx-auto relative left-1/2 -translate-x-1/2"
         id='info_window'>
-        <h2 class="text-2xl font-bold text-center text-gray-700 mb-4">Cập nhật thông tin sinh viên</h2>
+        <h2 class="text-2xl font-bold text-center text-gray-700 mb-4">{{__ "UPDATESTUDENT.title"}}</h2>
 
         <div class="space-y-3" id="student_info">
-            <input type="text" id="student_id" placeholder="Nhập MSSV để cập nhật"
+            <input type="text" id="student_id" placeholder="{{__ "inforStudent.studentID"}}"
                 class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400">
 
             <button onclick="queryStudent('student_id'); queryStudentIdentification('student_id');"
                 class="w-full bg-blue-500 text-white font-semibold py-2 rounded-lg shadow-md hover:bg-blue-600 transition">
-                Tìm sinh viên
+                {{__ "SEARCHSTUDENT.searchStudent"}}
             </button>
 
-            <input type="text" id="full_name" placeholder="Nhập họ tên"
+            <input type="text" id="full_name" placeholder="{{__ "inforStudent.name"}}"
                 class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400">
             <div>
-                Ngày sinh (mm/dd/yyyy)
+                {{__ "inforStudent.dob"}} (mm/dd/yyyy)
             </div>
             <input type="date" id="date_of_birth"
                 class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400">
 
             <select id="gender" class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400">
-                <option value="Nam">Nam</option>
-                <option value="Nữ">Nữ</option>
+                <option value="Nam">{{__ "inforStudent.male"}}</option>
+                <option value="Nữ">{{__ "inforStudent.female"}}</option>
             </select>
 
             <select id="faculty" class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400">
@@ -37,11 +37,11 @@
             <select id="education_program" class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400">
             </select>
             
-            <input type="text" id="academic_year" placeholder="Nhập năm khoá học"
+            <input type="text" id="academic_year" placeholder="{{__ "inforStudent.course"}}"
                 class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400">
-            <input type="text" id="email" placeholder="Nhập Email"
+            <input type="text" id="email" placeholder="{{__ "inforStudent.email"}}"
                 class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400">
-            <input type="text" id="phone" placeholder="Nhập số điện thoại"
+            <input type="text" id="phone" placeholder="{{__ "inforStudent.phone"}}"
                 class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400">
 
             <select id="student_status" class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400"></select>
@@ -50,7 +50,7 @@
 
         <button onclick="updateStudent()"
             class="my-3 w-full bg-blue-500 text-white font-semibold py-2 rounded-lg shadow-md hover:bg-blue-600 transition">
-            Cập nhật
+            {{__ "UPDATESTUDENT.udpateStudent"}}
         </button>
 
 
@@ -60,131 +60,135 @@
 
     <div class="max-w-lg bg-white shadow-lg rounded-lg p-6 transition inline_block mx-auto opacity-0 relative left-1/2 -translate-x-1/2"
         id='id_window'>
-        <h2 class="text-2xl font-bold text-center text-gray-700 mb-4">Cập nhật giấy tờ sinh viên</h2>
+        <h2 class="text-2xl font-bold text-center text-gray-700 mb-4">{{__ "inforStudent.ID.idDoc"}}</h2>
 
         <div class="space-y-3" id="ID_info">
-            <input type="text" id="student_id_3" placeholder="Nhập MSSV để cập nhật"
+            <input type="text" id="student_id_3" placeholder="{{__ "inforStudent.ID.number"}}"
                 class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400">
 
             <button onclick="queryStudent('student_id_3'); queryStudentIdentification('student_id_3');"
                 class="w-full bg-blue-500 text-white font-semibold py-2 rounded-lg shadow-md hover:bg-blue-600 transition">
-                Tìm sinh viên
+                {{__ "SEARCHSTUDENT.searchStudent"}}
             </button>
 
             <select id="id_type" class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400"
                 onchange="grayCheckBox()">
-                <option value="CCCD">CCCD</option>
-                <option value="CMND">CMND</option>
-                <option value="passport">passport</option>
+                <option value="CCCD">{{__ "inforStudent.ID.cccd"}}</option>
+                <option value="CMND">{{__ "inforStudent.ID.cmnd"}}</option>
+                <option value="passport">{{__ "inforStudent.ID.passport"}}</option>
             </select>
-            <input type="text" id="id_number" placeholder="Nhập số thẻ tương ứng"
+            <input type="text" id="id_number" placeholder="{{__ "inforStudent.ID.number"}}"
                 class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400">
 
 
             <div>
-                Ngày cấp thẻ (mm/dd/yyyy)
+                {{__ "inforStudent.ID.createDate"}} (mm/dd/yyyy)
             </div>
             <input type="date" id="issue_date" class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400">
 
-            <input type="text" id="issue_place" placeholder="Nhập nơi cấp thẻ tương ứng"
+            <input type="text" id="issue_place" placeholder="{{__ "inforStudent.ID.issuePlace"}}"
                 class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400">
 
 
             <div>
-                Ngày thẻ hết hạn (mm/dd/yyyy)
+                {{__ "inforStudent.ID.expireDate"}} (mm/dd/yyyy)
             </div>
             <input type="date" id="expiry_date" class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400">
 
 
             <div>
-                Thẻ có chip hay không:
+                {{__ "inforStudent.ID.hasChip"}}:
             </div>
 
             <input type="checkbox" id="has_chip"
                 class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400">
 
-            <input type="text" id="issue_country" placeholder="Nhập quốc tịch của hộ chiếu"
+            <input type="text" id="issue_country" placeholder="{{__ "inforStudent.ID.country"}}"
                 class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400 bg-gray-100">
 
-            <input type="text" id="note" placeholder="Ghi chú"
+            <input type="text" id="note" placeholder="{{__ "inforStudent.ID.note"}}"
                 class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400">
 
 
             <button onclick="updateIdentification()"
                 class="my-3 w-full bg-blue-500 text-white font-semibold py-2 rounded-lg shadow-md hover:bg-blue-600 transition">
-                Cập nhật
+                {{__ "UPDATESTUDENT.udpateStudent"}}
             </button>
         </div>
     </div>
     <div class="max-w-lg bg-white shadow-lg rounded-lg p-6 transition inline-block mx-auto opacity-0 relative left-1/2"
         id='address_window'>
 
-        <h2 class="text-2xl font-bold text-center text-gray-700 mb-4">Cập nhật địa chỉ sinh viên</h2>
+        <h2 class="text-2xl font-bold text-center text-gray-700 mb-4">{{__ "inforStudent.address.inforAddress"}}</h2>
 
         <div class="space-y-3" id='address_info'>
 
-            <input type="text" id="student_id_2" placeholder="Nhập MSSV để cập nhật"
+            <input type="text" id="student_id_2" placeholder="{{__ "inforStudent.studentID"}}"
                 class="p-3 border rounded-lg w-full focus:ring-2 focus:ring-yellow-400">
 
             <button onclick="queryStudent('student_id_2'); queryStudentIdentification('student_id_2');"
                 class="w-full bg-blue-500 text-white font-semibold py-2 rounded-lg shadow-md hover:bg-blue-600 transition">
-                Tìm sinh viên
+                {{__ "SEARCHSTUDENT.searchStudent"}}
             </button>
 
             <div class="mb-4" id="permanent_address_info">
-                <h3 class="text-lg font-semibold mb-2">Địa chỉ thường trú</h3>
-                <input type="text" id="street_address" name="permanent_street" placeholder="Số nhà, Tên đường"
+                <h3 class="text-lg font-semibold mb-2">{{__ "inforStudent.address.permanentAddress"}}</h3>
+                <input type="text" id="street_address" name="permanent_street" placeholder="{{__ "inforStudent.address.permanentStreet"}}"
                     class="permanent_address_cl p-2 border rounded w-full mb-2">
-                <input type="text" id="ward" name="permanent_ward" placeholder="Phường/Xã"
+                <input type="text" id="ward" name="permanent_ward" placeholder="{{__ "inforStudent.address.permanentWard"}}"
                     class="permanent_address_cl p-2 border rounded w-full mb-2">
-                <input type="text" id="district" name="permanent_district" placeholder="Quận/Huyện"
+                <input type="text" id="district" name="permanent_district" placeholder="{{__ "inforStudent.address.permanentDistrict"}}"
                     class="permanent_address_cl p-2 border rounded w-full mb-2">
-                <input type="text" id="city" name="permanent_city" placeholder="Tỉnh/Thành phố"
+                <input type="text" id="city" name="permanent_city" placeholder="{{__ "inforStudent.address.permanentCity"}}"
                     class="permanent_address_cl p-2 border rounded w-full mb-2">
-                <input type="text" id="country" name="permanent_country" placeholder="Quốc gia"
+                <input type="text" id="country" name="permanent_country" placeholder="{{__ "inforStudent.address.permanentCountry"}}"
                     class="permanent_address_cl p-2 border rounded w-full mb-2" value="Việt Nam">
             </div>
 
             <!-- Địa chỉ tạm trú -->
             <div class="mb-4" id="temporary_address_info">
-                <h3 class="text-lg font-semibold mb-2">Địa chỉ tạm trú <span class="text-sm font-normal">(không bắt
-                        buộc)</span></h3>
-                <input type="text" id="street_address" name="temporary_street" placeholder="Số nhà, Tên đường"
-                    class="temporary_address_cl p-2 border rounded w-full mb-2">
-                <input type="text" id="ward" name="temporary_ward" placeholder="Phường/Xã"
-                    class="temporary_address_cl p-2 border rounded w-full mb-2">
-                <input type="text" id="district" name="temporary_district" placeholder="Quận/Huyện"
-                    class="temporary_address_cl p-2 border rounded w-full mb-2">
-                <input type="text" id="city" name="temporary_city" placeholder="Tỉnh/Thành phố"
-                    class="temporary_address_cl p-2 border rounded w-full mb-2">
-                <input type="text" id="country" name="temporary_country" placeholder="Quốc gia"
-                    class="temporary_address_cl p-2 border rounded w-full mb-2" value="Việt Nam">
+                <h3 class="text-lg font-semibold mb-2">{{__ "inforStudent.address.temporaryAddress"}} <span class="text-sm font-normal">(không bắt
+                        buộc/ optional)</span></h3>
+                <input type="text" id="street_address" name="permanent_street" placeholder="{{__ "inforStudent.address.permanentStreet"}}"
+                    class="permanent_address_cl p-2 border rounded w-full mb-2">
+                <input type="text" id="ward" name="permanent_ward" placeholder="{{__ "inforStudent.address.permanentWard"}}"
+                    class="permanent_address_cl p-2 border rounded w-full mb-2">
+                <input type="text" id="district" name="permanent_district" placeholder="{{__ "inforStudent.address.permanentDistrict"}}"
+                    class="permanent_address_cl p-2 border rounded w-full mb-2">
+                <input type="text" id="city" name="permanent_city" placeholder="{{__ "inforStudent.address.permanentCity"}}"
+                    class="permanent_address_cl p-2 border rounded w-full mb-2">
+                <input type="text" id="country" name="permanent_country" placeholder="{{__ "inforStudent.address.permanentCountry"}}"
+                    class="permanent_address_cl p-2 border rounded w-full mb-2" value="Việt Nam">
             </div>
 
             <div class="mb-4" id="mailing_address_info">
-                <h3 class="text-lg font-semibold mb-2">Địa chỉ gửi thư<span class="text-sm font-normal">(không bắt
-                        buộc)</span></h3>
-                <input type="text" id="street_address" name="mailing_street" placeholder="Số nhà, Tên đường"
-                    class="mailing_address_cl p-2 border rounded w-full mb-2">
-                <input type="text" id="ward" name="mailing_ward" placeholder="Phường/Xã"
-                    class="mailing_address_cl p-2 border rounded w-full mb-2">
-                <input type="text" id="district" name="mailing_district" placeholder="Quận/Huyện"
-                    class="mailing_address_cl p-2 border rounded w-full mb-2">
-                <input type="text" id="city" name="mailing_city" placeholder="Tỉnh/Thành phố"
-                    class="mailing_address_cl p-2 border rounded w-full mb-2">
-                <input type="text" id="country" name="mailing_country" placeholder="Quốc gia"
-                    class="mailing_address_cl p-2 border rounded w-full mb-2" value="Việt Nam">
+                <h3 class="text-lg font-semibold mb-2">{{__ "inforStudent.address.mailingAddress"}}<span class="text-sm font-normal">(không bắt
+                        buộc/ optional)</span></h3>
+                <input type="text" id="street_address" name="permanent_street" placeholder="{{__ "inforStudent.address.permanentStreet"}}"
+                    class="permanent_address_cl p-2 border rounded w-full mb-2">
+                <input type="text" id="ward" name="permanent_ward" placeholder="{{__ "inforStudent.address.permanentWard"}}"
+                    class="permanent_address_cl p-2 border rounded w-full mb-2">
+                <input type="text" id="district" name="permanent_district" placeholder="{{__ "inforStudent.address.permanentDistrict"}}"
+                    class="permanent_address_cl p-2 border rounded w-full mb-2">
+                <input type="text" id="city" name="permanent_city" placeholder="{{__ "inforStudent.address.permanentCity"}}"
+                    class="permanent_address_cl p-2 border rounded w-full mb-2">
+                <input type="text" id="country" name="permanent_country" placeholder="{{__ "inforStudent.address.permanentCountry"}}"
+                    class="permanent_address_cl p-2 border rounded w-full mb-2" value="Việt Nam">
             </div>
         </div>
 
         <button onclick="updateAddress()"
             class="my-3 w-full bg-blue-500 text-white font-semibold py-2 rounded-lg shadow-md hover:bg-blue-600 transition">
-            Cập nhật
+            {{__ "UPDATESTUDENT.udpateStudent"}}
         </button>
     </div>
 
 
 </div>
 
+<script src="https://unpkg.com/i18next@21.6.3/i18next.min.js"></script>
+<script src="https://unpkg.com/i18next-http-backend@1.4.3/i18nextHttpBackend.min.js"></script>
+<script src="https://unpkg.com/i18next-browser-languagedetector@6.1.2/i18nextBrowserLanguageDetector.min.js"></script>
+<script src="/js/i18n-init.js"></script>
 <script src="/js/update.js"></script>
 <script src="/js/updateAnims.js"></script>

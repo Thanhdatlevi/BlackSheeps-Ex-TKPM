@@ -1,5 +1,6 @@
 let allowedDomains = [];
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
+    await window.i18nReady; // Đảm bảo i18next đã sẵn sàng
     // Load dữ liệu từ database cho các dropdown
     loadFaculties();
     loadPrograms();
@@ -153,7 +154,7 @@ async function loadStatuses() {
     }
 }
 // Hàm validate email
-function validateEmail() {
+async function validateEmail() {
     const emailInput = document.getElementById('email');
     const email = emailInput.value;
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -163,14 +164,14 @@ function validateEmail() {
     if (!email) return; // Bỏ qua nếu email trống
 
     if (!emailRegex.test(email)) {
-        showEmailError('Email không đúng định dạng!');
+        showEmailError(i18next.t('alert.errorFormatEmail'));
         return false;
     }
 
     // Kiểm tra domain
     const domain = email.split('@')[1];
     if (!allowedDomains.includes(domain)) {
-        showEmailError('Domain email không được phép sử dụng!');
+        showEmailError(i18next.t('alert.cantUseEmail'));
         return false;
     }
 
@@ -244,25 +245,13 @@ async function addStudent(event) {
     // Validate phone
     const phoneRegex = /(84|0[3|5|7|8|9])+([0-9]{8})\b/;
     if (!phoneRegex.test(data.phone)) {
-        alert('Số điện thoại không hợp lệ!');
+        alert(i18next.t('alert.errorPhone'));
         return;
     }
 
     // Validate faculty
-    if (data.faculty === '') {
-        alert('Vui lòng chọn khoa!');
-        return;
-    }
-
-    // Validate status
-    if (data.status === '') {
-        alert('Vui lòng chọn tình trạng sinh viên!');
-        return;
-    }
-
-    // Validate ID document
-    if (data.id_type === '') {
-        alert('Vui lòng chọn loại giấy tờ tùy thân!');
+    if (data.faculty === ''||data.status === ''||data.id_type === '') {
+        alert(i18next.t('alert.notFill'));
         return;
     }
 
@@ -279,9 +268,7 @@ async function addStudent(event) {
             program: data.program,
             status: data.status,
             email: data.email,
-            phone: data.phone,
-            address: data.permanent_street + ', ' + data.permanent_ward + ', ' 
-            + data.permanent_district + ', ' + data.permanent_city + ', ' + data.permanent_country
+            phone: data.phone
 
         },
         permanent_address: {
@@ -399,7 +386,7 @@ async function addStudent(event) {
             body: JSON.stringify(studentData.ID_info)
         });
         if (response.ok && responseAddress.ok && responseIdentification.ok && responseMailingAddress.ok) {
-            alert(result.message || 'Thêm sinh viên thành công!'); 
+            alert(result.message || i18next.t('alert.addSuccStudent')); 
             form.reset();
             
             // Reset form và ẩn các trường
@@ -409,16 +396,13 @@ async function addStudent(event) {
             document.getElementById('other_mailing_address').classList.add('hidden');
             console.log('Form đã reset');
         } else {
-            alert(result.message || 'Thêm sinh viên thất bại!'); 
+            alert(result.message || i18next.t('alert.addFaultStudent')); 
         }
     } catch (error) {
         console.error("Lỗi gửi form:", error);
-        alert("Đã xảy ra lỗi, vui lòng thử lại!");
+        alert(i18next.t('alert.error'));
     }
 }
-
-document.getElementById('studentForm').addEventListener('submit', addStudent);
-
 
 let importType = "";
 
@@ -432,11 +416,11 @@ function closeDialog() {
     document.getElementById('importDialog').style.display = 'none';
 }
 
-function submitImport() {
+async function submitImport() {
     const studentFile = document.getElementById('studentFile').files[0];
 
     if (!studentFile) {
-        alert("Vui lòng chọn đủ file.");
+        alert(i18next.t('alert.notFill'));
         return;
     }
 
@@ -453,6 +437,6 @@ function submitImport() {
     })
     .catch(error => {
         console.error('Lỗi import:', error);
-        alert('Import thất bại.');
+        alert(i18next.t('alert.error'));
     });
 }

@@ -1,13 +1,14 @@
 async function deleteStudent() {
+    await window.i18nReady; //Đảm bảo i18next đã sẵn sàng
     const deleteId = document.getElementById('deleteId').value.trim();
     
     if (!deleteId) {
-        alert("Vui lòng nhập MSSV để xóa!");
+        alert(i18next.t('alert.notFill'));
         return;
     }
 
     // Hiển thị hộp thoại xác nhận
-    const isConfirmed = confirm(`Bạn có chắc chắn muốn xóa sinh viên có MSSV: ${deleteId} không?`);
+    const isConfirmed = confirm(`${i18next.t('alert.suredDeleteStudent')} ${deleteId}`);
     
     if (!isConfirmed) {
         return; // Người dùng hủy, không thực hiện xóa
@@ -24,7 +25,7 @@ async function deleteStudent() {
     const result = await response.json();
 
     if (response.ok) {
-        alert(`Xóa thành công!\nTên: ${result.deletedStudent.full_name}\nMSSV: ${result.deletedStudent.student_id}`);
+        alert(`${i18next.t('alert.deleteSuccStudent')}\nTên: ${result.deletedStudent.full_name}\nMSSV: ${result.deletedStudent.student_id}`);
         document.getElementById('deleteId').value = '';
     } else {
         alert("Lỗi: " + result.message);

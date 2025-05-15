@@ -1,23 +1,27 @@
-<h1 class="text-2xl font-bold mb-4">Danh sách lớp đăng ký</h1>
+<h1 class="text-2xl font-bold mb-4">{{__ "CLASS.registeredClass"}}</h1>
 
     <div class="mb-4">
-        <label for="studentId" class="block text-sm font-medium text-gray-700">Mã sinh viên:</label>
-        <input type="text" id="studentId" class="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Nhập mã sinh viên">
-        <button id="searchBtn" class="mt-3 px-6 py-2 bg-blue-500 text-white rounded-lg">Tìm kiếm</button>
+        <label for="studentId" class="block text-sm font-medium text-gray-700">{{__ "inforStudent.studentID"}}:</label>
+        <input type="text" id="studentId" class="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="{{__ "inforStudent.studentID"}}">
+        <button id="searchBtn" class="mt-3 px-6 py-2 bg-blue-500 text-white rounded-lg">{{__ "GRADE.search"}}</button>
     </div>
 
     <table id="classTable" class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
         <thead>
             <tr class="bg-gray-800 text-white">
-                <th class="px-4 py-2">MSSV</th>  <!-- Cột MSSV -->
-                <th class="px-4 py-2">Mã lớp</th>
-                <th class="px-4 py-2">Mã môn</th>
-                <th class="px-4 py-2">Năm học</th>
-                <th class="px-4 py-2">Học kỳ</th>
-                <th class="px-4 py-2">Hành động</th>
+                <th class="px-4 py-2">{{__ "inforStudent.studentID"}}</th>  <!-- Cột MSSV -->
+                <th class="px-4 py-2">{{__ "CLASS.classId"}}</th>
+                <th class="px-4 py-2">{{__ "COURSE.courseCode"}}</th>
+                <th class="px-4 py-2">{{__ "CLASS.year"}}</th>
+                <th class="px-4 py-2">{{__ "CLASS.semester"}}</th>
+                <th class="px-4 py-2">{{__ "COURSE.action"}}</th>
             </tr>
         </thead>
         <tbody id="classListBody"></tbody>
     </table>
 
+<script src="https://unpkg.com/i18next@21.6.3/i18next.min.js"></script>
+<script src="https://unpkg.com/i18next-http-backend@1.4.3/i18nextHttpBackend.min.js"></script>
+<script src="https://unpkg.com/i18next-browser-languagedetector@6.1.2/i18nextBrowserLanguageDetector.min.js"></script>
+<script src="/js/i18n-init.js"></script>
 <script src="/js/deleteRegistration.js"></script>

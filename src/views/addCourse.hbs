@@ -1,178 +1,53 @@
 <div class="max-w-3xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
-    <h2 class="text-xl font-bold">Thêm khóa học</h2>
+    <h2 class="text-xl font-bold">{{__ "COURSE.add"}}</h2>
     <form action="/addCourse" method="POST">
         <!-- Course Code -->
         <div>
-            <label for="courseCode">Mã khóa học:</label>
+            <label for="courseCode">{{__ "COURSE.courseCode"}}:</label>
             <input type="text" id="courseCode" name="courseCode" required class="p-2 border rounded w-full mb-2">
         </div>
 
         <!-- Course Name -->
         <div>
-            <label for="courseName">Tên khóa học:</label>
+            <label for="courseName">{{__ "COURSE.courseName"}}:</label>
             <input type="text" id="courseName" name="courseName" required class="p-2 border rounded w-full mb-2">
         </div>
 
         <!-- Credits -->
         <div>
-            <label for="credits">Số tín chỉ:</label>
+            <label for="credits">{{__ "COURSE.credits"}}:</label>
             <input type="number" id="credits" name="credits" min="2" required class="p-2 border rounded w-full mb-2">
         </div>
 
         <!-- Department -->
         <div>
-            <label for="department">Khoa phụ trách:</label>
+            <label for="department">{{__ "COURSE.faculty"}}:</label>
             <select id="faculty" name="faculty" required class="p-2 border rounded w-full mb-2">
-                <option value="">Chọn khoa</option>
+                <option value="">{{__ "inforStudent.faculty"}}</option>
                 <!-- Các option sẽ được load từ database -->
             </select>
         </div>
 
         <!-- Description -->
         <div>
-            <label for="description">Mô tả:</label>
+            <label for="description">{{__ "COURSE.description"}}:</label>
             <textarea id="description" name="description" rows="4" required class="p-2 border rounded w-full mb-2"></textarea>
         </div>
 
         <!-- Prerequisite Course -->
         <div>
-            <label for="prerequisite">Môn tiên quyết (nếu có):</label>
+            <label for="prerequisite">{{__ "COURSE.prerequisite"}}:</label>
             <input type="text" id="prerequisite" name="prerequisite" class="p-2 border rounded w-full mb-2">
         </div>
 
         <!-- Submit Button -->
         <div>
-            <button type="submit" class="bg-blue-500 text-white p-2 rounded">Thêm khóa học</button>
+            <button type="submit" class="bg-blue-500 text-white p-2 rounded">{{__ "COURSE.submitButton"}}</button>
         </div>
     </form>
 </div>
-<script>
-async function loadFaculties() {
-    try {
-        const response = await fetch('/faculties');
-        const data = await response.json();
-        const facultySelect = document.getElementById('faculty');
-        
-        if (data.faculties && data.faculties.length > 0) {
-            data.faculties.forEach(faculty => {
-                const option = document.createElement('option');
-                option.value = faculty.faculty_id; // Sử dụng ID
-                option.textContent = faculty.faculty_name;
-                facultySelect.appendChild(option);
-            });
-        } else {
-            // Fallback nếu không lấy được dữ liệu từ API
-            const validDepartments = ['Khoa Luật', 'Khoa Tiếng Anh thương mại', 'Khoa Tiếng Nhật', 'Khoa Tiếng Pháp'];
-            validDepartments.forEach(dept => {
-                const option = document.createElement('option');
-                option.value = dept;
-                option.textContent = dept;
-                facultySelect.appendChild(option);
-            });
-        }
-    } catch (error) {
-        console.error('Error loading faculties:', error);
-        // Fallback khi có lỗi
-        const validDepartments = ['Khoa Luật', 'Khoa Tiếng Anh thương mại', 'Khoa Tiếng Nhật', 'Khoa Tiếng Pháp'];
-        const facultySelect = document.getElementById('faculty');
-        validDepartments.forEach(dept => {
-            const option = document.createElement('option');
-            option.value = dept;
-            option.textContent = dept;
-            facultySelect.appendChild(option);
-        });
-    }
-}
-async function validPrerequisite(prerequisite){
-    const query = new URLSearchParams();
-    query.append('courseId', prerequisite); // Thay 'courseCode' bằng tên tham số mà API yêu cầu
-    try {
-        // Gửi request với query string
-        const response = await fetch(`/searchCourseById?${query.toString()}`);
-
-        // Kiểm tra nếu response không thành công
-        const data = await response.json();
-        if (!data.success) {
-            console.error('Failed to fetch prerequisite course:', response.message);
-            alert('Khóa học tiên quyết không tồn tại!');
-            return false;
-        }
-
-        // Parse dữ liệu JSON
-        
-
-        // Kiểm tra nếu khóa học tồn tại
-        return data.success; // Giả sử API trả về { exists: true/false }
-    } catch (error) {
-        console.error('Error fetching prerequisite course:', error);
-        return false; // Giả định khóa học không tồn tại nếu có lỗi
-    }
-}
-function formatDateWithTimezone(date) {
-    const offset = -date.getTimezoneOffset(); // Lấy timezone offset (phút)
-    const sign = offset >= 0 ? '+' : '-'; // Dấu (+/-) cho timezone
-    const hours = String(Math.floor(Math.abs(offset) / 60)).padStart(2, '0'); // Giờ
-    const minutes = String(Math.abs(offset) % 60).padStart(2, '0'); // Phút
-
-    // Định dạng ngày giờ: YYYY-MM-DD HH:mm:ss.SSS±TZD
-    return date.toISOString().replace('T', ' ').replace('Z', '') + `${sign}${hours}:${minutes}`;
-}
-document.addEventListener('DOMContentLoaded', () => {
-    loadFaculties();
-});
-// Example script to validate prerequisite course existence
-document.querySelector('form').addEventListener('submit', (e) => {
-    e.preventDefault(); // Prevent form submission for validation
-
-    const validCredits = parseInt(document.getElementById('credits').value,10);
-    if (isNaN(validCredits) || validCredits < 2) {
-        alert('Số tín chỉ phải >= 2');
-        return;
-    }
-
-    const date = new Date();
-    
-    const currentTime = formatDateWithTimezone(date);
-    
-    const course = {
-        courseCode: document.getElementById('courseCode').value,
-        courseName: document.getElementById('courseName').value,
-        credits: validCredits,
-        faculty: document.getElementById('faculty').value,
-        description: document.getElementById('description').value,
-        prerequisite: null,
-        time_create:currentTime
-    };
-    if (document.getElementById('prerequisite').value){
-       const isvalid = validPrerequisite(document.getElementById('prerequisite').value);
-       if (isvalid){
-            course.prerequisite = document.getElementById('prerequisite').value;
-        }else{
-            return;
-        }
-    }
-    console.log(course);
-    fetch('/addCourse', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(course)
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert('Khóa học đã được thêm thành công!');
-            // Optionally, redirect or refresh the page
-            document.querySelector('form').reset(); // Reset form after successful submission
-        } else {
-            alert('Có lỗi xảy ra khi thêm khóa học: ' + data.message);
-        }
-    })
-    .catch(error => {
-        console.error('Error adding course:', error);
-        alert('Có lỗi xảy ra khi thêm khóa học!');
-    });
-
-});
-</script>
+<script src="https://unpkg.com/i18next@21.6.3/i18next.min.js"></script>
+<script src="https://unpkg.com/i18next-http-backend@1.4.3/i18nextHttpBackend.min.js"></script>
+<script src="https://unpkg.com/i18next-browser-languagedetector@6.1.2/i18nextBrowserLanguageDetector.min.js"></script>
+<script src="/js/i18n-init.js"></script>
+<script src="/js/addCourse.js"></script>

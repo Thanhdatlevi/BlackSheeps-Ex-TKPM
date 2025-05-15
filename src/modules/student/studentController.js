@@ -33,6 +33,7 @@ class studentController {
     static async addStudent(req, res) {
         try {
             logger.info("addStudent method got called in studentController");
+
             const newStudent = {
                 mssv: req.body.mssv,
                 name: req.body.name,
@@ -42,11 +43,12 @@ class studentController {
                 course: req.body.course,
                 program: req.body.program,
                 status: req.body.status,
-                address: req.body.permanent_street + ', ' + req.body.permanent_ward + ', ' + req.body.permanent_district + ', ' + req.body.permanent_city,
                 email: req.body.email,
                 phone: req.body.phone,
             }
+
             const addedStudent = await studentModel.addStudent(newStudent);
+
             if (addedStudent) {
                 return res.status(201).json({
                     message: "Student added successfully",
@@ -60,21 +62,9 @@ class studentController {
         } catch (error) {
             if (error.message.includes("duplicate key value violates unique constraint")) {
                 if (error.message.includes('students_pkey')) {
-                    logger.warn("Error existing studentID when adding student");
+                    logger.warn("Error: Student ID already exists");
                     return res.status(400).json({
-                        message: "Mã số sinh viên đã xuất hiện. Hãy dùng mssv khác"
-                    });
-                }
-                else if (error.message.includes('students_email_key')) {
-                    logger.warn("Error existing student email when adding student");
-                    return res.status(400).json({
-                        message: "Email already exists. Please use a different email."
-                    });
-                }
-                else if (error.message.includes('students_phone_key')) {
-                    logger.warn("Error existing student phone number when adding student");
-                    return res.status(400).json({
-                        message: "Phone number already exists. Please use a different phone number."
+                        message: "Student ID already exists. Please use a different ID."
                     });
                 }
             }
@@ -233,6 +223,34 @@ class studentController {
         })
     }
 
+    // Tách riêng việc lấy thông tin bổ sung cho sinh viên
+    static async getStudentSupplementaryData(students) {
+        const studentData = [];
+        for (const student of students) {
+            const [identifications, permanentAddress, temporaryAddress, mailingAddress] = await Promise.all([
+                indentificationModel.getIdentification(student.student_id),
+                addressModel.getPermanentAddress(student.student_id),
+                addressModel.getTemporaryAddress(student.student_id),
+                addressModel.getMailingAddress(student.student_id)
+            ]);
+
+            studentData.push({
+                ...student,
+                permanentAddress: studentController.formatAddress(permanentAddress),
+                temporaryAddress: studentController.formatAddress(temporaryAddress),
+                mailingAddress: studentController.formatAddress(mailingAddress),
+                ...identifications
+            });
+        }
+        return studentData;
+    }
+
+    // Định dạng địa chỉ chung cho sinh viên
+    static formatAddress(address) {
+        return address ? `${address.street_address || ''}, ${address.ward || ''}, ${address.district || ''}, ${address.city || ''}, ${address.country || ''}`.trim() : '';
+    }
+
+    // Hàm xử lý xuất dữ liệu theo định dạng CSV hoặc Excel
     static async exportData(req, res, fetchData, fileName, format) {
         try {
             // Lấy danh sách sinh viên
@@ -242,58 +260,15 @@ class studentController {
                 return res.status(404).send(`Không có dữ liệu để xuất: ${fileName}`);
             }
 
-            // Định dạng địa chỉ
-            const formatAddress = (address) =>
-                (address)
-                    ? `${address.street_address || ''}, ${address.ward || ''}, ${address.district || ''}, ${address.city || ''}, ${address.country || ''}`.trim()
-                    : '';
+            // Lấy thông tin bổ sung cho sinh viên
+            const studentData = await studentController.getStudentSupplementaryData(students);
 
-            // Lấy thông tin bổ sung từng sinh viên
-            const studentData = [];
-            for (const student of students) {
-                const identifications = await indentificationModel.getIdentification(student.student_id);
-                const permanentAddress = await addressModel.getPermanentAddress(student.student_id);
-                const temporaryAddress = await addressModel.getTemporaryAddress(student.student_id);
-                const mailingAddress = await addressModel.getMailingAddress(student.student_id);
-
-                studentData.push({
-                    ...student,
-                    permanentAddress: formatAddress(permanentAddress),
-                    temporaryAddress: formatAddress(temporaryAddress),
-                    mailingAddress: formatAddress(mailingAddress),
-                    ...identifications
-                });
-            }
-
-            // Xử lý xuất CSV
+            // Xử lý xuất dữ liệu theo định dạng
             if (format === "csv") {
-                res.setHeader("Content-Disposition", `attachment; filename=${fileName}.csv`);
-                res.setHeader("Content-Type", "text/csv");
-                const csvStream = fastCsv.format({ headers: true });
-                csvStream.pipe(res);
-
-                studentData.forEach((row) => {
-                    csvStream.write(row);
-                });
-
-                csvStream.end();
-            }
-            // Xử lý xuất Excel
-            else if (format === "excel") {
-                res.setHeader("Content-Disposition", `attachment; filename=${fileName}.xlsx`);
-                res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-
-                const worksheetData = studentData.map(row => (row));
-
-                const workbook = XLSX.utils.book_new();
-                const worksheet = XLSX.utils.json_to_sheet(worksheetData);
-                XLSX.utils.book_append_sheet(workbook, worksheet, "SinhVien");
-
-                const buffer = XLSX.write(workbook, { type: "buffer", bookType: "xlsx" });
-                res.end(buffer);
-            }
-            // Định dạng không hợp lệ
-            else {
+                return studentController.exportCSV(res, studentData, fileName);
+            } else if (format === "excel") {
+                return studentController.exportExcel(res, studentData, fileName);
+            } else {
                 logger.warn("Định dạng không hợp lệ, chỉ hỗ trợ CSV và Excel.");
                 return res.status(400).send("Định dạng không hợp lệ. Chỉ hỗ trợ CSV và Excel.");
             }
@@ -303,11 +278,42 @@ class studentController {
         }
     }
 
+    // Hàm xử lý xuất CSV
+    static exportCSV(res, studentData, fileName) {
+        res.setHeader("Content-Disposition", `attachment; filename=${fileName}.csv`);
+        res.setHeader("Content-Type", "text/csv");
+        const csvStream = fastCsv.format({ headers: true });
+        csvStream.pipe(res);
+
+        studentData.forEach((row) => {
+            csvStream.write(row);
+        });
+
+        csvStream.end();
+    }
+
+    // Hàm xử lý xuất Excel
+    static exportExcel(res, studentData, fileName) {
+        res.setHeader("Content-Disposition", `attachment; filename=${fileName}.xlsx`);
+        res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+
+        const worksheetData = studentData.map(row => (row));
+
+        const workbook = XLSX.utils.book_new();
+        const worksheet = XLSX.utils.json_to_sheet(worksheetData);
+        XLSX.utils.book_append_sheet(workbook, worksheet, "SinhVien");
+
+        const buffer = XLSX.write(workbook, { type: "buffer", bookType: "xlsx" });
+        res.end(buffer);
+    }
+
+    // Hàm xuất danh sách sinh viên CSV
     static async exportStudentListCSV(req, res) {
         logger.info("Xuất danh sách sinh viên CSV");
         return studentController.exportData(req, res, studentModel.searchStudent, "students", "csv");
     }
 
+    // Hàm xuất danh sách sinh viên Excel
     static async exportStudentListExcel(req, res) {
         logger.info("Xuất danh sách sinh viên Excel");
         return studentController.exportData(req, res, studentModel.searchStudent, "students", "excel");
@@ -426,28 +432,26 @@ class studentController {
 
             await indentificationModel.addIdentification(student);
 
-            const addressTypes = [
-                { type: 'thuongtru', address: student.permanentAddress },
-                { type: 'tamtru', address: student.temporaryAddress },
-                { type: 'nhanthu', address: student.mailingAddress }
-            ];
-
-            for (const addr of addressTypes) {
-                if (addr.address) {
-                    const [street, ward, district, city, country] = addr.address.split(", ");
-                    await addressModel.addAddress({
-                        student_id: student.student_id,
-                        address_type: addr.type,
-                        street_address: street,
-                        ward,
-                        district,
-                        city,
-                        country
-                    });
-                }
-            }
+            await this.addAddressIfPresent(student, 'thuongtru', student.permanentAddress);
+            await this.addAddressIfPresent(student, 'tamtru', student.temporaryAddress);
+            await this.addAddressIfPresent(student, 'nhanthu', student.mailingAddress);
         }
     }
+    static async addAddressIfPresent(student, type, addressString) {
+        if (!addressString) return;
+
+        const [street, ward, district, city, country] = addressString.split(",").map(s => s.trim());
+        await addressModel.addAddress({
+            student_id: student.student_id,
+            address_type: type,
+            street_address: street || null,
+            ward: ward || null,
+            district: district || null,
+            city: city || null,
+            country: country || null
+        });
+    }
+
 }
 
 module.exports = studentController;

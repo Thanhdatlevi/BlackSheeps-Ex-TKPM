@@ -2,7 +2,7 @@ const {query} = require('express');
 const db = require('../../config/db');
 const logger = require('../../config/logging')
 
-class programModel{
+class programModel {
     static async addProgram(program_name){
         try {
             const query = `

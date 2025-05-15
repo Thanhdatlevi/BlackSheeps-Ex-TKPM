@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", async function() {
+    await window.i18nReady; // Đảm bảo i18next đã sẵn sàng
+
     const facultySelect = document.getElementById("faculty");
     const programSelect = document.getElementById("education_program");
     const statusSelect = document.getElementById("student_status");
@@ -83,7 +85,7 @@ window.grayCheckBox = async () => {
 window.queryStudentIdentification = async (id) => {
     mssv = document.getElementById(id).value;
     if (!mssv) {
-        alert("Vui lòng nhập MSSV để cập nhật!");
+        alert(i18next.t('alert.notFill'));
         return;
     }
 
@@ -95,7 +97,7 @@ window.queryStudentIdentification = async (id) => {
     data = await result.json();
 
     if (data.length === 0) {
-        alert('Giấy tờ tuỳ thân của mã số sinh viên tương ứng không tồn tại!');
+        alert(i18next.t('alert.noInfoStudent'));
         return
     }
 
@@ -130,7 +132,7 @@ window.showStudentInfo = async (type, data) => {
 window.queryStudent = async (id) => {
     mssv = document.getElementById(id).value;
     if (!mssv) {
-        alert("Vui lòng nhập MSSV để cập nhật!");
+        alert(i18next.t('alert.notFill'));
         return;
     }
 
@@ -145,7 +147,7 @@ window.queryStudent = async (id) => {
     console.log(data)
 
     if (data.length === 0) {
-        alert('Mã số sinh viên không tồn tại!');
+        alert(i18next.t('alert.noInfoStudent'));
         return
     }
 
@@ -199,28 +201,28 @@ window.updateStudent = async () => {
 
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex.test(information.email)) {
-        alert("Email không hợp lệ!");
+        alert(i18next.t('alert.errorFormatEmail'));
         return;
     }
     // Kiểm tra sdt có đúng định dạng không
     const phoneRegex = /(84|0[3|5|7|8|9])+([0-9]{8})\b/;
     if (!phoneRegex.test(information.phone)) {
-        alert("Số điện thoại không hợp lệ!");
+        alert(i18next.t('alert.errorPhone'));
         return;
     }
 
     if (!window.facultyOptions.includes(information.faculty)) {
-        alert("Khoa không hợp lệ! Vui lòng chọn một trong các khoa: " + window.facultyOptions.join(", "));
+        alert(i18next.t('alert.invalidFaculty')+ window.facultyOptions.join(", "));
         return;
     }
 
     if (!window.statusOptions.includes(information.student_status)) {
-        alert("Tình trạng sinh viên không hợp lệ! Vui lòng chọn một trong các tình trạng: " + window.statusOptions.join(", "));
+        alert(i18next.t('alert.invalidStatus') + window.statusOptions.join(", "));
         return;
     }
 
     if (!window.programOptions.includes(information.education_program)) {
-        alert("Chương trình sinh viên không hợp lệ! Vui lòng chọn một trong các tình trạng: " + window.programOptions.join(", "));
+        alert(i18next.t('alert.invalidProgram') + window.programOptions.join(", "));
         return;
     }
 
@@ -237,7 +239,7 @@ window.updateStudent = async () => {
         alert(errorData.message);
     }
     else {
-        alert("Update student successfully");
+        alert(i18next.t('alert.updateSuccStudent'));
     }
 };
 
@@ -251,10 +253,10 @@ window.updateIdentification = async () => {
     })
 
     if (response.status != 200) {
-        alert("Update student identification failed");
+        alert(i18next.t('alert.updateFaultStudent'));
     }
     else {
-        alert("Update student identification successfully");
+        alert(i18next.t('alert.updateSuccStudent'));
     }
 };
 
@@ -283,10 +285,10 @@ window.updateAddress = async () => {
     })
 
     if (response.status != 200) {
-        alert("Update student address failed");
+        alert(i18next.t('alert.updateFaultStudent'));
     }
     else {
-        alert("Update student address successfully");
+        alert(i18next.t('alert.updateSuccStudent'));
     }
 
 }

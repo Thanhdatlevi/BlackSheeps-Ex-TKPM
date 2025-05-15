@@ -1,7 +1,7 @@
 async function fetchStudentGrades() {
     const studentId = document.getElementById("studentId").value;
     if (!studentId) {
-        alert("Vui lòng nhập MSSV!");
+        alert(i18next.t('alert.notFill'));
         return;
     }
     
@@ -40,7 +40,7 @@ async function fetchStudentGrades() {
 async function exportStudentGrades() {
     const studentId = document.getElementById("studentId").value.trim();
     if (!studentId) {
-        alert("Vui lòng nhập mã số sinh viên!");
+        alert(i18next.t('alert.notFill'));
         return;
     }
 
@@ -68,6 +68,6 @@ async function exportStudentGrades() {
         window.URL.revokeObjectURL(downloadUrl);
     } catch (error) {
         console.error("Lỗi khi tải bảng điểm:", error);
-        alert("Không thể tải bảng điểm. Vui lòng thử lại sau.");
+        alert(i18next.t('alert.cantDownloadStudent'));
     }
 }

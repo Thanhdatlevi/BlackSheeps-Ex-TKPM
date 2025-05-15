@@ -1,66 +1,23 @@
 <div class="max-w-3xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
-    <h2 class="text-xl font-bold mb-4">Sửa Chương trình</h2>
+    <h2 class="text-xl font-bold mb-4">{{__ "PROGRAM.update"}}</h2>
     
     <!-- Form tìm kiếm chương trình -->
     <form id="searchProgramForm" class="mb-6" action="/searchProgramByName" method="GET">
-        <input type="text" id="searchName" name="searchName" placeholder="Nhập tên chương trình để tìm kiếm" required class="p-2 border rounded w-full mb-2">
-        <button type="submit" class="bg-blue-500 text-white p-2 rounded w-full">Tìm kiếm</button>
+        <input type="text" id="searchName" name="searchName" placeholder="{{__ "PROGRAM.inputProgramName"}}" required class="p-2 border rounded w-full mb-2">
+        <button type="submit" class="bg-blue-500 text-white p-2 rounded w-full">{{__ "PROGRAM.search"}}</button>
     </form>
 
     <!-- Hiển thị thông tin chương trình để chỉnh sửa -->
     <form id="updateProgramForm" action="/updateProgram" method="POST">
         <div class="mb-4">
-            <label for="programName" class="block text-sm font-medium">Tên chương trình:</label>
-            <input type="text" id="programName" name="programName" placeholder="Tên chương trình" required class="p-2 border rounded w-full">
+            <label for="programName" class="block text-sm font-medium">{{__ "PROGRAM.programName"}}:</label>
+            <input type="text" id="programName" name="programName" placeholder="{{__ "PROGRAM.programName"}}" required class="p-2 border rounded w-full">
         </div>
-        <button type="submit" class="bg-blue-500 text-white p-2 rounded w-full">Cập nhật</button>
+        <button type="submit" class="bg-blue-500 text-white p-2 rounded w-full">{{__ "PROGRAM.updateButton"}}</button>
     </form>
 </div>
-<script>
-    const searchProgramForm = document.getElementById('searchProgramForm');
-    const updateProgramForm = document.getElementById('updateProgramForm');
-    const programName = document.getElementById('programName');
-
-    searchProgramForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const searchName = document.getElementById('searchName').value;
-        console.log(searchName);
-        fetch(`/searchProgramByName?searchName=${searchName}`)
-            .then(res => res.json())
-            .then(data => {
-                if (data.program) {
-                    console.log(data.program);
-                    console.log(data.program.program_name);
-                    programName.value = data.program.program_name;
-                } else {
-                    alert('Không tìm thấy chương trình');
-                }
-            });
-    });
-
-    updateProgramForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const searchName = document.getElementById('searchName').value;
-        const programName = document.getElementById('programName').value;
-        fetch('/updateProgram', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                searchName,
-                programName
-            })
-        })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Cập nhật chương trình thành công');
-                } else {
-                    alert('Cập nhật chương trình thất bại');
-                }
-                searchProgramForm.reset();
-                updateProgramForm.reset();
-            });
-    });
-</script>
+<script src="https://unpkg.com/i18next@21.6.3/i18next.min.js"></script>
+<script src="https://unpkg.com/i18next-http-backend@1.4.3/i18nextHttpBackend.min.js"></script>
+<script src="https://unpkg.com/i18next-browser-languagedetector@6.1.2/i18nextBrowserLanguageDetector.min.js"></script>
+<script src="/js/i18n-init.js"></script>
+<script src="/js/updateProgram.js"></script>

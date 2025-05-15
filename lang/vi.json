@@ -1,0 +1,249 @@
+{
+  "alert":{
+    "notFill": "Thông tin điền không đầy đủ. Vui lòng điền đầy đủ thông tin",
+    "error": "Có lỗi xảy ra, xin hãy thử lại",
+    "notConnectServer": "Lỗi: không thể kết nối máy chủ",
+    "errorFormatEmail": "Lỗi: Email sai định dạng",
+    "cantUseEmail": "Lỗi: Không thể sử dụng Domain Email này",
+    "errorPhone": "Lỗi: Số điện thoại này không thể sử dụng",
+    "addSuccStudent": "Thêm sinh viên thành công",
+    "addFaultStudent": "Thêm sinh viên thất bại",
+    "suredDeleteStudent": "Bạn có chắc chắn muốn xóa không?",
+    "deleteSuccStudent": "Xóa sinh viên thành công",
+    "noInfoStudent": "Không tìm thấy thông tin",
+    "invalidFaculty": "Khoa không hợp lệ! Vui lòng chọn một trong các khoa: ",
+    "invalidStatus": "Tình trạng sinh viên không hợp lệ! Vui lòng chọn một trong các tình trạng: ",
+    "invalidProgram": "Chương trình sinh viên không hợp lệ! Vui lòng chọn một trong các tình trạng: ",
+    "updateSuccStudent": "Cập nhật sinh viên thành công",
+    "updateFaultStudent": "Cập nhật sinh viên thất bại",
+    "addFaultClass": "Thêm lớp thất bại",
+    "addSuccStuToClass": "Thêm sinh viên vào lớp thành công",
+    "addFaultStuToClass": "Thêm sinh vào lớp viên thất bại",
+    "suredDeleteRegister": "Bạn có chắc chắn muốn xóa đăng ký này không?",
+    "cantDownloadStudent": "Không thể tải bảng điểm. Vui lòng thử lại sau.",
+    "notPreCourse": "Không tồn tại môn tiên quyết này",
+    "notCredit": "Số tín chỉ phải lớn hơn 2",
+    "addSuccCourse": "Thêm khóa học thành công",
+    "addFaultCourse": "Thêm khóa học thất bại",
+    "updateSuccCourse": "Cập nhật khóa học thành công",
+    "updateFaultCourse": "Cập nhật khóa học thất bại",
+    "deleteSuccCourse": "Xóa khóa học thành công",
+    "deleteFaultCourse": "Xóa khóa học thất bại",
+    "DeactivateCourse": "Khóa học đã được đăng ký lớp. Bạn có muốn chuyển trạng thái sang Deactivate không?",
+    "DeactivateSuccCourse": "Khóa học đã được chuyển sang trạng thái Deactivate!",
+    "DeactivateFaultCourse": "Không thể chuyển trạng thái khóa học",
+    "cantDeleteCourse": "Đã quá 30 phút không thể xóa khóa học được nữa",
+    "addSucc": "Thêm khóa thành công",
+    "addFault": "Thêm khóa thất bại",
+    "updateSucc": "Cập nhật thành công",
+    "updateFault": "Cập nhật thất bại",
+    "confirmDeleteEmail": "Bạn có chắc chắn muốn xóa email này không?",
+    "deleteEmailSucc": "Xóa email thành công",
+    "deleteEmailFault": "Xóa email thất bại",
+    "generalEmailError": "Lỗi chung",
+    "addEmailSuccess": "Thêm email thành công",
+    "addEmailError": "Thêm email thất bại",
+    "updateEmailSuccess": "Cập nhật email thành công",
+    "updateEmailError": "Cập nhật email thất bại"
+  },
+  "inforStudent":{
+    "studentID": "Mã số sinh viên",
+    "name": "Họ tên",
+    "dob": "Ngày sinh",
+    "gender": "Giới tính",
+    "male": "Nam",
+    "female": "Nữ",
+    "faculty": "Khoa",
+    "course": "Khóa học",
+    "program": "Chương trình",
+    "status": "Tình trạng",
+    "nationality": "Quốc tịch",
+    "contactInfo": "Thông tin liên lạc",
+    "email": "Email",
+    "phone": "Số điện thoại",
+    "listStudent": "Danh sách sinh viên",
+    "address": {
+      "inforAddress": "Địa chỉ của sinh viên",
+      "temporaryAddress": "Địa chỉ tạm trú",
+      "sameAsPermanent": "Giống địa chỉ thường trú",
+      "mailingAddress": "Địa chỉ nhận thư",
+      "permanentAddress": "Địa chỉ thường trú",
+
+      "permanentStreet": "Số nhà, Tên đường",
+      "permanentWard": "Phường/Xã",
+      "permanentDistrict": "Quận/Huyện",
+      "permanentCity": "Tỉnh/Thành phố",
+      "permanentCountry": "Quốc gia"
+    },
+    "ID" : {
+      "idDoc": "Giấy tờ tùy thân",
+      "cmnd": "Chứng minh nhân dân (CMND)",
+      "cccd": "Căn cước công dân (CCCD)",
+      "passport": "Hộ chiếu (Passport)",
+      "number": "Số",
+      "createDate": "Ngày cấp",
+      "expireDate": "Ngày hết hạn",
+      "issuePlace": "Nơi cấp",
+      "hasChip": "Có gắn chip không?",
+      "country": "Quốc gia",
+      "note": "Ghi chú"
+    }
+  },
+  "ADDSTUDENT": {
+    "title": "Thêm sinh viên",
+    "importCSV": "Import CSV",
+    "importExcel": "Import Excel",
+    "basicInfo": "Thông tin cơ bản",
+    "mailingAddressType": "Chọn địa chỉ nhận thư",
+    "usePermanent": "Sử dụng địa chỉ thường trú",
+    "useTemporary": "Sử dụng địa chỉ tạm trú",
+    "useOther": "Sử dụng địa chỉ khác",
+    "idType": "Loại giấy tờ",
+    "addStudent": "Thêm sinh viên",
+    "selectFile": "Chọn file danh sách sinh viên",
+    "close": "Đóng"
+  },
+  "UPDATESTUDENT": {
+    "title": "Cập nhật thông tin sinh viên",
+    "udpateStudent": "Cập nhật sinh viên"
+  },
+
+  "SEARCHSTUDENT": {
+    "title": "Tra cứu sinh viên",
+    "searchStudent": "Tìm sinh viên",
+    "noListStudent": "Không tìm thấy sinh viên"
+  },
+
+  "DELETESTUDENT": {
+    "title": "Xóa sinh viên",
+    "deleteStudent": "Xóa sinh viên"
+  },
+
+  "COURSE": {
+    "add": "Thêm khóa học",
+    "manage": "Thêm khóa học",
+    "update": "Chỉnh sửa khóa học",
+    "listCourse": "Danh sách khóa học",
+    "courseCode": "Mã khóa học",
+    "courseName": "Tên khóa học",
+    "credits": "Số tín chỉ",
+    "faculty": "Khoa phụ trách",
+    "description": "Mô tả",
+    "prerequisite": "Môn tiên quyết (nếu có)",
+    "submitButton": "Thêm khóa học",
+    "cancleButton": "Hủy",
+    "saveButton": "Lưu",
+    "status": "Trạng thái",
+    "action": "Hành động"
+  },
+
+  "FACULTY": {
+    "search": "Tìm kiếm",
+    "update": "Sửa khoa",
+    "add": "Thêm khoa",
+    "inputFacultyName": "Nhập tên khoa",
+    "facultyName": "Tên khoa",
+    "updateButton": "Lưu"
+  },
+
+  "STATUS": {
+    "search": "Tìm kiếm",
+    "update": "Sửa trạng thái",
+    "add": "Thêm trạng thái",
+    "inputStatusName": "Nhập tên trạng thái",
+    "statusName": "Tên trạng thái",
+    "updateButton": "Lưu"
+  },
+
+  "PROGRAM": {
+    "search": "Tìm kiếm",
+    "update": "Sửa chương trình",
+    "add": "Thêm chương trình",
+    "inputProgramName": "Nhập tên chương trình",
+    "programName": "Tên chương trình",
+    "updateButton": "Lưu"
+  },
+
+  "GRADE": {
+    "title": "Tra cứu điểm sinh viên",
+    "search": "Tra cứu",
+    "grade": "Điểm"
+  },
+
+  "CLASS": {
+    "registeredClass": "Danh sách lớp đã đăng ký",
+    "addStudent": "Thêm học sinh vào lớp học",
+    "addClass": "Thêm lớp học",
+    "classId": "Mã lớp học",
+    "lecturer": "Giảng viên",
+    "year": "Năm học",
+    "semester": "Học kì",
+    "room": "Phòng học",
+    "maximum": "Số lượng sinh viên tối đa",
+    "schedule": "Lịch học",
+    "mon": "T2",
+    "tue": "T3",
+    "wed": "T4",
+    "thu": "T5",
+    "fri": "T6",
+    "sat": "T7",
+    "startTimeLabel": "Giờ bắt đầu",
+    "endTimeLabel": "Giờ kết thúc",
+    "startTimePlaceholder": "Thời gian học",
+    "endTimePlaceholder": "Thời gian kết thúc",
+    "submitButton": "Thêm lớp"
+  },
+
+  "EMAIL": {
+    "title": "Quản lý Email Domain",
+    "addTitle": "Thêm Email Domain",
+    "domainLabel": "Tên domain",
+    "addButton": "Thêm",
+    "listTitle": "Danh sách Email Domain",
+    "table": {
+      "index": "STT",
+      "domain": "Domain",
+      "actions": "Thao tác"
+    },
+    "editTitle": "Chỉnh sửa Domain",
+    "editLabel": "Tên domain",
+    "cancelButton": "Hủy",
+    "saveButton": "Lưu",
+    "deleteButton": "Xóa",
+    "deleteTitle": "Xóa domain",
+    "editButton": "Sửa"
+    
+  },
+
+  "HEADER": {
+    "studentManagement": "Quản lý sinh viên",
+    "addStudent": "Thêm sinh viên",
+    "deleteStudent": "Xóa sinh viên",
+    "updateStudent": "Cập nhật sinh viên",
+    "searchStudent": "Tìm kiếm sinh viên",
+
+    "classManagement": "Quản lý lớp học",
+    "addClass": "Thêm lớp học",
+    "addStudentToClass": "Thêm học sinh vào lớp",
+    "removeStudentFromClass": "Xóa học sinh khỏi lớp",
+
+    "facultyManagement": "Quản lý khoa",
+    "addFaculty": "Thêm khoa",
+    "updateFaculty": "Thay đổi khoa",
+
+    "statusManagement": "Quản lý tình trạng",
+    "addStatus": "Thêm tình trạng",
+    "updateStatus": "Thay đổi tình trạng",
+
+    "programManagement": "Quản lý chương trình",
+    "addProgram": "Thêm chương trình",
+    "updateProgram": "Thay đổi chương trình",
+
+    "emailConfig": "Cấu hình email",
+    "viewGrades": "Xem điểm sinh viên",
+
+    "courseManagement": "Quản lý khóa học",
+    "addCourse": "Thêm khóa học",
+    "editCourse": "Chỉnh sửa khóa học"
+  }
+}

@@ -1,65 +1,23 @@
 <div class="max-w-3xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
-    <h2 class="text-xl font-bold mb-4">Sửa Khoa</h2>
+    <h2 class="text-xl font-bold mb-4">{{__ "FACULTY.update"}}</h2>
     
     <!-- Form tìm kiếm khoa -->
     <form id="searchFacultyForm" class="mb-6" action="/searchFacultyByName" method="GET">
-        <input type="text" id="searchName" name="searchName" placeholder="Nhập tên khoa để tìm kiếm" required class="p-2 border rounded w-full mb-2">
-        <button type="submit" class="bg-blue-500 text-white p-2 rounded w-full">Tìm kiếm</button>
+        <input type="text" id="searchName" name="searchName" placeholder="{{__ "FACULTY.inputFacultyName"}}" required class="p-2 border rounded w-full mb-2">
+        <button type="submit" class="bg-blue-500 text-white p-2 rounded w-full">{{__ "FACULTY.search"}}</button>
     </form>
 
     <!-- Hiển thị thông tin khoa để chỉnh sửa -->
     <form id="updateFacultyForm" action="/updateFaculty" method="POST">
         <div class="mb-4">
-            <label for="facultyName" class="block text-sm font-medium">Tên khoa:</label>
-            <input type="text" id="facultyName" name="facultyName" placeholder="Tên khoa" required class="p-2 border rounded w-full">
+            <label for="facultyName" class="block text-sm font-medium">{{__ "FACULTY.facultyName"}}:</label>
+            <input type="text" id="facultyName" name="facultyName" placeholder="{{__ "FACULTY.facultyName"}}" required class="p-2 border rounded w-full">
         </div>
-        <button type="submit" class="bg-blue-500 text-white p-2 rounded w-full">Cập nhật</button>
+        <button type="submit" class="bg-blue-500 text-white p-2 rounded w-full">{{__ "FACULTY.updateButton"}}</button>
     </form>
 </div>
-<script>
-    const searchFacultyForm = document.getElementById('searchFacultyForm');
-    const updateFacultyForm = document.getElementById('updateFacultyForm');
-    const facultyName = document.getElementById('facultyName');
-
-    searchFacultyForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const searchName = document.getElementById('searchName').value;
-        console.log(searchName);
-        fetch(`/searchFacultyByName?searchName=${searchName}`)
-            .then(res => res.json())
-            .then(data => {
-                if (data.faculty) {
-                    console.log(data.faculty);
-                    facultyName.value = data.faculty[0].faculty_name;
-                } else {
-                    alert('Không tìm thấy khoa');
-                }
-            });
-    });
-
-    updateFacultyForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const searchName = document.getElementById('searchName').value;
-        const facultyName = document.getElementById('facultyName').value;
-        fetch('/updateFaculty', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                searchName,
-                facultyName
-            })
-        })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Cập nhật khoa thành công');
-                } else {
-                    alert('Cập nhật khoa thất bại');
-                }
-                searchFacultyForm.reset();
-                updateFacultyForm.reset();
-            });
-    });
-</script>
+<script src="https://unpkg.com/i18next@21.6.3/i18next.min.js"></script>
+<script src="https://unpkg.com/i18next-http-backend@1.4.3/i18nextHttpBackend.min.js"></script>
+<script src="https://unpkg.com/i18next-browser-languagedetector@6.1.2/i18nextBrowserLanguageDetector.min.js"></script>
+<script src="/js/i18n-init.js"></script>
+<script src="/js/updateFaculty.js"></script>
