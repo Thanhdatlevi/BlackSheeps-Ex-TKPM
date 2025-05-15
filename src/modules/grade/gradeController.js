@@ -26,7 +26,7 @@ class gradeController {
         }
         catch (error){
             logger.error("Error in gradeController:", error);
-            return res.status(500).json({
+            return res.status(404).json({
                 message: "Lỗi khi tìm điểm của sinh viên. Vui lòng thử lại sau.",
                 data: []
             });
@@ -51,46 +51,54 @@ class gradeController {
             }
 
             // Tính GPA
-            let totalCredits = 0;
-            let weightedSum = 0;
-            studentData.forEach(({ credit, grade }) => {
-                totalCredits += credit;
-                weightedSum += grade * credit;
-            });
-            const gpa = totalCredits > 0 ? (weightedSum / totalCredits).toFixed(2) : "0.00";
+            const gpa = calculateGPA(studentData);
 
             // Chuẩn bị dữ liệu cho file Excel
-            const worksheetData = [
-                ["BẢNG ĐIỂM SINH VIÊN"],
-                [],
-                ["Mã sinh viên:", student_id],
-                ["Họ tên:", studentInformation.full_name],
-                ["Khóa:", studentInformation.academic_year],
-                ["Chuyên ngành:", studentInformation.faculty],
-                ["GPA:", gpa],
-                [],
-                ["Mã môn", "Tên môn học", "Số tín chỉ", "Điểm số"],
-                ...studentData.map(({ course_id, course_name, credit, grade }) => [course_id, course_name, credit, grade])
-            ];
-
-            // Tạo workbook và worksheet
-            const workbook = XLSX.utils.book_new();
-            const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
-
-            // Thêm sheet vào workbook
-            XLSX.utils.book_append_sheet(workbook, worksheet, "Bảng điểm");
+            const excelBuffer = createExcelFile(studentData, studentInformation, gpa);
 
             // Xuất file
             res.setHeader("Content-Disposition", `attachment; filename=bang_diem_${student_id}.xlsx`);
             res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 
-            const buffer = XLSX.write(workbook, { type: "buffer", bookType: "xlsx" });
-            res.end(buffer);
+            res.end(excelBuffer);
         } catch (error) {
             logger.error("Lỗi khi xuất bảng điểm:", error);
             res.status(500).send("Lỗi khi xuất bảng điểm.");
         }
     }
+
+    
+}
+
+function calculateGPA(grades) {
+    let totalCredits = 0;
+    let weightedSum = 0;
+    grades.forEach(({ credit, grade }) => {
+        totalCredits += credit;
+        weightedSum += grade * credit;
+    });
+    return totalCredits > 0 ? (weightedSum / totalCredits).toFixed(2) : "0.00";
+}
+
+function createExcelFile(studentData, studentInformation, gpa) {
+    const worksheetData = [
+        ["BẢNG ĐIỂM SINH VIÊN"],
+        [],
+        ["Mã sinh viên:", studentInformation.student_id],
+        ["Họ tên:", studentInformation.full_name],
+        ["Khóa:", studentInformation.academic_year],
+        ["Chuyên ngành:", studentInformation.faculty],
+        ["GPA:", gpa],
+        [],
+        ["Mã môn", "Tên môn học", "Số tín chỉ", "Điểm số"],
+        ...studentData.map(({ course_id, course_name, credit, grade }) => [course_id, course_name, credit, grade])
+    ];
+
+    const workbook = XLSX.utils.book_new();
+    const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Bảng điểm");
+
+    return XLSX.write(workbook, { type: "buffer", bookType: "xlsx" });
 }
 
 module.exports = gradeController;
