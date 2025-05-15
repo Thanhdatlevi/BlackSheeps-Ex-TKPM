@@ -192,14 +192,15 @@ class studentController {
     }
 
     static async updateStudent(req, res) {
+        // TODO: provide properties list to make sure students have enough
+        
         logger.info("updateStudent method got called in studentController");
-
 
         const newStudent = req.body;
         logger.info(newStudent);
 
         for (const property in newStudent) {
-            if (newStudent[property] == undefined) {
+            if (!newStudent[property] ||newStudent[property] == undefined) {
                 logger.warn("Not enough parameters when updating student");
                 return res.status(400).json({
                     error: "All information fields are required"
