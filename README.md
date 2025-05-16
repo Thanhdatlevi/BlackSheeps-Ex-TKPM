@@ -397,12 +397,16 @@ Nếu là môi trường developer chạy: npm run start:dev
 	+ studentController, studentModel: Bỏ phần address và chỉnh lại phần mã lỗi cho chính xác.
 ### Chức năng chuyển ngôn ngữ cho các tiêu đề
 - Tiếng Việt
+![Screenshot 2025-05-16 135507](https://github.com/user-attachments/assets/39a43e26-73d8-42bc-8ab3-e6013165600f)
 - Tiếng Anh
+![Screenshot 2025-05-16 135517](https://github.com/user-attachments/assets/032e81d5-c30e-4978-8845-192d860f8c2e)
 ### Chức năng chuyển ngôn ngữ cho các dữ liệu động
 - Tiếng Việt
+  ![Screenshot 2025-05-16 135624](https://github.com/user-attachments/assets/9e5e9916-aad1-41b9-abcf-b2611d0778bb)
 - Tiếng Anh
+  ![Screenshot 2025-05-16 135635](https://github.com/user-attachments/assets/2cf45868-6930-4550-ae04-0ce4989d31a1)
 ### Cài đặt thêm các unit test
-+ Test classController: Bao gồm add Class (add thành công, thất bại), Thêm sinh viên vào class, Cập nhật CLass, Cập nhật học 	sinh trong lớp, lấy khóa học, lấy năm/ học kì.
++ Test classController: Bao gồm add Class (add thành công, thất bại), Thêm sinh viên vào class, Cập nhật CLass, Cập nhật học sinh trong lớp, lấy khóa học, lấy năm/ học kì.
 + Test classModel: Tìm kiếm năm và học kì
 + Udapte test StudentController: Kiểm tra tìm kiếm, cập nhật, xóa. 
 + Test StudentModel: Update sinh viên.
