@@ -368,3 +368,46 @@ Viết 23 unit test
  + Should return 404 if no students to export as a Excel file.
 ![image](https://github.com/user-attachments/assets/cfcde36f-7b20-49fb-a135-cbb3319132ea)
 
+# Hướng dẫn sử dụng Version 6.0
+
+## Hướng dẫn cài đặt
+```
+
+Bước 1: Cài đặt NodeJS và npm
+
+Bước 2: Clone repo về máy
+
+Bước 3: Chạy npm install để cài đặt node-modules
+
+Bước 4: Tạo file .env và thêm các nội dung có note bên bài txt đã nộp
+```
+## Chạy chương trình
+
+Trong terminal  
+Nếu là môi trường sản phẩm chạy: npm start  
+Nếu là môi trường developer chạy: npm run start:dev 
+
+## Hướng dẫn sử dụng web
+### Refactor code
+- Refactor theo clean code ở những file sau:
+	+ search.js: Tách nhỏ hàm searchStudent.
+	+ gradeController.js: Tách nhỏ hàm export grate.
+	+ studentController.js: Tách nhỏ hàm export và import Student.
+	+ courseController, courseModel: chỉnh lại phần mã lỗi cho chính xác.
+	+ studentController, studentModel: Bỏ phần address và chỉnh lại phần mã lỗi cho chính xác.
+### Chức năng chuyển ngôn ngữ cho các tiêu đề
+- Tiếng Việt
+- Tiếng Anh
+### Chức năng chuyển ngôn ngữ cho các dữ liệu động
+- Tiếng Việt
+- Tiếng Anh
+### Cài đặt thêm các unit test
++ Test classController: Bao gồm add Class (add thành công, thất bại), Thêm sinh viên vào class, Cập nhật CLass, Cập nhật học 	sinh trong lớp, lấy khóa học, lấy năm/ học kì.
++ Test classModel: Tìm kiếm năm và học kì
++ Udapte test StudentController: Kiểm tra tìm kiếm, cập nhật, xóa. 
++ Test StudentModel: Update sinh viên.
++ Add student: add Student thành công, lỗi khi add sinh viên lặp ID, Lỗi có kí tự đặc biệt,...
++ Add Course: add Course thành công, lặp ID, lỗi ký tự đặc biệt.
++ Search Course: search Course thành công, Lỗi ID không xuất hiện, lấy toàn bộ course
++ Delete and update Course: Update thành công, update status thành công, xóa thành công, kiểm tra course đã có class, không thể 	update ID không xuất hiện. 
++ Test Performance and Edge Cases.
