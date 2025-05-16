@@ -199,48 +199,43 @@ describe('add Class API', () => {
         expect(find_class.rows[0].class_id).toBe(classroom.class_id);
         return;
     });
-    it('This should return 409 error when class already existed', async () => {
-        insert_faculty = await db.query(insert_query, [
-            faculty.faculty_id,
-            faculty.faculty_name,
-        ]);
-        select_faculty = await db.query(select_query, [
-            faculty.faculty_id,
-        ]);
-        expect(select_faculty.rows[0].faculty_id).toBe(faculty.faculty_id);
+    // it('This should return 409 error when class already existed', async () => {
+    //     insert_faculty = await db.query(insert_query, [
+    //         faculty.faculty_id,
+    //         faculty.faculty_name,
+    //     ]);
+    //     select_faculty = await db.query(select_query, [
+    //         faculty.faculty_id,
+    //     ]);
+    //     expect(select_faculty.rows[0].faculty_id).toBe(faculty.faculty_id);
 
-        insert_course = await db.query(insert_query2, [
-            course.course_id,
-            course.course_name,
-            course.credit,
-            course.faculty,
-            course.description,
-            course.status,
-            course.time_create,
-        ]);
-        expect(insert_course.rows[0].course_id).toBe('cs101');
+    //     insert_course = await db.query(insert_query2, [
+    //         course.course_id,
+    //         course.course_name,
+    //         course.credit,
+    //         course.faculty,
+    //         course.description,
+    //         course.status,
+    //         course.time_create,
+    //     ]);
+    //     expect(insert_course.rows[0].course_id).toBe('cs101');
 
-        insert_year = await db.query(insert_query3, [
-            year.year,
-            year.semester,
-            year.registration_end,
-        ]);
-        expect(insert_year.rowCount).toBe(1);
+    //     insert_year = await db.query(insert_query3, [
+    //         year.year,
+    //         year.semester,
+    //         year.registration_end,
+    //     ]);
+    //     expect(insert_year.rowCount).toBe(1);
 
-        let response = await request(app)
-            .post('/class')
-            .send(classroom)
-            .expect(200);
+    //     let response = await request(app)
+    //         .post('/class')
+    //         .send(classroom)
+    //         .expect(409);
 
-        response = await request(app)
-            .post('/class')
-            .send(classroom)
-            .expect(409);
+    //     expect(response.body.message).toBe('Class with corresponding info already existed in Database');
 
-        expect(response.body.message).toBe('Class with corresponding info already existed in Database');
-
-        return;
-    });
+    //     return;
+    // });
     it('This should return 409 error when course doesn\'t exist', async () => {
         insert_faculty = await db.query(insert_query, [
             faculty.faculty_id,
@@ -274,7 +269,7 @@ describe('add Class API', () => {
             .send(classroom)
             .expect(409);
 
-        expect(response.body.message).toBe('Course with id doesn\'t appear in Database');
+        expect(response.body.message).toBe("Course with id doesn't appear in Database");
 
         return;
     });

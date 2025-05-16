@@ -48,14 +48,16 @@ class classModel {
                 classObject.year,
                 classObject.semester
             )
-            if (class_result.length != 0) {
+            console.log(class_result)
+
+            if (parseInt(class_result.count) != 0) {
                 throw new Error('Class already existed');
             }
 
             const courseResult = await this.searchCourse(
                 classObject.course_id,
             )
-            if (courseResult.length == 0) {
+            if (parseInt(courseResult.length) == 0) {
                 throw new Error('Course with id not existed');
             }
 
@@ -142,7 +144,7 @@ class classModel {
             semester
         ]);
 
-        return class_result.rows;
+        return class_result.rows[0];
     }
     static async countRegister(student_id, class_id, course_id, year, semester) {
         const existed_query = `

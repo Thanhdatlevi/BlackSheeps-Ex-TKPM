@@ -21,7 +21,7 @@ class gradeController {
     static async searchGrade(req,res){
         try {
             console.log(req.query.lang)
-            let lang = req.query.lang || "en";
+            let lang = req.query.lang || "vi";
 
             const student_id = req.query.student_id;
             const grades = await gradeModel.getStudentGrades(student_id,lang);
@@ -38,7 +38,7 @@ class gradeController {
 
     static async exportStudentGrades(req, res) {
         try {
-            let lang = req.query.lang || "en";
+            let lang = req.query.lang || "vi";
 
             const student_id = req.query.student_id;
             if (!student_id) {
