@@ -1,8 +1,13 @@
 // Function to get all input field values and store them in an object
-const CLASS_URL = '/classes'
-const COURSE_URL = '/class/courses';
-const YEAR_URL = '/class/year';
+const CLASS_URL = '/classes?'
+const COURSE_URL = '/class/courses?';
+const YEAR_URL = '/class/year?';
 
+
+function getLangFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('lang') || 'vi';
+}
 const options_template = (obj, prop1, prop2) => {
     return `
     {{#each ${obj}}}
@@ -32,7 +37,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 async function getOptions(url) {
     try {
-        const response = await fetch(url, {
+        const response = await fetch(url +
+            (new URLSearchParams({lang: getLangFromURL()})).toString(), {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
