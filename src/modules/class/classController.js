@@ -146,8 +146,10 @@ class classController {
     }
     static async getCourses(req, res) {
         try {
+            const lang = req.query.lang;
+            console.log(lang)
             logger.info("getCourses method got called in ClassController");
-            const courses = await classModel.getCourses();
+            const courses = await classModel.getCourses(lang);
             if (courses) {
                 return res.status(200).json({
                     courses: courses

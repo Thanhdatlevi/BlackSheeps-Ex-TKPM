@@ -5,7 +5,7 @@ const { search } = require('../../routes/classRoutes');
 const studentModel = require('../student/studentModel')
 
 class classModel {
-    static async searchCourse(course_id){
+    static async searchCourse(course_id) {
         try {
             const course_query = `
                 SELECT * FROM course WHERE course_id = $1;
@@ -23,7 +23,7 @@ class classModel {
             const year_query = `
                 SELECT * FROM term WHERE year = $1 AND semester = $2;
             `;
-            let search_year_result = await db.query(year_query , [year, semester]);
+            let search_year_result = await db.query(year_query, [year, semester]);
             console.log(search_year_result.rows);
             return search_year_result.rows;
         } catch (error) {
@@ -273,13 +273,23 @@ class classModel {
             throw new Error(error);
         }
     }
-    static async getCourses() {
+    static async getCourses(lang) {
         try {
+            let course_name_col = '';
+            console.log(lang);
+            if (lang === 'en') {
+                course_name_col += 'en_course_name'
+            }
+            else {
+                course_name_col += 'course_name'
+            };
+
             const query = `
-            SELECT course_id, course_name
+            SELECT course_id, ${course_name_col} as course_name
             FROM course
             ORDER BY course_id;
             `;
+
             const result = await db.query(query);
             if (result.rows.length > 0) {
                 logger.info("getCourses executed successfully in classModel");
@@ -313,7 +323,7 @@ class classModel {
             throw new Error(error);
         }
     }
-    static async getClasses(){
+    static async getClasses() {
         try {
             const query = `
             SELECT DISTINCT class_id 
