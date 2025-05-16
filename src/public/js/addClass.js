@@ -1,6 +1,11 @@
 // Function to get all input field values and store them in an object
-const COURSE_URL = '/class/courses';
-const YEAR_URL = '/class/year';
+const COURSE_URL = '/class/courses?';
+const YEAR_URL = '/class/year?';
+
+function getLangFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('lang') || 'vi';
+}
 
 const options_template = (obj, prop1, prop2) => {
     return `
@@ -16,14 +21,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('course_id').innerHTML += html;
 
     const yearData = await getOptions(YEAR_URL);
-    const template2 = Handlebars.compile(options_template('terms','year','year'));
-    console.log(options_template('terms','year','year'));
+    const template2 = Handlebars.compile(options_template('terms', 'year', 'year'));
+    console.log(options_template('terms', 'year', 'year'));
     const html2 = template2(yearData);
     document.getElementById('year').innerHTML += html2;
 });
 async function getOptions(url) {
     try {
-        const response = await fetch(url, {
+        console.log((new URLSearchParams({lang: getLangFromURL()})).toString());
+        const response = await fetch(url + 
+            (new URLSearchParams({lang: getLangFromURL()})).toString(), {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -84,8 +91,8 @@ window.submitFormData = async () => {
 
     delete formData.time;
 
-    for (let e in formData){
-        if (!formData[e] || formData[e] == ''){
+    for (let e in formData) {
+        if (!formData[e] || formData[e] == '') {
             alert(i18next.t('alert.notFill'));
             return null
         }
@@ -104,7 +111,7 @@ window.submitFormData = async () => {
                 alert(`Thêm lớp học thành công`);
                 return res.json();
             }
-            return res.json().then(text => {throw new Error(text.message)});
+            return res.json().then(text => { throw new Error(text.message) });
         });
         if (response.status == 200) {
             console.log('Form data submitted successfully!');
