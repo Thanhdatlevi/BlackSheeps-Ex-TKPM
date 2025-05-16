@@ -396,11 +396,13 @@ Nếu là môi trường developer chạy: npm run start:dev
 	+ courseController, courseModel: chỉnh lại phần mã lỗi cho chính xác.
 	+ studentController, studentModel: Bỏ phần address và chỉnh lại phần mã lỗi cho chính xác.
 ### Chức năng chuyển ngôn ngữ cho các tiêu đề
+Người dùng sẽ nhấn vào nút ngân ngữ trên thanh điều khiển để chọn loại ngôn ngữ
 - Tiếng Việt
 ![Screenshot 2025-05-16 135507](https://github.com/user-attachments/assets/39a43e26-73d8-42bc-8ab3-e6013165600f)
 - Tiếng Anh
 ![Screenshot 2025-05-16 135517](https://github.com/user-attachments/assets/032e81d5-c30e-4978-8845-192d860f8c2e)
 ### Chức năng chuyển ngôn ngữ cho các dữ liệu động
+Thông tin sẽ hiển thị theo loại ngôn ngữ mà người dùng chọn
 - Tiếng Việt
   ![Screenshot 2025-05-16 135624](https://github.com/user-attachments/assets/9e5e9916-aad1-41b9-abcf-b2611d0778bb)
 - Tiếng Anh
@@ -408,10 +410,16 @@ Nếu là môi trường developer chạy: npm run start:dev
 ### Cài đặt thêm các unit test
 + Test classController: Bao gồm add Class (add thành công, thất bại), Thêm sinh viên vào class, Cập nhật CLass, Cập nhật học sinh trong lớp, lấy khóa học, lấy năm/ học kì.
 + Test classModel: Tìm kiếm năm và học kì
-+ Udapte test StudentController: Kiểm tra tìm kiếm, cập nhật, xóa. 
+  ![image](https://github.com/user-attachments/assets/ebba9f57-c092-4b62-81e0-25e8581feb39)
++ Update test StudentController: Kiểm tra tìm kiếm, cập nhật, xóa.
+  ![Screenshot 2025-05-16 162928](https://github.com/user-attachments/assets/28275d5a-8565-4532-8814-1483ad29bd22)
 + Test StudentModel: Update sinh viên.
+  ![Screenshot 2025-05-16 162959](https://github.com/user-attachments/assets/f57e9173-f510-45cc-a785-dde42a9bc001)
 + Add student: add Student thành công, lỗi khi add sinh viên lặp ID, Lỗi có kí tự đặc biệt,...
+  ![Screenshot 2025-05-16 163055](https://github.com/user-attachments/assets/f894e006-8fcb-4e2d-8011-dc1f1f7babd5)
 + Add Course: add Course thành công, lặp ID, lỗi ký tự đặc biệt.
 + Search Course: search Course thành công, Lỗi ID không xuất hiện, lấy toàn bộ course
-+ Delete and update Course: Update thành công, update status thành công, xóa thành công, kiểm tra course đã có class, không thể 	update ID không xuất hiện. 
++ Delete and update Course: Update thành công, update status thành công, xóa thành công, kiểm tra course đã có class, không thể update ID không xuất hiện.
 + Test Performance and Edge Cases.
+  ![Screenshot 2025-05-16 163212](https://github.com/user-attachments/assets/601d9c8c-0aba-4a03-bdfc-4170ea0fbcb7)
+
