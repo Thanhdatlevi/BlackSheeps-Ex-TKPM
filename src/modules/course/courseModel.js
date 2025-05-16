@@ -1,4 +1,4 @@
-const {qurey} = require('express');
+const {query} = require('express');
 const db = require('../../config/db');
 const logger = require('../../config/logging');
 class courseModel {
