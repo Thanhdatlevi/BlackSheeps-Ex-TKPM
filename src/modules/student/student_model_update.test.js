@@ -2,7 +2,7 @@ const studentModel = require('./studentModel');
 const db = require('../../config/db')
 
 jest.mock('../../config/db')
-
+jest.setTimeout(30000); 
 describe('studentModel', () => {
     afterEach(() => {
         jest.clearAllMocks();

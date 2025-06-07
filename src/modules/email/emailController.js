@@ -1,4 +1,4 @@
-const emailModel = require('../email/emailModel');
+const emailService = require('./emailService');
 const logger = require('../../config/logging')
 class emailController {
 
@@ -21,7 +21,7 @@ class emailController {
             logger.info("addEmail method got called in emailController");
             const email = req.body.domain;
             console.log(email);
-            const addedEmail = await emailModel.addEmail(email);
+            const addedEmail = await emailService.addEmail(email);
             if (addedEmail){
                 return res.status(201).json(
                     {
@@ -51,7 +51,7 @@ class emailController {
             logger.info("searchEmail method got called in emailController");
             const email = req.body.email;
             
-            const searchedEmail = await emailModel.searchEmail(email);
+            const searchedEmail = await emailService.searchEmail(email);
             if (searchedEmail){
                 return res.status(200).json(
                     {
@@ -83,7 +83,7 @@ class emailController {
                 email_domain: req.body.email_domain,
                 email_id: req.body.email_id
             };
-            const updatedEmail = await emailModel.updateEmail(email);
+            const updatedEmail = await emailService.updateEmail(email);
             if (updatedEmail){
                 return res.status(200).json(
                     {
@@ -111,7 +111,7 @@ class emailController {
     static async getAllEmails(req,res){
         try {
             logger.info("getAllEmails method got called in emailController");
-            const emails = await emailModel.getAllEmails();
+            const emails = await emailService.getAllEmails();
             if (emails){
                 return res.status(200).json(
                     {
@@ -140,7 +140,7 @@ class emailController {
         try {
             logger.info("deleteEmail method got called in emailController");
             const email_id = req.body.email_id;
-            const deletedEmail = await emailModel.deleteEmail(email_id);
+            const deletedEmail = await emailService.deleteEmail(email_id);
             if (deletedEmail){
                 return res.status(200).json(
                     {

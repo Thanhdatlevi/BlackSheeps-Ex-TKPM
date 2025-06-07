@@ -9,7 +9,7 @@ searchFacultyForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const searchName = document.getElementById('searchName').value;
     console.log(searchName);
-    fetch(`/searchFacultyByName?searchName=${searchName}`)
+    fetch(`/faculty/searchFacultyByName?searchName=${searchName}`)
         .then(res => res.json())
         .then(data => {
             if (data.faculty) {
@@ -25,7 +25,7 @@ updateFacultyForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const searchName = document.getElementById('searchName').value;
     const facultyName = document.getElementById('facultyName').value;
-    fetch('/updateFaculty', {
+    fetch('/faculty/updateFaculty', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

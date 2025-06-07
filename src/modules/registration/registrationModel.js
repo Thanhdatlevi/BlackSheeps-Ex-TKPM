@@ -19,7 +19,7 @@ class registrationModel{
             }
     
             const { year, semester } = termResult.rows[0];
-
+            console.log(student_id || null, year, semester)
             const registerQuery = `
                 SELECT rs.student_id, rs.class_id, rs.course_id, rs.year, rs.semester
                 FROM register_subject rs

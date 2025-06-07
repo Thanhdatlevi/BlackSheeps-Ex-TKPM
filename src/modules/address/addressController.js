@@ -1,5 +1,6 @@
-const addressModel = require('../address/addressModel');
-const logger = require('../../config/logging')
+const addressService = require('./addressService');
+const logger = require('../../config/logging');
+
 class addressController {
     static async addAddress(req, res) {
         try {
@@ -12,7 +13,7 @@ class addressController {
                 city: req.body.city,
                 country: req.body.country
             };
-            const addedAddress = await addressModel.addAddress(newAddress);
+            const addedAddress = await addressService.addAddress(newAddress);
             if (addedAddress) {
                 return res.status(201).json({
                     success: true,
@@ -34,25 +35,21 @@ class addressController {
     }
 
     static async updateAddress(req, res) {
-        const address = req.body
-        // TODO: refactor this controller to a different controller
+        const address = req.body;
         try {
             if (address.permanent_address !== undefined) {
-                let result = await addressModel.updateAddress(address.permanent_address)
+                await addressService.updateAddress(address.permanent_address);
             }
-
             if (address.temporary_address !== undefined) {
-                let result2 = await addressModel.updateAddress(address.temporary_address)
+                await addressService.updateAddress(address.temporary_address);
             }
-
             if (address.mailing_address !== undefined) {
-                let result3 = await addressModel.updateAddress(address.mailing_address)
+                await addressService.updateAddress(address.mailing_address);
             }
             return res.status(200).json({
                 message: "update address successfully"
-            })
-        }
-        catch (error) {
+            });
+        } catch (error) {
             logger.error("Error in updateStudentController address:", error);
             return res.status(500).json({
                 message: "Failed to update student of user 1. Please try again later."
@@ -60,4 +57,5 @@ class addressController {
         }
     }
 }
+
 module.exports = addressController;

@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", async function() {
 
 // Hàm fetch danh sách khoa
 async function fetchFaculties() {
-    const response = await fetch("/faculties");
+    const response = await fetch("/faculty/faculties");
     const data = await response.json();
     if (!response.ok) throw new Error("Lỗi lấy danh sách khoa");
     return data.faculties;
@@ -39,7 +39,7 @@ async function fetchFaculties() {
 
 // Hàm fetch danh sách chương trình đào tạo
 async function fetchPrograms() {
-    const response = await fetch("/programs");
+    const response = await fetch("/program/programs");
     const data = await response.json();
     if (!response.ok) throw new Error("Lỗi lấy danh sách chương trình đào tạo");
     console.log(data, 'program')
@@ -48,7 +48,7 @@ async function fetchPrograms() {
 
 // Hàm fetch danh sách trạng thái sinh viên
 async function fetchStatuses() {
-    const response = await fetch("/statuses");
+    const response = await fetch("/status/statuses");
     const data = await response.json();
     if (!response.ok) throw new Error("Lỗi lấy danh sách trạng thái sinh viên");
     console.log(data, 'status')

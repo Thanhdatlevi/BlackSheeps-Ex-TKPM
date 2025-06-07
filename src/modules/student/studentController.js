@@ -1,15 +1,10 @@
-const studentModel = require('../student/studentModel');
-const emailModel = require('../email/emailModel');
-// TODO: migrating these api controller to address controller
-const addressModel = require('../address/addressModel');
-const indentificationModel = require('../identification/identificationModel');
-
-const facultyModel = require('../faculty/facultyModel');
-const programModel = require('../program/programModel');
-const statusModel = require('../status/statusModel');
-
-const logger = require('../../config/logging')
-
+const studentService = require('./studentService');
+const facultyService = require('../faculty/facultyService');
+const programService = require('../program/programService');
+const statusService = require('../status/statusService');
+const identificationService = require('../identification/identificationService');
+const addressService = require('../address/addressService');
+const logger = require('../../config/logging');
 const fastCsv = require('fast-csv');
 const XLSX = require("xlsx");
 const csv = require("csv-parser");
@@ -47,7 +42,7 @@ class studentController {
                 phone: req.body.phone,
             }
 
-            const addedStudent = await studentModel.addStudent(newStudent);
+            const addedStudent = await studentService.addStudent(newStudent);
 
             if (addedStudent) {
                 return res.status(201).json({
@@ -97,7 +92,7 @@ class studentController {
             logger.info("deleteStudent method got called in studentController");
             const { mssv } = req.body;
             console.log(mssv);
-            const checkStudent = await studentModel.searchStudent(mssv);
+            const checkStudent = await studentService.searchStudent(mssv);
             console.log(checkStudent);
             if (checkStudent.length === 0) {
                 logger.warn("StudentID not exists when deleting");
@@ -106,7 +101,7 @@ class studentController {
 
             const deletedStudent = checkStudent[0];
 
-            await studentModel.deleteStudent(mssv);
+            await studentService.deleteStudent(mssv);
 
             return res.status(200).json({ message: "Xóa thành công!", deletedStudent });
         } catch (error) {
@@ -141,7 +136,7 @@ class studentController {
             let { mssv, name, khoa } = req.query;
             console.log(mssv, name, khoa );
             // Lấy danh sách sinh viên
-            let students = await studentModel.searchStudent(mssv, name, khoa);
+            let students = await studentService.searchStudent(mssv, name, khoa);
             console.log(students);
             if (!students || students.length === 0) {
                 logger.error("No students found");
@@ -152,10 +147,10 @@ class studentController {
             let results = await Promise.all(students.map(async (student) => {
                 let studentID = student.student_id; // Lấy MSSV của từng sinh viên
 
-                let identification = await indentificationModel.getIdentification(studentID);
-                let permanentAddress = await addressModel.getPermanentAddress(studentID);
-                let temporaryAddress = await addressModel.getTemporaryAddress(studentID);
-                let mailingAddress = await addressModel.getMailingAddress(studentID);
+                let identification = await identificationService.getIdentification(studentID);
+                let permanentAddress = await addressService.getPermanentAddress(studentID);
+                let temporaryAddress = await addressService.getTemporaryAddress(studentID);
+                let mailingAddress = await addressService.getMailingAddress(studentID);
 
                 return {
                     information: student,
@@ -209,7 +204,7 @@ class studentController {
         }
 
         try {
-            let result = await studentModel.updateStudent(newStudent);
+            let result = await studentService.updateStudent(newStudent);
         }
         catch (error) {
             logger.error("Error in updateStudentController:", error.message);
@@ -228,10 +223,10 @@ class studentController {
         const studentData = [];
         for (const student of students) {
             const [identifications, permanentAddress, temporaryAddress, mailingAddress] = await Promise.all([
-                indentificationModel.getIdentification(student.student_id),
-                addressModel.getPermanentAddress(student.student_id),
-                addressModel.getTemporaryAddress(student.student_id),
-                addressModel.getMailingAddress(student.student_id)
+                identificationService.getIdentification(student.student_id),
+                addressService.getPermanentAddress(student.student_id),
+                addressService.getTemporaryAddress(student.student_id),
+                addressService.getMailingAddress(student.student_id)
             ]);
 
             studentData.push({
@@ -310,13 +305,13 @@ class studentController {
     // Hàm xuất danh sách sinh viên CSV
     static async exportStudentListCSV(req, res) {
         logger.info("Xuất danh sách sinh viên CSV");
-        return studentController.exportData(req, res, studentModel.searchStudent, "students", "csv");
+        return studentController.exportData(req, res, studentService.searchStudent, "students", "csv");
     }
 
     // Hàm xuất danh sách sinh viên Excel
     static async exportStudentListExcel(req, res) {
         logger.info("Xuất danh sách sinh viên Excel");
-        return studentController.exportData(req, res, studentModel.searchStudent, "students", "excel");
+        return studentController.exportData(req, res, studentService.searchStudent, "students", "excel");
     }
 
     static async importCSV(req, res) {
@@ -398,19 +393,19 @@ class studentController {
         for (const student of studentData) {
             console.log(student.faculty, 394)
             if (typeof student.faculty === 'string') {
-                const faculty = await facultyModel.searchFacultyByName(student.faculty);
+                const faculty = await facultyService.searchFacultyByName(student.faculty);
                 console.log(faculty[0], 398)
                 student.faculty = faculty ? faculty[0].faculty_id : null;
             }
             if (typeof student.education_program === 'string') {
-                const program = await programModel.searchProgramByName(student.education_program);
+                const program = await programService.searchProgramByName(student.education_program);
                 student.education_program = program ? program.program_id : null;
             }
             if (typeof student.student_status === 'string') {
-                const status = await statusModel.searchStatusByName(student.student_status);
+                const status = await statusService.searchStatusByName(student.student_status);
                 student.student_status = status ? status.status_id : null;
             }
-            await studentModel.addStudent({
+            await studentService.addStudent({
                 mssv: student.student_id,
                 name: student.full_name,
                 dob: formatDate(student.date_of_birth),
@@ -430,7 +425,7 @@ class studentController {
             student.issue_date = formatDate(student.issue_date);
             student.expiry_date = formatDate(student.expiry_date);
 
-            await indentificationModel.addIdentification(student);
+            await identificationService.addIdentification(student);
 
             await this.addAddressIfPresent(student, 'thuongtru', student.permanentAddress);
             await this.addAddressIfPresent(student, 'tamtru', student.temporaryAddress);
@@ -441,7 +436,7 @@ class studentController {
         if (!addressString) return;
 
         const [street, ward, district, city, country] = addressString.split(",").map(s => s.trim());
-        await addressModel.addAddress({
+        await addressService.addAddress({
             student_id: student.student_id,
             address_type: type,
             street_address: street || null,

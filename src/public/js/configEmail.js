@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 // Tải danh sách domains từ API
 async function loadDomains() {
     try {
-        const response = await fetch('/emails');
+        const response = await fetch('/email/emails');
         const data = await response.json();
         console.log(data);
         if (data.success && data.domains) {
@@ -91,7 +91,7 @@ async function addDomain() {
     }
 
     try {
-        const response = await fetch('/addEmail', {
+        const response = await fetch('/email/addEmail', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -142,7 +142,7 @@ async function updateDomain() {
     }
 
     try {
-        const response = await fetch(`/updateEmail`, {
+        const response = await fetch(`/email/updateEmail`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -178,7 +178,7 @@ async function deleteDomain(id) {
     }
 
     try {
-        const response = await fetch(`/deleteEmail`, {
+        const response = await fetch(`/email/deleteEmail`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'

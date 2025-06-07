@@ -1,5 +1,5 @@
-const gradeModel = require('../grade/gradeModel');
-const studentModel = require('../student/studentModel');
+const gradeService = require('./gradeService');
+const studentService = require('../student/studentService');
 const logger = require('../../config/logging');
 const XLSX = require("xlsx");
 class gradeController {
@@ -24,7 +24,7 @@ class gradeController {
             let lang = req.query.lang || "vi";
 
             const student_id = req.query.student_id;
-            const grades = await gradeModel.getStudentGrades(student_id,lang);
+            const grades = await gradeService.getStudentGrades(student_id,lang);
             return res.status(200).json(grades);
         }
         catch (error){
@@ -45,10 +45,10 @@ class gradeController {
                 return res.status(400).send("Thiếu mã số sinh viên.");
             }
 
-            let studentData = await gradeModel.getStudentGrades(student_id,lang);
+            let studentData = await gradeService.getStudentGrades(student_id,lang);
             studentData = studentData.grades;
             console.log(studentData)
-            let studentInformation = await studentModel.searchStudent(student_id);
+            let studentInformation = await studentService.searchStudent(student_id);
             studentInformation =studentInformation[0];
             if (!studentData || studentData.length === 0) {
                 logger.warn(`Không tìm thấy dữ liệu điểm của sinh viên ${student_id}`);

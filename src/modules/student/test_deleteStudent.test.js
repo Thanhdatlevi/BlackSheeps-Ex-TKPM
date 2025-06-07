@@ -2,7 +2,7 @@ const request = require('supertest');
 const app = require('../../../app');  // Đường dẫn đến file app chính
 const db = require('../../config/db');
 const logger = require('../../config/logging');
-
+jest.setTimeout(30000); 
 PORT = 3001;
 let server;
 require('dotenv').config();

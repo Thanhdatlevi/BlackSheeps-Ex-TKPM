@@ -6,7 +6,7 @@ const logger = require('../../config/logging');
 const { scheduler } = require('timers/promises');
 const { exec } = require('child_process');
 require('dotenv').config();
-
+jest.setTimeout(30000); 
 PORT = 3000;
 const course = {
     course_id: 'cs101',

@@ -110,16 +110,12 @@ window.submitFormData = async () => {
                 console.log('Form data submitted successfully!');
                 alert(`Thêm lớp học thành công`);
                 return res.json();
-            }
-            return res.json().then(text => { throw new Error(text.message) });
-        });
-        if (response.status == 200) {
-            console.log('Form data submitted successfully!');
-            // Optionally, you can redirect or show a success message
-        } else {
+            } else {
             console.error('Failed to submit form data:', response.statusText);
             alert(`${i18next.t('alert.addFaultClass')}: ${response.message}`);
         }
+            return res.json().then(text => { throw new Error(text.message) });
+        });
     } catch (error) {
         console.error('Error submitting form data:', error);
         alert(i18next.t('alert.addFaultClass'));

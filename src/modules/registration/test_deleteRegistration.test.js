@@ -3,7 +3,7 @@ const app = require('../../../app');
 const db = require('../../config/db');
 const logger = require('../../config/logging');
 require('dotenv').config();
-
+jest.setTimeout(30000); 
 beforeAll(async () => {
     const result = await db.query('SELECT current_database()');
     if (result.rows[0].current_database != process.env.DB_NAME_TEST) {

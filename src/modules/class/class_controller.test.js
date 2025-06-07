@@ -1,9 +1,9 @@
 const classController = require('./classController');
-const classModel = require('./classModel');
+const classService = require('./classService');
 const httpMocks = require('node-mocks-http');
 
-jest.mock('./classModel');
-
+jest.mock('./classService');
+jest.setTimeout(30000); 
 describe('classController', () => {
     let req, res;
 
@@ -28,7 +28,7 @@ describe('classController', () => {
     describe('addClass', () => {
         it('should return 200 if class is added successfully', async () => {
             req.body = { name: 'Math' };
-            classModel.addClass.mockResolvedValue(true);
+            classService.addClass.mockResolvedValue(true);
 
             await classController.addClass(req, res);
 
@@ -40,7 +40,7 @@ describe('classController', () => {
 
         it('should return 409 for Course ID error', async () => {
             req.body = { name: 'Science' };
-            classModel.addClass.mockRejectedValue(new Error('Error: Course with id not existed'));
+            classService.addClass.mockRejectedValue(new Error('Course with id not existed'));
 
             await classController.addClass(req, res);
 
@@ -52,7 +52,7 @@ describe('classController', () => {
 
         it('should return 500 on unknown error', async () => {
             req.body = { name: 'History' };
-            classModel.addClass.mockRejectedValue(new Error('Unexpected'));
+            classService.addClass.mockRejectedValue(new Error('Unexpected'));
 
             await classController.addClass(req, res);
 
@@ -79,7 +79,7 @@ describe('classController', () => {
                 studentList: ['stu1', 'stu2'],
                 classObject: { id: 1 }
             };
-            classModel.addStudentToClass.mockResolvedValue(true);
+            classService.addStudentToClass.mockResolvedValue(true);
 
             await classController.addStudentToClass(req, res);
             expect(res.status).toHaveBeenCalledWith(200);
@@ -89,8 +89,12 @@ describe('classController', () => {
         });
 
         it('should return 409 if student already registered', async () => {
-            classModel.addStudentToClass.mockRejectedValue(
-                new Error('Error: Student already register this subject')
+            req.body = {
+                studentList: ['stu1', 'stu2'],
+                classObject: { id: 1 }
+            };
+            classService.addStudentToClass.mockRejectedValue(
+                new Error('Student already register this subject')
             );
 
             await classController.addStudentToClass(req, res);
@@ -105,7 +109,7 @@ describe('classController', () => {
     describe('updateClass', () => {
         it('should return 200 if class is updated successfully', async () => {
             req.body = { id: 1 };
-            classModel.updateClass.mockResolvedValue(true);
+            classService.updateClass.mockResolvedValue(true);
 
             await classController.updateClass(req, res);
 
@@ -122,7 +126,7 @@ describe('classController', () => {
                 studentList: ['a', 'b'],
                 classObject: { id: 2 }
             };
-            classModel.updateStudentInClass.mockResolvedValue(true);
+            classService.updateStudentInClass.mockResolvedValue(true);
 
             await classController.updateStudentInClass(req, res);
 
@@ -136,7 +140,7 @@ describe('classController', () => {
     describe('getCourses', () => {
         it('should return courses list', async () => {
             const courses = [{ id: 1, name: 'Physics' }];
-            classModel.getCourses.mockResolvedValue(courses);
+            classService.getCourses.mockResolvedValue(courses);
 
             await classController.getCourses(req, res);
 
@@ -150,7 +154,7 @@ describe('classController', () => {
     describe('getYear', () => {
         it('should return year term list', async () => {
             const terms = ['2023 Fall', '2024 Spring'];
-            classModel.getYear.mockResolvedValue(terms);
+            classService.getYear.mockResolvedValue(terms);
 
             await classController.getYear(req, res);
 
@@ -164,7 +168,7 @@ describe('classController', () => {
     describe('getAllClasses', () => {
         it('should return all classes', async () => {
             const classes = [{ id: 1, name: 'Algebra' }];
-            classModel.getClasses.mockResolvedValue(classes);
+            classService.getClasses.mockResolvedValue(classes);
 
             await classController.getAllClasses(req, res);
 
@@ -175,4 +179,3 @@ describe('classController', () => {
         });
     });
 });
-

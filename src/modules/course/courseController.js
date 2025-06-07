@@ -1,4 +1,4 @@
-const courseModel = require('../course/courseModel');
+const courseService = require('./courseService');
 const logger = require('../../config/logging');
 class courseController {
     static async addCoursePage(req,res){
@@ -21,7 +21,7 @@ class courseController {
 
             const course = req.body;
 
-            const addedCourse = await courseModel.addCourse(course);
+            const addedCourse = await courseService.addCourse(course);
 
             if (addedCourse){
                 return res.status(201).json(
@@ -79,7 +79,7 @@ class courseController {
                     }
                 );
             }
-            const course = await courseModel.searchCourseById(courseId);
+            const course = await courseService.searchCourseById(courseId);
             logger.info("course: ", course);
             if (course){
                 return res.status(200).json(
@@ -128,7 +128,7 @@ class courseController {
             let lang = req.query.lang || "en";
             console.log("lang: ", lang);
             logger.info("getAllCourses method got called in courseController");
-            const courses = await courseModel.getAllCourses(lang);
+            const courses = await courseService.getAllCourses(lang);
             if (courses){
                 return res.status(200).json(
                     {
@@ -162,7 +162,7 @@ class courseController {
             let courseId = req.body.courseId;
             console.log("courseId in controller: ", courseId);
             console.log(courseId);
-            const deletedCourse = await courseModel.deleteCourse(courseId);
+            const deletedCourse = await courseService.deleteCourse(courseId);
             if (deletedCourse){
                 return res.status(200).json(
                     {
@@ -195,7 +195,7 @@ class courseController {
             let lang = req.query.lang || "en";
             logger.info("updateCourse method got called in courseController");
             const course = req.body;
-            const updatedCourse = await courseModel.updateCourse(course, lang);
+            const updatedCourse = await courseService.updateCourse(course, lang);
             if (updatedCourse){
                 return res.status(200).json(
                     {
@@ -227,7 +227,7 @@ class courseController {
             const courseId = req.body.courseId;
             const status = req.body.status;
             logger.info("updateCourseStatus method got called in courseController");
-            const updatedCourseStatus = await courseModel.updateCourseStatus(courseId,status);
+            const updatedCourseStatus = await courseService.updateCourseStatus(courseId,status);
             if (updatedCourseStatus){
                 return res.status(200).json(
                     {
@@ -259,7 +259,7 @@ class courseController {
             const courseId = req.query;
             console.log("courseId in controller: ", courseId);
             logger.info("isCourseExistInClass method got called in courseController");
-            const isCourseExist = await courseModel.isCourseExistInClass(courseId);
+            const isCourseExist = await courseService.isCourseExistInClass(courseId);
             if (isCourseExist){
                 return res.status(200).json(
                     {

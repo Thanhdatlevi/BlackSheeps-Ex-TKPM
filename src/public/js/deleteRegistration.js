@@ -28,6 +28,7 @@ async function loadAllRegisteredClasses() {
 
 // Hàm xử lý tìm kiếm lớp đăng ký theo MSSV
 document.getElementById('searchBtn').addEventListener('click', async function() {
+    console.log(1)
     const studentId = document.getElementById('studentId').value.trim();
     if (!studentId) {
         alert(i18next.t('alert.notFill'));

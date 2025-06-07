@@ -1,4 +1,4 @@
-const programModel = require('../program/programModel');
+const programService = require('./programService');
 const logger = require('../../config/logging')
 class programController {
     static async addPage(req,res){
@@ -19,7 +19,7 @@ class programController {
     static async addProgram(req, res){
         try {
             const program_name = req.body.name
-            const addedProgram = await programModel.addProgram(program_name);
+            const addedProgram = await programService.addProgram(program_name);
             if (addedProgram){
                 return res.status(201).json(
                     {
@@ -64,7 +64,7 @@ class programController {
     static async searchProgramByName(req,res){
         try {
             const program_name = req.query.searchName;
-            const program = await programModel.searchProgramByName(program_name);
+            const program = await programService.searchProgramByName(program_name);
             if (program){
                 logger.info("searchProgramByName executed successfully");
                 return res.status(200).json(
@@ -93,7 +93,7 @@ class programController {
     static async updateProgram(req,res){
         try {
             const {searchName, programName} = req.body;
-            const program = await programModel.searchProgramByName(searchName);
+            const program = await programService.searchProgramByName(searchName);
             if (!program || program.length === 0){
                 logger.warn("No program found to update");
                 return res.status(404).json(
@@ -103,7 +103,7 @@ class programController {
                     }
                 );
             } 
-            const updatedProgram = await programModel.updateProgram({
+            const updatedProgram = await programService.updateProgram({
                 program_id: program.program_id,
                 program_name: programName
             });
@@ -137,7 +137,7 @@ class programController {
     static async getAllPrograms(req,res){
         try {
             logger.info("getAllPrograms executed successfully");
-            const programs = await programModel.getAllPrograms();
+            const programs = await programService.getAllPrograms();
             return res.status(200).json(
                 {
                     message: "Get all programs successfully",

@@ -4,7 +4,6 @@ const logger = require('../../config/logging');
 class courseModel {
     static async addCourse(course){
         logger.info("addCourse method got called in courseModel");
-        console.log("course: ", course);
         try {
             const query = `
             INSERT INTO public.course (course_id, course_name, credit, faculty, description, prerequisite, status, time_create, en_course_name, en_description)
@@ -28,7 +27,6 @@ class courseModel {
     }
     static async searchCourseById(courseId){
         try {
-            console.log("courseid in model: ", courseId.courseId);
             const query = `
             SELECT * FROM public.course
             WHERE course_id = $1;
@@ -50,7 +48,6 @@ class courseModel {
     static async getAllCourses(lang){
         if(lang==="en") lang+="_";
         else lang = "";
-        console.log("lang in model: ", lang);
         try {
             const query =`
             SELECT
@@ -84,7 +81,6 @@ class courseModel {
     }
     static async deleteCourse(courseId){
         try {
-            console.log("courseId in model: ", courseId);
             const query = `
             DELETE FROM public.course
             WHERE course_id = $1

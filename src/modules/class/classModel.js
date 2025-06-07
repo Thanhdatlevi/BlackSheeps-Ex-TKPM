@@ -11,7 +11,7 @@ class classModel {
                 SELECT * FROM course WHERE course_id = $1;
             `;
             let course_result = await db.query(course_query, [course_id]);
-            console.log(course_result.rows);
+            // console.log(course_result.rows);
             return course_result.rows;
         } catch (error) {
             logger.info(error);
@@ -24,7 +24,7 @@ class classModel {
                 SELECT * FROM term WHERE year = $1 AND semester = $2;
             `;
             let search_year_result = await db.query(year_query, [year, semester]);
-            console.log(search_year_result.rows);
+            // console.log(search_year_result.rows);
             return search_year_result.rows;
         } catch (error) {
             logger.error(error);
@@ -35,31 +35,31 @@ class classModel {
         try {
             // TODO: check for year term 
             // Error: Year Term not found
-            const year_result = await this.searchYear(
-                classObject.year,
-                classObject.semester
-            )
-            if (year_result.length == 0) {
-                throw new Error('Year Term not found');
-            }
-            const class_result = await this.countClass(
-                classObject.class_id,
-                classObject.course_id,
-                classObject.year,
-                classObject.semester
-            )
-            console.log(class_result)
+            // const year_result = await this.searchYear(
+            //     classObject.year,
+            //     classObject.semester
+            // )
+            // if (year_result.length == 0) {
+            //     throw new Error('Year Term not found');
+            // }
+            // const class_result = await this.countClass(
+            //     classObject.class_id,
+            //     classObject.course_id,
+            //     classObject.year,
+            //     classObject.semester
+            // )
+            // console.log(class_result)
 
-            if (parseInt(class_result.count) != 0) {
-                throw new Error('Class already existed');
-            }
+            // if (parseInt(class_result.count) != 0) {
+            //     throw new Error('Class already existed');
+            // }
 
-            const courseResult = await this.searchCourse(
-                classObject.course_id,
-            )
-            if (parseInt(courseResult.length) == 0) {
-                throw new Error('Course with id not existed');
-            }
+            // const courseResult = await this.searchCourse(
+            //     classObject.course_id,
+            // )
+            // if (parseInt(courseResult.length) == 0) {
+            //     throw new Error('Course with id not existed');
+            // }
 
             const query = `
             INSERT INTO class (class_id, course_id, year, semester, lecturer, maximum, schedule, room)
@@ -171,58 +171,56 @@ class classModel {
     }
     static async addStudentToClass(studentList, classObject) {
         try {
-            for (let i = 0; i < studentList.length; i++) {
-                let student_result = await studentModel.searchStudent(
-                    studentList[i].student_id,
-                    '',
-                    ''
-                )
-                if (student_result.length == 0) {
-                    throw new Error('Non-existing Student');
-                }
-            }
+            // for (let i = 0; i < studentList.length; i++) {
+            //     let student_result = await studentModel.searchStudent(
+            //         studentList[i].student_id,
+            //         '',
+            //         ''
+            //     )
+            //     if (student_result.length == 0) {
+            //         throw new Error('Non-existing Student');
+            //     }
+            // }
 
-            const class_result = await this.countClass(
-                classObject.class_id,
-                classObject.course_id,
-                classObject.year,
-                classObject.semester
-            )
-            console.log(class_result);
-            if (class_result.length == 0) {
-                throw new Error('Class not found');
-            }
+            // const class_result = await this.countClass(
+            //     classObject.class_id,
+            //     classObject.course_id,
+            //     classObject.year,
+            //     classObject.semester
+            // )
+            // console.log(class_result);
+            // if (class_result.length == 0) {
+            //     throw new Error('Class not found');
+            // }
 
 
-            for (let i = 0; i < studentList.length; i++) {
-                const subject_result = await this.countRegister(
-                    studentList[i].student_id,
-                    classObject.class_id,
-                    classObject.course_id,
-                    classObject.year,
-                    classObject.semester
-                )
-                console.log(subject_result);
-                if (subject_result.count != 0) {
-                    throw new Error('Student already register this subject');
-                }
-            }
+            // for (let i = 0; i < studentList.length; i++) {
+            //     const subject_result = await this.countRegister(
+            //         studentList[i].student_id,
+            //         classObject.class_id,
+            //         classObject.course_id,
+            //         classObject.year,
+            //         classObject.semester
+            //     )
+            //     console.log(subject_result);
+            //     if (subject_result.count != 0) {
+            //         throw new Error('Student already register this subject');
+            //     }
+            // }
 
             const query = `
             INSERT INTO register_subject (student_id, class_id, course_id, year, semester, grade)
-            VALUES ($1, $2, $3, $4, $5, $6)
+            VALUES ($1, $2, $3, $4, $5, NULL)
             RETURNING *;`;
-
             for (let i = 0; i < studentList.length; i++) {
                 let result = await db.query(query, [
                     studentList[i].student_id,
                     classObject.class_id,
                     classObject.course_id,
                     classObject.year,
-                    classObject.semester,
-                    studentList[i].grade
+                    classObject.semester
                 ]);
-
+                console.log(result.rows[0])
                 if (result.rows.length > 0) {
                     return result.rows[0];
                 }

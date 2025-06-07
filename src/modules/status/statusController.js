@@ -1,4 +1,4 @@
-const statusModel = require('../status/statusModel');
+const statusService = require('./statusService');
 const logger = require('../../config/logging')
 class statusController {
     static async addPage(req,res){
@@ -20,7 +20,7 @@ class statusController {
         try {
             logger.info("addStatus method got called in statusController");
             const status_name = req.body.name
-            const addedStatus = await statusModel.addStatus(status_name);
+            const addedStatus = await statusService.addStatus(status_name);
             if (addedStatus){
                 return res.status(201).json(
                     {
@@ -65,9 +65,7 @@ class statusController {
     static async searchStatusByName(req,res){
         try {
             const status_name = req.query.searchName;
-            console.log("status name in controller",status_name);
-            const status = await statusModel.searchStatusByName(status_name);
-            console.log("status in controller",status);
+            const status = await statusService.searchStatusByName(status_name);
             if (status){
                 logger.info("searchStatusByName executed successfully");
                 return res.status(200).json(
@@ -96,7 +94,7 @@ class statusController {
     static async updateStatus(req,res){
         try {
             const {searchName, statusName} = req.body;
-            const status = await statusModel.searchStatusByName(searchName);
+            const status = await statusService.searchStatusByName(searchName);
             if (!status || status.length === 0){
                 logger.warn("No status found to update");
                 return res.status(404).json({
@@ -104,7 +102,7 @@ class statusController {
                     message: "Không tìm thấy trạng thái để cập nhật."
                 });
             }
-            const updatedStatus = await statusModel.updateStatus({
+            const updatedStatus = await statusService.updateStatus({
                 status_id: status.status_id,
                 status_name: statusName
             });
@@ -137,7 +135,7 @@ class statusController {
     
     static async getAllStatus(req,res){
         try {
-            const status = await statusModel.getAllStatus();
+            const status = await statusService.getAllStatus();
             logger.info("getAllStatus executed successfully");
             return res.status(200).json(
                 {

@@ -1,6 +1,6 @@
-const {query} = require('express');
-const logger = require('../../config/logging')
+const logger = require('../../config/logging');
 const db = require('../../config/db');
+
 class addressModel {
     static async getPermanentAddress(mssv) {
         try {
@@ -21,10 +21,8 @@ class addressModel {
                 logger.info("getPermanentAddress executed successfully in addressModel");
                 return result.rows[0];
             }
-
             return undefined;
-        }
-        catch (error) {
+        } catch (error) {
             logger.error("Error get PermanentAddress addressModel:", error);
             throw new Error(error.message);
         }
@@ -50,8 +48,7 @@ class addressModel {
                 return result.rows[0];
             }
             return undefined;
-        }
-        catch (error) {
+        } catch (error) {
             logger.error("Error get TemporaryAddress addressModel:", error);
             throw new Error(error.message);
         }
@@ -76,10 +73,8 @@ class addressModel {
                 logger.info("getMailingAddress executed successfully in addressModel");
                 return result.rows[0];
             }
-    
             return undefined;
-        }
-        catch (error) {
+        } catch (error) {
             logger.error("Error get MailingAddress addressModel:", error);
             throw new Error(error.message);
         }
@@ -92,35 +87,35 @@ class addressModel {
             VALUES ($1,$2,$3,$4,$5,$6,$7)
             RETURNING *;
             `;
-            const result = await db.query(query, [info.student_id, info.address_type, 
-                info.street_address, info.ward, info.district, info.city, info.country]);
+            const result = await db.query(query, [
+                info.student_id, info.address_type, 
+                info.street_address, info.ward, info.district, info.city, info.country
+            ]);
             if (result.rows.length > 0) {
                 logger.info("addAddress executed successfully in addressModel");
                 return result.rows[0];
             }
-
             return null;
-        }
-        catch (error) {
+        } catch (error) {
             logger.error("Error add Address addressModel:", error.message);
             throw new Error(error.message);
         }
     }
+
     static async updateAddress(info) {
         try {
             const query = `
             UPDATE public.address
             SET
-            street_address = $1,
-            ward           = $2,
-            district       = $3,
-            city           = $4,
-            country        = $5
+                street_address = $1,
+                ward           = $2,
+                district       = $3,
+                city           = $4,
+                country        = $5
             WHERE 
-            student_id     = $6 AND
-            address_type   = $7
+                student_id     = $6 AND
+                address_type   = $7
             RETURNING *`;
-
             const result = await db.query(query, [
                 info.street_address,
                 info.ward,
@@ -130,13 +125,12 @@ class addressModel {
                 info.student_id,
                 info.address_type
             ]);
-
             if (result.rows.length > 0) {
                 logger.info("updateAddress executed successfully in addressModel");
                 return result.rows[0];
             }
-        }
-        catch (error) {
+            return null;
+        } catch (error) {
             logger.error("Error update Address addressModel:", error);
             throw new Error(error.message);
         }

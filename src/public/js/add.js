@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 });
 async function loadAllowedDomains() {
     try {
-        const response = await fetch('/emails');
+        const response = await fetch('/email/emails');
         const data = await response.json();
         
         if (data.domains) {
@@ -56,7 +56,7 @@ async function loadAllowedDomains() {
 // Functions to load dropdown data
 async function loadFaculties() {
     try {
-        const response = await fetch('/faculties');
+        const response = await fetch('/faculty/faculties');
         const data = await response.json();
         const facultySelect = document.getElementById('faculty');
         
@@ -93,7 +93,7 @@ async function loadFaculties() {
 
 async function loadPrograms() {
     try {
-        const response = await fetch('/programs');
+        const response = await fetch('/program/programs');
         const data = await response.json();
         const programSelect = document.getElementById('program');
         if (data.programs && data.programs.length > 0) {
@@ -120,7 +120,7 @@ async function loadPrograms() {
 
 async function loadStatuses() {
     try {
-        const response = await fetch('/statuses');
+        const response = await fetch('/status/statuses');
         const data = await response.json();
         const statusSelect = document.getElementById('status');
         if (data.status && data.status.length > 0) {

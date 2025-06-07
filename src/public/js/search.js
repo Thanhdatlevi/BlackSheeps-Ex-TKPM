@@ -89,8 +89,8 @@ function generateIDDocsHTML(ID_info) {
                 <p><strong>${i18next.t('inforStudent.ID.createDate')}:</strong> ${ID_info.issue_date || 'Không có'}</p>
                 <p><strong>${i18next.t('inforStudent.ID.expireDate')}:</strong> ${ID_info.expiry_date || 'Không có'}</p>
                 <p><strong>${i18next.t('inforStudent.ID.issuePlace')}:</strong> ${ID_info.issue_place || 'Không có'}</p>
-                <p><strong>${i18next.t('inforStudent.ID.hasChip')}:</strong> ${ID_info.issue_country || 'Không có'}</p>
-                <p><strong>${i18next.t('inforStudent.ID.country')}:</strong> ${ID_info.has_chip ? 'Có' : 'Không'}</p>
+                <p><strong>${i18next.t('inforStudent.ID.country')}:</strong> ${ID_info.issue_country || 'Không có'}</p>
+                <p><strong>${i18next.t('inforStudent.ID.hasChip')}:</strong> ${ID_info.has_chip ? 'Có' : 'Không'}</p>
                 <p><strong>${i18next.t('inforStudent.ID.note')}:</strong> ${ID_info.note || 'Không có'}</p>
             </li>
         </ul>
@@ -147,7 +147,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     const facultySelect = document.getElementById('facultySelect');
 
     try {
-        const response = await fetch("/faculties"); // Gọi API để lấy danh sách khoa
+        const response = await fetch("/faculty/faculties"); // Gọi API để lấy danh sách khoa
         const data = await response.json();
         if (response.ok) {
             data.faculties.forEach(faculty => {

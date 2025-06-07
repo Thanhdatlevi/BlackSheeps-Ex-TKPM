@@ -10,7 +10,7 @@ async function fetchStudentGrades() {
         return;
     }
     
-    const response = await fetch(`/searchGrade?student_id=${studentId}&lang=${getLangFromURL()}`);
+    const response = await fetch(`/grade/searchGrade?student_id=${studentId}&lang=${getLangFromURL()}`);
     const data = await response.json();
     console.log(data)
 
@@ -49,7 +49,7 @@ async function exportStudentGrades() {
         return;
     }
 
-    const url = `/exportGrades?student_id=${studentId}&lang=${getLangFromURL()}`;
+    const url = `/grade/exportGrades?student_id=${studentId}&lang=${getLangFromURL()}`;
     
     try {
         const response = await fetch(url);

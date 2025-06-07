@@ -1,5 +1,6 @@
-const classModel = require('../class/classModel');
-const logger = require('../../config/logging')
+const classService = require('./classService');
+const logger = require('../../config/logging');
+
 class classController {
     static async classPage(req, res) {
         try {
@@ -15,62 +16,43 @@ class classController {
             });
         }
     }
+
     static async addClass(req, res) {
         try {
             logger.info("addClass method got called in classController");
             const classObject = req.body;
-            console.log(classObject);
-            const result = await classModel.addClass(classObject);
+            const result = await classService.addClass(classObject);
             if (result) {
-                return res.status(200).json({
-                    message: "Class added successfully."
-                });
+                return res.status(200).json({ message: "Class added successfully." });
             }
         } catch (error) {
             switch (error.message) {
-                case 'Error: Course with id not existed':
-                    return res.status(409).json({
-                        message: `Course with id doesn\'t appear in Database`
-                    })
-                    break;
-
-                case 'Error: Class already existed':
-                    return res.status(409).json({
-                        message: `Class with corresponding info already existed in Database`
-                    })
-                    break;
-
-                case 'Error: Year Term not found':
-                    return res.status(409).json({
-                        message: `Year Term not found`
-                    })
-                    break;
-
+                case 'Course with id not existed':
+                    return res.status(409).json({ message: `Course with id doesn't appear in Database` });
+                case 'Class already existed':
+                    return res.status(409).json({ message: `Class with corresponding info already existed in Database` });
+                case 'Year Term not found':
+                    return res.status(409).json({ message: `Year Term not found` });
                 default:
-                    return res.status(500).json({
-                        message: "Failed to add class. Please try again later."
-                    });
-                    break;
+                    return res.status(500).json({ message: "Failed to add class. Please try again later." });
             }
         }
     }
+
     static async updateClass(req, res) {
         try {
             logger.info("updateClass method got called in classController");
             const classObject = req.body;
-            const result = await classModel.updateClass(classObject);
+            const result = await classService.updateClass(classObject);
             if (result) {
-                return res.status(200).json({
-                    message: "Class updated successfully."
-                });
+                return res.status(200).json({ message: "Class updated successfully." });
             }
         } catch (error) {
-            logger.error("Error in emailController:", error.message);
-            return res.status(500).json({
-                message: "Failed to add email of user. Please try again later."
-            });
+            logger.error("Error in updateClass:", error.message);
+            return res.status(500).json({ message: "Failed to update class. Please try again later." });
         }
     }
+
     static async addStudentClassPage(req, res) {
         try {
             logger.info("addStudentClassPage method got called in ClassController");
@@ -85,57 +67,38 @@ class classController {
             });
         }
     }
+
     static async addStudentToClass(req, res) {
         try {
-            logger.info("addstudentToClass method got called in ClassController");
+            logger.info("addStudentToClass method got called in ClassController");
             const studentList = req.body.studentList;
             const classObject = req.body.classObject;
-            const result = await classModel.addStudentToClass(studentList, classObject);
+            const result = await classService.addStudentToClass(studentList, classObject);
             if (result) {
-                return res.status(200).json({
-                    message: "Students added successfully."
-                });
+                return res.status(200).json({ message: "Students added successfully." });
             }
         } catch (error) {
-            logger.error("Error in addStudentToClass:", error);
             switch (error.message) {
-                case 'Error: Non-existing Student':
-                    return res.status(409).json({
-                        message: `Students with ID doesn\'t appear in Database`
-                    })
-                    break;
-
-                case 'Error: Class not found':
-                    return res.status(409).json({
-                        message: `Class with corresponding info doens't appear in Database`
-                    })
-                    break;
-
-                case 'Error: Student already register this subject':
-                    return res.status(409).json({
-                        message: `Students with ID already register the corresponding class`
-                    })
-                    break;
-
+                case 'Non-existing Student':
+                    return res.status(409).json({ message: `Students with ID doesn't appear in Database` });
+                case 'Class not found':
+                    return res.status(409).json({ message: `Class with corresponding info doesn't appear in Database` });
+                case 'Student already register this subject':
+                    return res.status(409).json({ message: `Students with ID already register the corresponding class` });
                 default:
-
-                    return res.status(500).json({
-                        message: "Failed to add students to class. Please try again later."
-                    });
-                    break;
+                    return res.status(500).json({ message: "Failed to add students to class. Please try again later." });
             }
         }
     }
+
     static async updateStudentInClass(req, res) {
         try {
             logger.info("updateStudentInClass method got called in ClassController");
             const studentList = req.body.studentList;
             const classObject = req.body.classObject;
-            const result = await classModel.updateStudentInClass(studentList, classObject);
+            const result = await classService.updateStudentInClass(studentList, classObject);
             if (result) {
-                return res.status(200).json({
-                    message: "Students updated successfully."
-                });
+                return res.status(200).json({ message: "Students updated successfully." });
             }
         } catch (error) {
             logger.error("Error in updateStudentInClass:", error.message);
@@ -144,16 +107,14 @@ class classController {
             });
         }
     }
+
     static async getCourses(req, res) {
         try {
-            const lang = req.query.lang;
-            console.log(lang)
+            const lang = req.query.lang || 'vi';
             logger.info("getCourses method got called in ClassController");
-            const courses = await classModel.getCourses(lang);
+            const courses = await classService.getCourses(lang);
             if (courses) {
-                return res.status(200).json({
-                    courses: courses
-                });
+                return res.status(200).json({ courses: courses });
             }
         } catch (error) {
             logger.error("Error in getCourses:", error.message);
@@ -162,15 +123,13 @@ class classController {
             });
         }
     }
+
     static async getYear(req, res) {
         try {
             logger.info("getYear method got called in ClassController");
-            const yearTerm = await classModel.getYear();
-            logger.info(yearTerm);
+            const yearTerm = await classService.getYear();
             if (yearTerm) {
-                return res.status(200).json({
-                    terms: yearTerm
-                });
+                return res.status(200).json({ terms: yearTerm });
             }
         } catch (error) {
             logger.error("Error in getYear controller:", error);
@@ -179,15 +138,13 @@ class classController {
             });
         }
     }
+
     static async getAllClasses(req, res) {
         try {
             logger.info("getAllClasses method got called in ClassController");
-            const classes = await classModel.getClasses();
-            logger.info(classes);
+            const classes = await classService.getClasses();
             if (classes) {
-                return res.status(200).json({
-                    classes: classes 
-                });
+                return res.status(200).json({ classes: classes });
             }
         } catch (error) {
             logger.error("Error in getAllClasses controller:", error);

@@ -5,7 +5,7 @@ const facultyForm = document.getElementById('facultyForm');
 facultyForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const name = document.getElementById('name').value;
-    fetch('/addFaculty', {
+    fetch('/faculty/addFaculty', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

@@ -9,7 +9,7 @@ searchProgramForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const searchName = document.getElementById('searchName').value;
     console.log(searchName);
-    fetch(`/searchProgramByName?searchName=${searchName}`)
+    fetch(`/program/searchProgramByName?searchName=${searchName}`)
         .then(res => res.json())
         .then(data => {
             if (data.program) {
@@ -26,7 +26,7 @@ updateProgramForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const searchName = document.getElementById('searchName').value;
     const programName = document.getElementById('programName').value;
-    fetch('/updateProgram', {
+    fetch('/program/updateProgram', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

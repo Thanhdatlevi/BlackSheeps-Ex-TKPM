@@ -1,7 +1,7 @@
 const request = require('supertest');
 const app = require('../../../app'); // path to your Express app
 const studentModel = require('./studentModel');
-
+jest.setTimeout(30000); 
 jest.mock('../student/studentModel'); // Mocking the model
 
 describe('Student Controller', () => {

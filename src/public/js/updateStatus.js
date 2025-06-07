@@ -9,7 +9,7 @@ searchStatusForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const searchName = document.getElementById('searchName').value;
     console.log("searchName: ",searchName);
-    fetch(`/searchStatusByName?searchName=${searchName}`)
+    fetch(`/status/searchStatusByName?searchName=${searchName}`)
         .then(res => res.json())
         .then(data => {
             if (data.status) {
@@ -26,7 +26,7 @@ updateStatusForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const searchName = document.getElementById('searchName').value;
     const statusName = document.getElementById('statusName').value;
-    fetch('/updateStatus', {
+    fetch('/status/updateStatus', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

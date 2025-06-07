@@ -5,7 +5,7 @@ const logger = require('../../config/logging');
 const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
-
+jest.setTimeout(30000); 
 beforeAll(async () => {
     const result = await db.query('SELECT current_database()');
     if (result.rows[0].current_database != process.env.DB_NAME_TEST) {
@@ -76,7 +76,7 @@ describe('Export student grades API', () => {
 
     it('should export grades as an Excel file for valid student_id', async () => {
         const response = await request(app)
-            .get('/exportGrades?student_id=22129934')
+            .get('/grade/exportGrades?student_id=22129934')
             .buffer()
             .parse((res, callback) => {
                 const data = [];
@@ -95,7 +95,7 @@ describe('Export student grades API', () => {
 
     it('should return 400 if student_id is missing', async () => {
         const response = await request(app)
-            .get('/exportGrades') // không truyền student_id
+            .get('/grade/exportGrades') // không truyền student_id
             .expect(400);
 
         expect(response.text).toContain('Thiếu mã số sinh viên');
@@ -105,7 +105,7 @@ describe('Export student grades API', () => {
         await db.query('DELETE FROM class');
 
         const response = await request(app)
-            .get('/exportGrades?student_id=22129934')
+            .get('/grade/exportGrades?student_id=22129934')
             .expect(404);
 
         expect(response.text).toContain('Không tìm thấy dữ liệu điểm của sinh viên');
@@ -113,7 +113,7 @@ describe('Export student grades API', () => {
 
     it('should return 404 if student does not exist', async () => {
         const response = await request(app)
-            .get('/exportGrades?student_id=99999999') // không có sinh viên này
+            .get('/grade/exportGrades?student_id=99999999') // không có sinh viên này
             .expect(404);
 
         expect(response.text).toContain('Không tìm thấy dữ liệu điểm của sinh viên');

@@ -5,7 +5,7 @@ function getLangFromURL() {
 
 async function loadFaculties() {
     try {
-        const response = await fetch('/faculties');
+        const response = await fetch('/faculty/faculties');
         const data = await response.json();
         const facultySelect = document.getElementById('faculty');
         
@@ -44,7 +44,7 @@ async function validPrerequisite(prerequisite){
     query.append('courseId', prerequisite); // Thay 'courseCode' bằng tên tham số mà API yêu cầu
     try {
         // Gửi request với query string
-        const response = await fetch(`/searchCourseById?${query.toString()}`);
+        const response = await fetch(`/course/searchCourseById?${query.toString()}`);
 
         // Kiểm tra nếu response không thành công
         const data = await response.json();
@@ -112,7 +112,7 @@ document.querySelector('form').addEventListener('submit', (e) => {
         }
     }
     console.log(course);
-    fetch('/addCourse', {
+    fetch('/course/addCourse', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

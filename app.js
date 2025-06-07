@@ -74,14 +74,14 @@ app.use(express.static(path.join(__dirname, 'src', 'public')));
 app.use('/lang', express.static(path.join(__dirname, 'lang')));
 
 app.use('/', studentRoutes);
-app.use('/', facultyRoutes);
-app.use('/', programRoutes);
-app.use('/', statusRoutes);
-app.use('/', emailRoutes);
+app.use('/faculty', facultyRoutes);
+app.use('/program', programRoutes);
+app.use('/status', statusRoutes);
+app.use('/email', emailRoutes);
 app.use('/registration', registrationRoutes);
-app.use('/', gradeRoutes);
-app.use('/', courseRoutes);
-app.use('/', classRoutes);
+app.use('/grade', gradeRoutes);
+app.use('/course', courseRoutes);
+app.use('/class', classRoutes);
 
 function areWeTestingWithJest() {
     return process.env.JEST_WORKER_ID !== undefined;

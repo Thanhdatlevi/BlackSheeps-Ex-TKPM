@@ -1,5 +1,5 @@
 // Function to get all input field values and store them in an object
-const CLASS_URL = '/classes?'
+const CLASS_URL = '/class/classes?'
 const COURSE_URL = '/class/courses?';
 const YEAR_URL = '/class/year?';
 

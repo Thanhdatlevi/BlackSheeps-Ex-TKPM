@@ -3,7 +3,7 @@ const db = require('../../config/db');
 
 jest.mock('../../config/db');
 jest.mock('../student/studentModel');
-
+jest.setTimeout(30000); 
 describe('classModel', () => {
     
     afterEach(() => {

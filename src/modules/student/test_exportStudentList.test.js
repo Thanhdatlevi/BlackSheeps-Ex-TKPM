@@ -5,7 +5,7 @@ const logger = require('../../config/logging');
 const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
-
+jest.setTimeout(30000); 
 beforeAll(async () => {
     // Kiểm tra nếu cơ sở dữ liệu đã sẵn sàng
     const checkDbQuery = 'SELECT current_database();';

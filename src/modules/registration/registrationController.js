@@ -1,4 +1,4 @@
-const registrationModel = require('../registration/registrationModel');
+const registrationService = require('./registrationService');
 const logger = require('../../config/logging')
 class registrationController {
     static async deleteRegistrationPage(req,res){
@@ -19,7 +19,7 @@ class registrationController {
     static async searchdeleteRegistration(req,res){
         try {
             const student_id = req.query.student_id;
-            const deleteRegistration = await registrationModel.searchdeleteRegistration(student_id);
+            const deleteRegistration = await registrationService.searchdeleteRegistration(student_id);
             return res.status(200).json(deleteRegistration);
         }
         catch (error){
@@ -46,7 +46,7 @@ class registrationController {
             }
     
             // Gọi model để xóa đăng ký
-            const deletedRegistration = await registrationModel.deleteRegistration(registration);
+            const deletedRegistration = await registrationService.deleteRegistration(registration);
     
             // Nếu không tìm thấy đăng ký
             if (!deletedRegistration.success) {

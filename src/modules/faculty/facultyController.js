@@ -1,4 +1,4 @@
-const facultyModel = require('../faculty/facultyModel');
+const facultyService = require('./facultyService');
 const logger = require('../../config/logging')
 class facultyController {
     static async addPage(req,res){
@@ -20,7 +20,7 @@ class facultyController {
         try {
             logger.info("addFaculty method got called in facultyController");
             const faculty_name = req.body.name;
-            const addedFaculty = await facultyModel.addFaculty(faculty_name);
+            const addedFaculty = await facultyService.addFaculty(faculty_name);
             
             if (addedFaculty){
                 return res.status(201).json(
@@ -66,7 +66,7 @@ class facultyController {
     static async searchFacultyByName(req,res){
         try {
             const faculty_name = req.query.searchName;
-            const faculty = await facultyModel.searchFacultyByName(faculty_name);
+            const faculty = await facultyService.searchFacultyByName(faculty_name);
 
             if (faculty){
                 logger.info("searchFacultyByName executed successfully");
@@ -95,7 +95,7 @@ class facultyController {
     static async updateFaculty(req, res) {
         try {
             const { searchName, facultyName } = req.body; // Lấy dữ liệu từ request body
-            const faculty = await facultyModel.searchFacultyByName(searchName); // Tìm khoa theo tên cũ
+            const faculty = await facultyService.searchFacultyByName(searchName); // Tìm khoa theo tên cũ
 
             if (!faculty || faculty.length === 0) {
                 logger.warn("No faculty found to update");
@@ -105,7 +105,7 @@ class facultyController {
                 });
             }
 
-            const updatedFaculty = await facultyModel.updateFaculty({
+            const updatedFaculty = await facultyService.updateFaculty({
                 faculty_id: faculty[0].faculty_id, // Lấy ID của khoa tìm được
                 faculty_name: facultyName // Tên khoa mới
             });
@@ -134,7 +134,7 @@ class facultyController {
     
     static async getAllFaculties(req,res){
         try {
-            const faculties = await facultyModel.getAllFaculties();
+            const faculties = await facultyService.getAllFaculties();
             logger.info("getAllFaculties executed successfully");
 
             return res.status(200).json(

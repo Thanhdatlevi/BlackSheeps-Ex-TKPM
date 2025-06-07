@@ -5,7 +5,7 @@ const programForm = document.getElementById('programForm');
 programForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const name = document.getElementById('name').value;
-    fetch('/addProgram', {
+    fetch('/program/addProgram', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

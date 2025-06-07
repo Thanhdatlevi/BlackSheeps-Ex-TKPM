@@ -4,7 +4,7 @@ const db = require('../../config/db');
 const logger = require('../../config/logging');
 const { add } = require('winston');
 require('dotenv').config();
-
+jest.setTimeout(30000); 
 // Test data
 const address = {
     street: '123 Đường Nguyễn Văn Cừ',

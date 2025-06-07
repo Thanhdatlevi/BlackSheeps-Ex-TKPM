@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 // Tải danh sách khóa học từ API
 async function loadCourses() {
     try {
-        const response = await fetch(`/getAllCourses?lang=${getLangFromURL()}`);
+        const response = await fetch(`/course/getAllCourses?lang=${getLangFromURL()}`);
         const data = await response.json();
         if (data.success && data.courses) {
             courses = data.courses;
@@ -47,7 +47,7 @@ async function loadCourses() {
 // Tải danh sách khoa phụ trách từ API
 async function loadDepartments() {
     try {
-        const response = await fetch('/faculties');
+        const response = await fetch('/faculty/faculties');
         const data = await response.json();
         if (data.success && data.faculties) {
             departments = data.faculties;
@@ -110,7 +110,7 @@ async function openEditModal(courseId) {
 try {
     const lang = getLangFromURL();
     // Gửi yêu cầu kiểm tra xem khóa học có tồn tại trong bảng class không
-    const response = await fetch(`/isCourseNameExists?courseId=${courseId}`);
+    const response = await fetch(`/course/isCourseNameExists?courseId=${courseId}`);
 
     const data = await response.json();
 
@@ -180,7 +180,7 @@ async function updateCourse() {
     console.log("updateData: ", updateData);
 
     try {
-        const response = await fetch(`/updateCourse?lang=${lang}`, {
+        const response = await fetch(`/course/updateCourse?lang=${lang}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -208,7 +208,7 @@ async function updateCourse() {
 
 // Xóa khóa học
 async function deleteCourse(courseId, timeCreate) {
-    const reponse = await fetch(`/isCourseNameExists?courseId=${courseId}`);
+    const reponse = await fetch(`/course/isCourseNameExists?courseId=${courseId}`);
     const data = await reponse.json();
     const createdTime = new Date(timeCreate);
     const currentTime = new Date();
@@ -218,7 +218,7 @@ async function deleteCourse(courseId, timeCreate) {
         if (!data.exists) {
             if (confirm(i18next.t('alert.suredDeleteStudent'))) {
             try {
-                const response = await fetch(`/deleteCourse`, {
+                const response = await fetch(`/course/deleteCourse`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'
@@ -242,7 +242,7 @@ async function deleteCourse(courseId, timeCreate) {
         else {
             if (confirm(i18next.t('alert.DeactivateCourse'))) {
             try {
-                const response = await fetch(`/updateCourseStatus`, {
+                const response = await fetch(`/course/updateCourseStatus`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'

@@ -169,7 +169,7 @@ describe('Course API', () => {
             // Test: Add course with all valid fields
             try {
                 const response = await request(app)
-                    .post('/addCourse')
+                    .post('/course/addCourse')
                     .send(validCourse);
                 
                 console.log('Response status:', response.status);
@@ -213,7 +213,7 @@ describe('Course API', () => {
             // Add the first course
             try {
                 const firstResponse = await request(app)
-                    .post('/addCourse')
+                    .post('/course/addCourse')
                     .send(validCourse);
                 
                 console.log('First course response:', firstResponse.status, firstResponse.body);
@@ -227,7 +227,7 @@ describe('Course API', () => {
                 console.log('Attempting to add duplicate course:', JSON.stringify(duplicateCourse, null, 2));
 
                 const response = await request(app)
-                    .post('/addCourse')
+                    .post('/course/addCourse')
                     .send(duplicateCourse);
                 
                 console.log('Duplicate course response:', response.status, response.body);
@@ -272,7 +272,7 @@ describe('Course API', () => {
 
             try {
                 const response = await request(app)
-                    .post('/addCourse')
+                    .post('/course/addCourse')
                     .send(specialCharCourse);
                 
                 console.log('Special char course response:', response.status, response.body);
@@ -305,7 +305,7 @@ describe('Course API', () => {
 
             try {
                 const longNameResponse = await request(app)
-                    .post('/addCourse')
+                    .post('/course/addCourse')
                     .send(longNameCourse);
                 
                 console.log('Long name course response:', longNameResponse.status);
@@ -341,14 +341,14 @@ describe('Course API', () => {
             try {
                 // First add a course
                 const addResponse = await request(app)
-                    .post('/addCourse')
+                    .post('/course/addCourse')
                     .send(validCourse);
                 
                 console.log('Add course response:', addResponse.status, addResponse.body);
                 
                 // Test: Search by ID
                 const response = await request(app)
-                    .get(`/searchCourseById?courseId=${validCourse.courseCode}`);
+                    .get(`/course/searchCourseById?courseId=${validCourse.courseCode}`);
                 
                 console.log('Search course response:', response.status, response.body);
                 
@@ -379,7 +379,7 @@ describe('Course API', () => {
             // Test: Search for non-existent course
             try {
                 const response = await request(app)
-                    .get('/searchCourseById?courseId=NON_EXISTENT');
+                    .get('/course/searchCourseById?courseId=NON_EXISTENT');
                 
                 console.log('Search non-existent course response:', response.status, response.body);
                 
@@ -425,14 +425,14 @@ describe('Course API', () => {
             
             try {
                 // Add all courses
-                await request(app).post('/addCourse').send(course1);
-                await request(app).post('/addCourse').send(course2);
-                await request(app).post('/addCourse').send(course3);
+                await request(app).post('/course/addCourse').send(course1);
+                await request(app).post('/course/addCourse').send(course2);
+                await request(app).post('/course/addCourse').send(course3);
                 
                 // Test: Get all courses with Vietnamese language
                 console.log('Testing getAllCourses with lang=vi');
                 const responseVi = await request(app)
-                    .get('/getAllCourses?lang=vi');
+                    .get('/course/getAllCourses?lang=vi');
                 
                 console.log('getAllCourses (vi) response status:', responseVi.status);
                 console.log('Number of courses returned:', responseVi.body.courses?.length);
@@ -446,7 +446,7 @@ describe('Course API', () => {
                 // Test: Get all courses with English language
                 console.log('Testing getAllCourses with lang=en');
                 const responseEn = await request(app)
-                    .get('/getAllCourses?lang=en');
+                    .get('/course/getAllCourses?lang=en');
                 
                 console.log('getAllCourses (en) response status:', responseEn.status);
                 console.log('Number of courses returned:', responseEn.body.courses?.length);
@@ -491,7 +491,7 @@ describe('Course API', () => {
             try {
                 // First add a course
                 const addResponse = await request(app)
-                    .post('/addCourse')
+                    .post('/course/addCourse')
                     .send(validCourse);
                 
                 console.log('Add course response:', addResponse.status);
@@ -508,7 +508,7 @@ describe('Course API', () => {
                 console.log('Updating course in Vietnamese:', JSON.stringify(updateDataVi, null, 2));
                 
                 const responseVi = await request(app)
-                    .put('/updateCourse?lang=vi')
+                    .put('/course/updateCourse?lang=vi')
                     .send(updateDataVi);
                 
                 console.log('Update course (vi) response:', responseVi.status, responseVi.body);
@@ -529,7 +529,7 @@ describe('Course API', () => {
                 console.log('Updating course in English:', JSON.stringify(updateDataEn, null, 2));
                 
                 const responseEn = await request(app)
-                    .put('/updateCourse?lang=en')
+                    .put('/course/updateCourse?lang=en')
                     .send(updateDataEn);
                 
                 console.log('Update course (en) response:', responseEn.status, responseEn.body);
@@ -564,7 +564,7 @@ describe('Course API', () => {
             try {
                 // First add a course
                 const addResponse = await request(app)
-                    .post('/addCourse')
+                    .post('/course/addCourse')
                     .send(validCourse);
                 
                 console.log('Add course response:', addResponse.status);
@@ -578,7 +578,7 @@ describe('Course API', () => {
                 console.log('Updating course status:', JSON.stringify(statusData, null, 2));
                 
                 const response = await request(app)
-                    .put('/updateCourseStatus')
+                    .put('/course/updateCourseStatus')
                     .send(statusData);
                 
                 console.log('Update status response:', response.status, response.body);
@@ -612,14 +612,14 @@ describe('Course API', () => {
             try {
                 // First add a course
                 const addResponse = await request(app)
-                    .post('/addCourse')
+                    .post('/course/addCourse')
                     .send(validCourse);
                 
                 console.log('Add course response:', addResponse.status);
                 
                 // Test: Delete course
                 const response = await request(app)
-                    .delete('/deleteCourse')
+                    .delete('/course/deleteCourse')
                     .send({ courseId: validCourse.courseCode });
                 
                 console.log('Delete course response:', response.status, response.body);
@@ -653,14 +653,14 @@ describe('Course API', () => {
             try {
                 // First add a course
                 const addResponse = await request(app)
-                    .post('/addCourse')
+                    .post('/course/addCourse')
                     .send(validCourse);
                 
                 console.log('Add course response:', addResponse.status);
                 
                 // Test: Check if course exists in any class
                 const response = await request(app)
-                    .get(`/isCourseNameExists?courseId=${validCourse.courseCode}`);
+                    .get(`/course/isCourseNameExists?courseId=${validCourse.courseCode}`);
                 
                 console.log('Course exists in class response:', response.status, response.body);
                 
@@ -698,7 +698,7 @@ describe('Course API', () => {
             
             try {
                 const response = await request(app)
-                    .put('/updateCourse')
+                    .put('/course/updateCourse')
                     .send(updateData);
                 
                 console.log('Update non-existent course response:', response.status, response.body);
@@ -719,7 +719,7 @@ describe('Course API', () => {
             
             try {
                 const response = await request(app)
-                    .delete('/deleteCourse')
+                    .delete('/course/deleteCourse')
                     .send({ courseId: 'NON_EXISTENT' });
                 
                 console.log('Delete non-existent course response:', response.status, response.body);
@@ -761,7 +761,7 @@ describe('Course API', () => {
             
             try {
                 const response = await request(app)
-                    .post('/addCourse')
+                    .post('/course/addCourse')
                     .send(unicodeCourse);
                 
                 console.log('Add Unicode course response:', response.status, response.body);
@@ -806,7 +806,7 @@ describe('Course API', () => {
             
             try {
                 const response = await request(app)
-                    .post('/addCourse')
+                    .post('/course/addCourse')
                     .send(decimalCreditCourse);
                 
                 console.log('Decimal credit course response:', response.status, response.body);
