@@ -9,12 +9,11 @@ let pool;
 if (areWeTestingWithJest()) {
     console.log('testing database');
     pool = new Pool({
-        user: process.env.DB_USER,
-        host: process.env.DB_HOST,
+        user: process.env.DB_USER_TEST,
+        host: process.env.DB_HOST_TEST,
         database: process.env.DB_NAME_TEST,
-        password: process.env.DB_PASSWORD,
-        port: process.env.DB_PORT,
-        ssl: { rejectUnauthorized: false },
+        password: process.env.DB_PASSWORD_TEST,
+        port: process.env.DB_PORT_TEST,
         max: 200,
         idleTimeoutMillis: 30000,
         connectionTimeoutMillis: 20000,

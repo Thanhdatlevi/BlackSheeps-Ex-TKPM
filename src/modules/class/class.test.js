@@ -110,6 +110,7 @@ const query_find_class = `
 
 beforeAll(async () => {
     // Set up the database before tests (create device table)
+    jest.clearAllMocks();
     check_db_query = `
     SELECT current_database();
     `;
@@ -134,6 +135,7 @@ beforeAll(async () => {
 
 afterEach(async () => {
     // Clean up the table between tests to ensure isolation
+    jest.clearAllMocks();
     const clean_result = await db.query(`
     DO $$ DECLARE
     r RECORD;
@@ -181,7 +183,6 @@ describe('add Class API', () => {
             course.course_id,
         ]);
         expect(select_course.rows[0].course_id).toBe(course.course_id);
-
 
         let insert_year = await db.query(insert_query3, [
             year.year,
