@@ -1,5 +1,5 @@
 ## 1. 📂 Cấu trúc dự án chính (rút gọn)
-
+```
 src/
 │
 ├── modules/
@@ -20,6 +20,7 @@ src/
 └── views/
     ├── addCourse.ejs              # Trang thêm khóa học
     └── editCourse.ejs             # Trang chỉnh sửa khóa học
+```
 
 ## 🧩 BƯỚC 2: TẠO MODEL, SERVICE, CONTROLLER (theo chuẩn `course`)
 
