@@ -50,7 +50,7 @@ Mỗi module gồm:
 
 * `*Controller.js`: Điều phối yêu cầu từ client
 * `*Service.js`: Xử lý logic nghiệp vụ
-* `*Model.js`: Truy vấn cơ sở dữ liệu (Knex.js)
+* `*Model.js`: Truy vấn cơ sở dữ liệu (pg.js)
 * `*.test.js`: Unit test
 
 ➡️ Tuân thủ nguyên lý **Single Responsibility Principle**
@@ -111,7 +111,7 @@ Các file `.hbs` tổ chức theo chức năng như `addCourse.hbs`, `updateStat
 
 Chi tiết tại [How to add a module](./add-your-first-module.md)
 
-Để thêm một module mới:
+Để thêm một module mới (tóm tắt):
 
 1. Tạo thư mục mới trong `src/modules/[tên_module]`
 2. Thêm các file:
