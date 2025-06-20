@@ -423,4 +423,29 @@ Thông tin sẽ hiển thị theo loại ngôn ngữ mà người dùng chọn
 + Test Performance and Edge Cases.
   
   ![Screenshot 2025-05-16 163212](https://github.com/user-attachments/assets/601d9c8c-0aba-4a03-bdfc-4170ea0fbcb7)
+# Hướng dẫn sử dụng Version 7.0
 
+## Hướng dẫn cài đặt
+```
+
+Bước 1: Cài đặt NodeJS và npm
+
+Bước 2: Clone repo về máy
+
+Bước 3: Chạy npm install để cài đặt node-modules
+
+Bước 4: Tạo file .env và thêm các nội dung có note bên bài txt đã nộp
+```
+## Chạy chương trình
+
+Trong terminal  
+Nếu là môi trường sản phẩm chạy: npm start  
+Nếu là môi trường developer chạy: npm run start:dev 
+
+## Hướng dẫn sử dụng web
+### Refactor code
+- Tạo thêm tầng service nằm giữa controller và model. Viết code nghiệp vụ nằm trong tầng service này và ở controller hay model sẽ không có nghiệp vụ.
+- Thay đổi tên các web api gọi đến để từ đó làm rõ và clean hơn về web api. Ví dụ: các api liên quan đến class sẽ bắt đầu bằng /class
+- Web sử dụng mô hình 3 lớp và đã chia thêm tầng service giúp Clean Architecture
+- Sửa lỗi một số chỗ theo unit test để có thể chạy test hoạt thiện toàn bộ.
+- Viết các báo cáo từ 00 -> 09 về developer Guide để hướng dẫn developer một số cái về lập trình web sao cho clean và chính xác nhất.
