@@ -4,7 +4,7 @@
 
 # Project name: Website quản lý sinh viên
 
-  
+[Tài liệu chi tiết](./reports)
 
 ## Cấu trúc source code
 
