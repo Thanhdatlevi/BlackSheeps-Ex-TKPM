@@ -453,5 +453,6 @@ Nếu là môi trường developer chạy: npm run start:dev
 - Sửa lỗi một số chỗ theo unit test để có thể chạy test hoạt thiện toàn bộ.
   ![image](https://github.com/user-attachments/assets/df7358ce-d6d8-40a7-9c44-95d5abc6c089)
 - Viết các báo cáo từ 00 -> 09 về developer Guide để hướng dẫn developer một số cái về lập trình web sao cho clean và chính xác nhất.
+
   ![image](https://github.com/user-attachments/assets/1b814962-1f1a-4606-97c3-1a90ba9e21ac)
 
