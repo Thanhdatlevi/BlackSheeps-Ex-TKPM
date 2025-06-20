@@ -444,8 +444,14 @@ Nếu là môi trường developer chạy: npm run start:dev
 
 ## Hướng dẫn sử dụng web
 ### Refactor code
-- Tạo thêm tầng service nằm giữa controller và model. Viết code nghiệp vụ nằm trong tầng service này và ở controller hay model sẽ không có nghiệp vụ.
-- Thay đổi tên các web api gọi đến để từ đó làm rõ và clean hơn về web api. Ví dụ: các api liên quan đến class sẽ bắt đầu bằng /class
 - Web sử dụng mô hình 3 lớp và đã chia thêm tầng service giúp Clean Architecture
+- Tạo thêm tầng service nằm giữa controller và model. Viết code nghiệp vụ nằm trong tầng service này và ở controller hay model sẽ không có nghiệp vụ.
+  ![image](https://github.com/user-attachments/assets/f19ea567-164a-4e68-be8a-b3dde4fb3dfe)
+  ![image](https://github.com/user-attachments/assets/96dc7e30-cec1-47e5-9a74-d5d4284e105c)
+- Thay đổi tên các web api gọi đến để từ đó làm rõ và clean hơn về web api. Ví dụ: các api liên quan đến class sẽ bắt đầu bằng /class
+![image](https://github.com/user-attachments/assets/d354a30d-0bb3-4e59-b738-b8e5181489be)
 - Sửa lỗi một số chỗ theo unit test để có thể chạy test hoạt thiện toàn bộ.
+  ![image](https://github.com/user-attachments/assets/df7358ce-d6d8-40a7-9c44-95d5abc6c089)
 - Viết các báo cáo từ 00 -> 09 về developer Guide để hướng dẫn developer một số cái về lập trình web sao cho clean và chính xác nhất.
+  ![image](https://github.com/user-attachments/assets/1b814962-1f1a-4606-97c3-1a90ba9e21ac)
+
